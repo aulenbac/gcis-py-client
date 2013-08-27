@@ -1,0 +1,99 @@
+<?php
+/**
+ * Created by IntelliJ IDEA.
+ * User: abuddenberg
+ * Date: 8/22/13
+ * Time: 11:58 AM
+ * To change this template use File | Settings | File Templates.
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+function formsrv_help($path, $arg) {
+    $output = '';
+    switch ($path) {
+        case "admin/help#formsrv":
+            $output = '<p>'.  t("Provides RESTful endpoint for serving out Webform submissions") .'</p>';
+            break;
+    }
+    return $output;
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function formsrv_menu() {
+    $items['metadata/images'] = array(
+        'page callback' => 'formsrv_image_metadata_json',
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+    return $items;
+}
+
+function formsrv_image_metadata_json(){
+//    $form_data = formsrv_get_image_metadata(1318, 10);
+
+    $map = formsrv_get_chapter_image_map();
+    drupal_json($map);
+}
+
+
+
+
+function formsrv_get_chapter_image_map(){
+    $q = <<<END
+        select
+          n.nid as form_nid,
+          n.title as section,
+          d.sid as form_submission_id,
+          d.data as chapter_image_nid
+        from (
+            select
+                nid,
+                case title
+                    when 'Image Metadata' then 'images'
+                    when 'Figure Metadata' then 'figure'
+                    when 'Data Source Metadata' then 'datasources'
+                    end as title
+            from {node}
+            where title in ('Image Metadata', 'Figure Metadata', 'Data Source Metadata')
+            ) n
+          join {webform_submitted_data} d on n.nid = d.nid
+          join {webform_component} c on n.nid = c.nid and d.cid = c.cid
+        where c.form_key = 'nid'
+        order by chapter_image_nid, d.sid
+END;
+
+    $map = array();
+    foreach(db_query($q) as $row){
+        $map[$row['chapter_image_nid']][$row['section']][] = array('nid' => $row['form_nid'], 'sid' => $row['form_submission_id']);
+    }
+
+    return $map;
+}
+
+
+function formsrv_get_image_metadata($form_node_id, $submission_id) {
+    $q = <<<END
+        select
+#          d.sid,
+          c.form_key as k,
+#          c.name,
+          d.data as v
+        from {webform_submitted_data} d
+          join {webform_component} c on d.nid = c.nid and d.cid = c.cid
+        where d.nid = %d
+          and d.sid = %d
+          order by c.pid, c.weight
+END;
+
+    $results = array();
+    foreach(db_query($q, $form_node_id, $submission_id) as $row){
+        $results[$row['k']] = $row['v'];
+    }
+
+    return $results;
+
+}
