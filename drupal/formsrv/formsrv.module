@@ -36,6 +36,21 @@ function formsrv_image_metadata_json(){
 //    $form_data = formsrv_get_image_metadata(1318, 10);
 
     $map = formsrv_get_chapter_image_map();
+
+    foreach($map as $chapter_image_nid => $figure){
+        foreach($figure as $section => $list_ids){
+            foreach($list_ids as $index => $ids){
+                $form_node_id = $ids['nid'];
+                $submission_id = $ids['sid'];
+
+                $map[$chapter_image_nid][$section][$index] = formsrv_get_form_data($form_node_id , $submission_id );
+                if($section == 'images'){
+                    $map[$chapter_image_nid][$section][$index]['datasources'] = formsrv_get_datasources_for_image($submission_id);
+                }
+            }
+        }
+    }
+
     drupal_json($map);
 }
 
@@ -55,10 +70,9 @@ function formsrv_get_chapter_image_map(){
                 case title
                     when 'Image Metadata' then 'images'
                     when 'Figure Metadata' then 'figure'
-                    when 'Data Source Metadata' then 'datasources'
                     end as title
             from {node}
-            where title in ('Image Metadata', 'Figure Metadata', 'Data Source Metadata')
+            where title in ('Image Metadata', 'Figure Metadata')
             ) n
           join {webform_submitted_data} d on n.nid = d.nid
           join {webform_component} c on n.nid = c.nid and d.cid = c.cid
@@ -74,8 +88,29 @@ END;
     return $map;
 }
 
+function formsrv_get_datasources_for_image($image_sid){
+    $q = <<<END
+        #Query to get datasource information for an image
+        select
+          d.nid,
+          d.sid
+        from webform_submitted_data d
+          join webform_component c on d.nid = c.nid and d.cid = c.cid
+        where d.nid = (select nid from node where title = 'Data Source Metadata')
+          and c.form_key = 'image_metadata_sid'
+          and d.data = %d;
+END;
 
-function formsrv_get_image_metadata($form_node_id, $submission_id) {
+    $datasources = array();
+    foreach(db_query($q, $image_sid) as $row){
+        $datasources[] = formsrv_get_form_data($row['nid'], $row['sid']);
+    }
+
+    return $datasources;
+}
+
+
+function formsrv_get_form_data($form_node_id, $submission_id) {
     $q = <<<END
         select
 #          d.sid,
