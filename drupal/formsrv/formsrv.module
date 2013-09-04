@@ -24,18 +24,88 @@ function formsrv_help($path, $arg) {
  * Implementation of hook_menu().
  */
 function formsrv_menu() {
-    $items['metadata/images'] = array(
-        'page callback' => 'formsrv_image_metadata_json',
+//    $items['metadata/figures/all'] = array(
+//        'page callback' => 'formsrv_figure_metadata_json',
+//        'type' => MENU_CALLBACK,
+//        'access arguments' => array('access content'),
+//    );
+
+    $items['metadata/figures'] = array(
+        'page callback' => 'formsrv_figure_metadata_json',
         'type' => MENU_CALLBACK,
         'access arguments' => array('access content'),
     );
+
+    $items['metadata/list'] = array(
+        'page callback' => 'formsrv_figure_list_json',
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+    );
+
     return $items;
 }
 
-function formsrv_image_metadata_json(){
-//    $form_data = formsrv_get_image_metadata(1318, 10);
+/**
+ * Renders a list of figure node IDs with a basic descriptions in JSON.
+ */
+function formsrv_figure_list_json(){
+    $q = <<<END
+        #Query to give brief listing and description of figures in Drupal
+        select
+          figures.chapter_image_nid,
+          max(
+              case c.form_key
+                when 'what_is_the_figure_id' then d.data else NULL
+              end
+          ) as figure_id,
+          max(
+              case c.form_key
+                when 'what_is_the_name_of_the_figure_as_listed_in_the_report' then d.data else NULL
+              end
+          ) as figure_name
+        from {webform_submitted_data} d
+          join {webform_component} c on d.nid = c.nid and d.cid = c.cid
+          join (
+            select
+              d.nid,
+              d.sid,
+              d.data as chapter_image_nid
+            from {webform_submitted_data} d
+              join {webform_component} c on d.nid = c.nid and d.cid = c.cid
+            where d.nid = (select nid from {node} where title = 'Figure Metadata')
+             and c.form_key ='nid'
+          ) figures on d.nid = figures.nid and d.sid = figures.sid
+        where c.form_key in ('what_is_the_figure_id', 'what_is_the_name_of_the_figure_as_listed_in_the_report')
+        group by figures.chapter_image_nid
+        order by figures.chapter_image_nid
+END;
+    $results = array();
+    foreach(db_query($q) as $row){
+        $results[] = array(
+            'chapter_image_nid' => $row['chapter_image_nid'],
+            'figure_id' => $row['figure_id'],
+            'figure_name' => $row['figure_name'],
+            'url' => url('metadata/figures/'.$row['chapter_image_nid'])
+        );
+    }
+
+    drupal_json($results);
+}
+
+/**
+ * Creates and populates a tree-like data structure of figures and images with their related datasources.
+ * If the node ID of the figure from trh
+ * Renders this data structure as JSON.
+ */
+function formsrv_figure_metadata_json($image_nid_query = 'all'){
+//    drupal_json(node_load(1314));
 
     $map = formsrv_get_chapter_image_map();
+
+    //Filter out figures we don't care about
+    if($image_nid_query != 'all'){
+        $map = array_intersect_key($map, array($image_nid_query => 1));
+    }
 
     foreach($map as $chapter_image_nid => $figure){
         foreach($figure as $section => $list_ids){
@@ -44,6 +114,15 @@ function formsrv_image_metadata_json(){
                 $submission_id = $ids['sid'];
 
                 $map[$chapter_image_nid][$section][$index] = formsrv_get_form_data($form_node_id , $submission_id );
+
+                //So much for a functional design...
+                //Grab the path to the figure in Drupal from its node ID
+                if($section == 'figure'){
+                    $chapter_image = node_load($chapter_image_nid);
+                    $map[$chapter_image_nid][$section][$index]['path'] = url('system/files/'.$chapter_image->field_chapter_image_image[0]['filename']);
+                }
+
+                //Add datasource section to images; might need to expand this to figures as well
                 if($section == 'images'){
                     $map[$chapter_image_nid][$section][$index]['datasources'] = formsrv_get_datasources_for_image($submission_id);
                 }
@@ -55,8 +134,10 @@ function formsrv_image_metadata_json(){
 }
 
 
-
-
+/**
+ * Create a basic tree-like structure of figures and images with their identifiers.
+ * We'll replace the identifiers with actual data from the database in another function.
+ */
 function formsrv_get_chapter_image_map(){
     $q = <<<END
         select
@@ -88,6 +169,10 @@ END;
     return $map;
 }
 
+
+/**
+ * Returns a populated list of datasources for the given image.
+ */
 function formsrv_get_datasources_for_image($image_sid){
     $q = <<<END
         #Query to get datasource information for an image
@@ -110,6 +195,12 @@ END;
 }
 
 
+/**
+ * Returns a map of field-value pairs of webform submission data.
+ * Parameters:
+ * $form_node_id: the node ID of the webform
+ * $submission_id: the submission ID within the given webform to get
+ */
 function formsrv_get_form_data($form_node_id, $submission_id) {
     $q = <<<END
         select
