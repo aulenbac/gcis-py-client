@@ -52,15 +52,15 @@ function formsrv_figure_list_json(){
     $q = <<<END
         #Query to give brief listing and description of figures in Drupal
         select
-          figures.chapter_image_nid,
+          trim(figures.chapter_image_nid),
           max(
               case c.form_key
-                when 'what_is_the_figure_id' then d.data else NULL
+                when 'what_is_the_figure_id' then trim(d.data) else NULL
               end
           ) as figure_id,
           max(
               case c.form_key
-                when 'what_is_the_name_of_the_figure_as_listed_in_the_report' then d.data else NULL
+                when 'what_is_the_name_of_the_figure_as_listed_in_the_report' then trim(d.data) else NULL
               end
           ) as figure_name
         from {webform_submitted_data} d
@@ -79,9 +79,11 @@ function formsrv_figure_list_json(){
         group by figures.chapter_image_nid
         order by figures.chapter_image_nid
 END;
-    $results = array();
-    foreach(db_query($q) as $row){
-        $results[] = array(
+    $list = array();
+
+    $result = db_query($q);
+    while($row = $result->fetch_assoc()){
+        $list[] = array(
             'chapter_image_nid' => $row['chapter_image_nid'],
             'figure_id' => $row['figure_id'],
             'figure_name' => $row['figure_name'],
@@ -89,7 +91,7 @@ END;
         );
     }
 
-    drupal_json($results);
+    drupal_json($list);
 }
 
 /**
@@ -113,7 +115,7 @@ function formsrv_figure_metadata_json($image_nid_query = 'all'){
                 $form_node_id = $ids['nid'];
                 $submission_id = $ids['sid'];
 
-                $map[$chapter_image_nid][$section][$index] = formsrv_get_form_data($form_node_id , $submission_id );
+                $map[$chapter_image_nid][$section][$index] = formsrv_get_form_data($form_node_id , $submission_id);
 
                 //So much for a functional design...
                 //Grab the path to the figure in Drupal from its node ID
@@ -144,7 +146,7 @@ function formsrv_get_chapter_image_map(){
           n.nid as form_nid,
           n.title as section,
           d.sid as form_submission_id,
-          d.data as chapter_image_nid
+          trim(d.data) as chapter_image_nid
         from (
             select
                 nid,
@@ -162,7 +164,9 @@ function formsrv_get_chapter_image_map(){
 END;
 
     $map = array();
-    foreach(db_query($q) as $row){
+
+    $result = db_query($q);
+    while($row = $result->fetch_assoc()){
         $map[$row['chapter_image_nid']][$row['section']][] = array('nid' => $row['form_nid'], 'sid' => $row['form_submission_id']);
     }
 
@@ -187,7 +191,9 @@ function formsrv_get_datasources_for_image($image_sid){
 END;
 
     $datasources = array();
-    foreach(db_query($q, $image_sid) as $row){
+
+    $result = db_query($q, $image_sid);
+    while($row = $result->fetch_assoc()){
         $datasources[] = formsrv_get_form_data($row['nid'], $row['sid']);
     }
 
@@ -205,9 +211,9 @@ function formsrv_get_form_data($form_node_id, $submission_id) {
     $q = <<<END
         select
 #          d.sid,
-          c.form_key as k,
+          trim(c.form_key) as k,
 #          c.name,
-          d.data as v
+          trim(d.data) as v
         from {webform_submitted_data} d
           join {webform_component} c on d.nid = c.nid and d.cid = c.cid
         where d.nid = %d
@@ -215,11 +221,13 @@ function formsrv_get_form_data($form_node_id, $submission_id) {
           order by c.pid, c.weight
 END;
 
-    $results = array();
-    foreach(db_query($q, $form_node_id, $submission_id) as $row){
-        $results[$row['k']] = $row['v'];
+    $form_data = array();
+
+    $result = db_query($q, $form_node_id, $submission_id);
+    while($row = $result->fetch_assoc()){
+        $form_data[$row['k']] = $row['v'];
     }
 
-    return $results;
+    return $form_data;
 
 }
