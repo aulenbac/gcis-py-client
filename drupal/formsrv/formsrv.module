@@ -52,7 +52,7 @@ function formsrv_figure_list_json(){
     $q = <<<END
         #Query to give brief listing and description of figures in Drupal
         select
-          trim(figures.chapter_image_nid),
+          trim(figures.chapter_image_nid) as chapter_image_nid,
           max(
               case c.form_key
                 when 'what_is_the_figure_id' then trim(d.data) else NULL
