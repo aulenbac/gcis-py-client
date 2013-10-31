@@ -90,8 +90,9 @@ END;
             'url' => url('metadata/figures/'.$row['chapter_image_nid'])
         );
     }
-
-    drupal_json($list);
+    drupal_set_header('Content-Type: application/json');
+    echo json_encode($list);
+//    drupal_json($list);
 }
 
 /**
@@ -132,7 +133,9 @@ function formsrv_figure_metadata_json($image_nid_query = 'all'){
         }
     }
 
-    drupal_json($map);
+    drupal_set_header('Content-Type: application/json');
+    echo json_encode($map);
+//    drupal_json($map);
 }
 
 
