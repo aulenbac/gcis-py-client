@@ -4,3 +4,5 @@
 .groovy
 .settings
 bin/*
+src/blah.py
+src/Blah.py

@@ -1,14 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e5a156d-c536-48fc-a8d5-fd965ad14087" name="Default" comment="" />
+    <list default="true" id="8e5a156d-c536-48fc-a8d5-fd965ad14087" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/load_endnote.sh" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/pack_endnote.sh" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Joker.iml" afterPath="$PROJECT_DIR$/Joker.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/add_uuids.py" afterPath="$PROJECT_DIR$/src/add_uuids.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/blah.py" afterPath="$PROJECT_DIR$/src/blah.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parse_endnote_xml.py" afterPath="$PROJECT_DIR$/src/parse_endnote_xml.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="Joker.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/formsrv.info" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1377190723489" ignored="false" />
-    <file path="/formsrv.module" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1377634080723" ignored="false" />
+    <file path="/formsrv.info" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1383243145814" ignored="false" />
+    <file path="/formsrv.module" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1383246607951" ignored="false" />
     <file path="/a.regexp" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1377614838173" ignored="false" />
-    <file path="/local_drupal" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1377634615765" ignored="false" />
-    <file path="/Dummy.txt" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1377634800640" ignored="false" />
+    <file path="/local_drupal" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1382557894751" ignored="false" />
+    <file path="/Dummy.txt" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1382972562919" ignored="false" />
+    <file path="$PROJECT_DIR$/../RandomStuff/src/blah.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1381177090268" ignored="false" />
+    <file path="/blah.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1383058410364" ignored="false" />
+    <file path="/dev.nemac.org - Asides10" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1383244845046" ignored="false" />
+    <file path="$PROJECT_DIR$/../CMIP3_RegionalDistribution/src/Blah.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380036214456" ignored="false" />
+    <file path="/Blah.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380045447369" ignored="false" />
+    <file path="$PROJECT_DIR$/../CMIP3_RegionalDistribution/src/config.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380047162697" ignored="false" />
+    <file path="$PROJECT_DIR$/../RandomStuff/src/get_regional_bounds.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1378747018369" ignored="false" />
+    <file path="$PROJECT_DIR$/../RandomStuff/src/consecDD.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1379613539367" ignored="false" />
+    <file path="/consecDD.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1379613539258" ignored="false" />
+    <file path="$PROJECT_DIR$/../plot_temp_trends/src/plot_temp_trends_map.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380823692697" ignored="false" />
+    <file path="/plot_temp_trends_map.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380823006420" ignored="false" />
+    <file path="$PROJECT_DIR$/../plot_precip_maps/src/Blah.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380030459276" ignored="false" />
+    <file path="$PROJECT_DIR$/../CMIP3_RegionalDistribution/.idea/workspace.xml" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380215374893" ignored="false" />
+    <file path="$PROJECT_DIR$/../CMIP3_RegionalDistribution/mask_Southwest_CMIP3.dat" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380037812014" ignored="false" />
+    <file path="$PROJECT_DIR$/../CMIP3_RegionalDistribution/src/grid_point_fun.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380047129135" ignored="false" />
+    <file path="/grid_point_fun.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380045440050" ignored="false" />
+    <file path="/config.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1381347012521" ignored="false" />
+    <file path="$PROJECT_DIR$/../CMIP3_RegionalDistribution/src/RegionalTempDistribution.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380046726711" ignored="false" />
+    <file path="$PROJECT_DIR$/../CMIP3_RegionalDistribution/src/RegionalPrecipDistribution.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380046743408" ignored="false" />
+    <file path="$PROJECT_DIR$/../NARCCAP_scatter/data/Annual/PR_precip_annual.txt" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380049361539" ignored="false" />
+    <file path="/PR_precip_annual.txt" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380048772684" ignored="false" />
+    <file path="$PROJECT_DIR$/../NARCCAP_scatter/data/Annual/PR_temp_annual.txt" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380049990860" ignored="false" />
+    <file path="/PR_temp_annual.txt" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380049619077" ignored="false" />
+    <file path="$PROJECT_DIR$/../NARCCAP_scatter/src/config.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1381347052669" ignored="false" />
+    <file path="$PROJECT_DIR$/../NARCCAP_scatter/src/plotAnnualTemp.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380050056332" ignored="false" />
+    <file path="/plotAnnualTemp.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380050054491" ignored="false" />
+    <file path="$PROJECT_DIR$/../NARCCAP_scatter/src/plotAnnualPrecip.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1381346890567" ignored="false" />
+    <file path="/plotAnnualPrecip.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380050097524" ignored="false" />
+    <file path="$PROJECT_DIR$/../NARCCAP_scatter/data/Seasonal/PR_precip_seasonal_a2.txt" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380050734276" ignored="false" />
+    <file path="$PROJECT_DIR$/../NARCCAP_scatter/data/Seasonal/PR_temp_seasonal_a2.txt" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380050425075" ignored="false" />
+    <file path="$PROJECT_DIR$/../NARCCAP_scatter/src/plotSeasonalA2Precip.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380050778887" ignored="false" />
+    <file path="/plotSeasonalA2Precip.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380050777302" ignored="false" />
+    <file path="$PROJECT_DIR$/../plot_temp_maps/src/blah.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380118615650" ignored="false" />
+    <file path="$PROJECT_DIR$/../plot_scenarios_compare/data/annual_global_data.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380641539748" ignored="false" />
+    <file path="/annual_global_data.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380648257244" ignored="false" />
+    <file path="$PROJECT_DIR$/../plot_scenarios_compare/src/plot_scenarios_compare.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1381345474661" ignored="false" />
+    <file path="/plot_scenarios_compare.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1381345218302" ignored="false" />
+    <file path="$PROJECT_DIR$/../plot_scenarios_compare/src/__init__.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380642257684" ignored="false" />
+    <file path="$PROJECT_DIR$/../plot_scenarios_compare/src/annual_global_data.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1380648257244" ignored="false" />
+    <file path="$PROJECT_DIR$/../plot_precip_stations/src/plot_precip_stations.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1381334408767" ignored="false" />
+    <file path="/add_uuids.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1382375555500" ignored="false" />
+    <file path="/load_endnote.sh" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1382375831240" ignored="false" />
+    <file path="/pack_endnote.sh" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1382620564624" ignored="false" />
+    <file path="/parse_endnote_xml.py" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1382549703209" ignored="false" />
+    <file path="/deploy_endnote.sh" changelist="8e5a156d-c536-48fc-a8d5-fd965ad14087" time="1383155410351" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +83,6 @@
     <sortChildren value="false" />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -65,6 +119,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -74,13 +129,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="formsrv.module" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="dev.nemac.org - Asides10" pinned="false" current="false" current-in-tab="false">
+        <entry file="dbDummy://db-console:/e9cc23a9/3167a6ff-9ca2-4ae7-8ab0-29fd49e6dc74/">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="35" column="31" selection-start="845" selection-end="845" vertical-scroll-proportion="-18.103449">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="formsrv.module" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/drupal/formsrv/formsrv.module">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="0" selection-start="923" selection-end="923" vertical-scroll-proportion="-26.25">
-              <folding>
-                <element signature="e#6#163#0" expanded="true" />
-              </folding>
+            <state line="87" column="45" selection-start="2741" selection-end="2741" vertical-scroll-proportion="0.2123656">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="work.sql" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/work.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="0" selection-start="227" selection-end="286" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -88,19 +162,7 @@
       <file leaf-file-name="local_drupal" pinned="false" current="false" current-in-tab="false">
         <entry file="dbDummy://db-console:/e9cc23a9/d57fbb0a-a392-432f-a64b-d93578ddd822/">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="0" selection-start="0" selection-end="1848" vertical-scroll-proportion="-9.827586">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="work.sql" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/work.sql">
-          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="0" selection-start="1833" selection-end="1833" vertical-scroll-proportion="0.96031743">
+            <state line="5" column="1" selection-start="81" selection-end="81" vertical-scroll-proportion="-2.586207">
               <folding />
             </state>
           </provider>
@@ -109,7 +171,16 @@
       <file leaf-file-name="formsrv.info" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/drupal/formsrv/formsrv.info">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="15" selection-start="44" selection-end="105" vertical-scroll-proportion="0.0">
+            <state line="4" column="28" selection-start="168" selection-end="168" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pack_endnote.sh" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/pack_endnote.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="64" selection-start="498" selection-end="498" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -133,18 +204,27 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/drupal/formsrv/formsrv.info" />
-        <option value="db-console:/e9cc23a9/d57fbb0a-a392-432f-a64b-d93578ddd822/" />
-        <option value="$PROJECT_DIR$/drupal/formsrv/formsrv.module" />
         <option value="$PROJECT_DIR$/work.sql" />
+        <option value="$PROJECT_DIR$/src/pack_endnote.sh" />
+        <option value="$PROJECT_DIR$/src/load_endnote.sh" />
+        <option value="$PROJECT_DIR$/scripts/load_endnote.sh" />
+        <option value="$PROJECT_DIR$/endnote_types.xml" />
+        <option value="$PROJECT_DIR$/src/parse_endnote_xml.py" />
+        <option value="db-console:/e9cc23a9/d57fbb0a-a392-432f-a64b-d93578ddd822/" />
+        <option value="$PROJECT_DIR$/scripts/pack_endnote.sh" />
+        <option value="$PROJECT_DIR$/scripts/deploy_endnote.sh" />
+        <option value="$PROJECT_DIR$/src/add_uuids.py" />
+        <option value="$PROJECT_DIR$/drupal/formsrv/formsrv.info" />
+        <option value="db-console:/e9cc23a9/3167a6ff-9ca2-4ae7-8ab0-29fd49e6dc74/" />
+        <option value="$PROJECT_DIR$/src/blah.py" />
+        <option value="$PROJECT_DIR$/drupal/formsrv/formsrv.module" />
       </list>
     </option>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="10" />
     <option name="y" value="22" />
-    <option name="width" value="2540" />
+    <option name="width" value="2560" />
     <option name="height" value="1330" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -160,6 +240,11 @@
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
   </component>
+  <component name="ProjectStructureProblems">
+    <ignored-problems>
+      <problem id="library-invalid-classes-path(library:project:SQLAlchemy-0.8.2-py2.7-macosx-10.8-intel)" />
+    </ignored-problems>
+  </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
@@ -173,6 +258,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -201,6 +288,34 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Joker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Joker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Joker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Joker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="drupal" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -211,55 +326,54 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="JdbcConsole.Extract.LineSuffix" value="" />
-    <property name="project.structure.last.edited" value="Project" />
     <property name="JdbcConsole.Extract.Separator" value="," />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../nca3-web" />
     <property name="JdbcConsole.Extract.LineSeparator" value="\n" />
     <property name="JdbcConsole.ResultInNewTab" value="false" />
     <property name="JdbcConsole.Extract.LinePrefix" value="" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="JdbcConsole.ResultToolbar" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="JdbcConsole.Extract.IncludeRowNumbers" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="Console.TableResult.DefaultCopyAction" value="Tab-separated Values (TSV)" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
+    <property name="options.lastSelected" value="editor" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="JdbcConsole.Extract.OpeningQuote" value="\&quot;" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="JdbcConsole.Extract.ClosingQuote" value="\&quot;" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="JdbcConsole.EnableParameterPattern" value="false" />
-    <property name="JdbcConsole.Extract.QuoteEverything" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="JdbcConsole.Extract.IncludeHeader" value="false" />
+    <property name="JdbcConsole.Extract.QuoteEverything" value="false" />
+    <property name="JdbcConsole.EnableParameterPattern" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
     <property name="JdbcConsole.ParameterPattern" value="(\?\d*|\:\w+|\@\w+|\$\{[^$\{\}]*\}|\$\w+\$|\#\w+\#)" />
     <property name="JdbcConsole.ResultPageSize" value="1000" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
   </component>
-  <component name="PublishConfig" serverName="local_drupal6" serverId="b17e5d88-b38e-4082-ae9f-4d02a6bc1af2" autoUpload="true">
+  <component name="PublishConfig" serverName="fog" serverId="4e6f7e11-1715-4231-965c-35f46b19bff0" autoUpload="true">
     <servers>
-      <server id="020877f7-1381-41bb-add0-c8dc18455351">
+      <server id="4e6f7e11-1715-4231-965c-35f46b19bff0">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" />
-          </mappings>
-        </serverdata>
-      </server>
-      <server id="b17e5d88-b38e-4082-ae9f-4d02a6bc1af2">
-        <serverdata>
-          <mappings>
-            <mapping deploy="modules" local="$PROJECT_DIR$/drupal" />
+            <mapping deploy="/var/dev.nemac.org/html/asides10/sites/all/modules/custom" local="$PROJECT_DIR$/drupal" />
           </mappings>
         </serverdata>
       </server>
@@ -273,15 +387,88 @@
       <PyConsoleSettings />
     </option>
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
-      <option name="PROGRAM_PARAMETERS" />
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/scripts" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.blah">
+    <configuration default="false" name="add_uuids" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Joker" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/add_uuids.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
-      <TestRunner />
+    <configuration default="false" name="parse_endnote_xml" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Joker" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/parse_endnote_xml.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="blah" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Joker" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/blah.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Joker" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
       <method />
     </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -290,9 +477,6 @@
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
       <method />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
@@ -306,34 +490,6 @@
       <option name="VM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
-      <envs />
-      <properties />
-      <listeners />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -351,12 +507,29 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Joker" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugSession" factoryName="Local" singleton="true">
       <JSDebuggerConfigurationSettings>
-        <option name="engineId" />
+        <option name="engineId" value="embedded" />
         <option name="fileUrl" />
       </JSDebuggerConfigurationSettings>
       <method />
@@ -388,13 +561,42 @@
       <option name="CONTEXT_PROVIDER" />
       <method />
     </configuration>
-    <list size="0" />
+    <list size="3">
+      <item index="0" class="java.lang.String" itemvalue="Python.add_uuids" />
+      <item index="1" class="java.lang.String" itemvalue="Python.parse_endnote_xml" />
+      <item index="2" class="java.lang.String" itemvalue="Python.blah" />
+    </list>
+    <recent_temporary>
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Python.blah" />
+        <item index="1" class="java.lang.String" itemvalue="Python.add_uuids" />
+        <item index="2" class="java.lang.String" itemvalue="Python.parse_endnote_xml" />
+      </list>
+    </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
       <Port>5050</Port>
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="sslv3">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <configuration useDefault="true">$USER_HOME$/.subversion</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="8e5a156d-c536-48fc-a8d5-fd965ad14087" name="Default" comment="" />
@@ -404,33 +606,34 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="10" y="22" width="2540" height="1330" extended-state="0" />
+    <frame x="0" y="22" width="2560" height="1330" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32975206" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975206" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3289256" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32999197" sideWeight="0.6707921" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32895783" sideWeight="0.6710744" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975337" sideWeight="0.6710744" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24979952" sideWeight="0.6702479" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25775656" sideWeight="0.6710744" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.353719" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -500,65 +703,111 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/bootstrap-3.0.0/examples/signin/index.html">
+    <entry file="file://$PROJECT_DIR$/list.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="34" selection-start="1366" selection-end="1366" vertical-scroll-proportion="0.5301724">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/add_uuids.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="115" selection-start="392" selection-end="404" vertical-scroll-proportion="0.19157088" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/endnote_types.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="64" selection-start="2136" selection-end="2136" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bootstrap-3.0.0/index.html">
+    <entry file="file://$PROJECT_DIR$/RefTypeTableEN9.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
+        <state line="0" column="18" selection-start="11" selection-end="18" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bootstrap-3.0.0/dist/css/bootstrap.css">
+    <entry file="file://$PROJECT_DIR$/scripts/load_endnote.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="5" selection-start="361" selection-end="361" vertical-scroll-proportion="-0.6789069">
+        <state line="8" column="36" selection-start="285" selection-end="285" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bootstrap-3.0.0/examples/carousel/index.html">
+    <entry file="file://$PROJECT_DIR$/scripts/deploy_endnote.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="29" selection-start="926" selection-end="926" vertical-scroll-proportion="-0.10026738">
+        <state line="4" column="0" selection-start="21" selection-end="213" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/add_uuids.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="35" selection-start="874" selection-end="874" vertical-scroll-proportion="0.47195622">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/drupal/formsrv/formsrv.info">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="15" selection-start="44" selection-end="105" vertical-scroll-proportion="0.0">
+        <state line="4" column="28" selection-start="168" selection-end="168" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://db-console:/e9cc23a9/d57fbb0a-a392-432f-a64b-d93578ddd822/">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="1" selection-start="81" selection-end="81" vertical-scroll-proportion="-2.586207">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/work.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="227" selection-end="286" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="dbDummy://db-console:/e9cc23a9/3167a6ff-9ca2-4ae7-8ab0-29fd49e6dc74/">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="31" selection-start="845" selection-end="845" vertical-scroll-proportion="-18.103449">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/blah.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="0" selection-start="350" selection-end="350" vertical-scroll-proportion="0.3065134">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/pack_endnote.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="64" selection-start="498" selection-end="498" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parse_endnote_xml.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="41" selection-start="296" selection-end="296" vertical-scroll-proportion="0.22959183">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/drupal/formsrv/formsrv.module">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="0" selection-start="923" selection-end="923" vertical-scroll-proportion="-26.25">
-          <folding>
-            <element signature="e#6#163#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://db-console:/e9cc23a9/d57fbb0a-a392-432f-a64b-d93578ddd822/">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="0" selection-start="0" selection-end="1848" vertical-scroll-proportion="-9.827586">
+        <state line="87" column="45" selection-start="2741" selection-end="2741" vertical-scroll-proportion="0.2123656">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/work.sql">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="0" selection-start="1833" selection-end="1833" vertical-scroll-proportion="0.96031743">
-          <folding />
-        </state>
       </provider>
     </entry>
   </component>
@@ -578,7 +827,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>No facets are configured</last-edited>
+          <last-edited>Python</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -590,7 +839,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
-          <last-edited>groovy-2.1.3</last-edited>
+          <last-edited>Python 2.7.3 (/Library/Frameworks/Python.framework/Versions/2.7/bin/python) interpreter library</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -602,7 +851,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.6</last-edited>
+          <last-edited>Python 2.7.3 (/Library/Frameworks/Python.framework/Versions/2.7/bin/python)</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -639,6 +888,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>SQLAlchemy-0.8.2-py2.7-macosx-10.8-intel</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

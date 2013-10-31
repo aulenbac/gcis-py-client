@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3718794531">
+  <component name="DataSourceManagerImpl" format="xml" hash="4194578566">
     <data-source source="LOCAL" name="local_drupal" product="MySQL" version="5.5.29" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.26 ( Revision: ${bzr.revision-id} )" uuid="d57fbb0a-a392-432f-a64b-d93578ddd822">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
@@ -19,6 +19,36 @@
           <url>file://$PROJECT_DIR$/lib/mysql-connector-license.txt</url>
         </library>
       </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="dev.nemac.org - Asides10" product="MySQL" version="5.1.52" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.26 ( Revision: ${bzr.revision-id} )" uuid="3167a6ff-9ca2-4ae7-8ab0-29fd49e6dc74">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:5000/asides10</jdbc-url>
+      <user-name>asides10</user-name>
+      <user-password>df9bdfdedf9edf9edf9bdf98dfd0dfcddfd2df9a</user-password>
+      <libraries>
+        <library>
+          <url>jar://$PROJECT_DIR$/lib/mysql-connector-java-5.1.26-bin.jar!/</url>
+        </library>
+        <library>
+          <url>file://$PROJECT_DIR$/lib/mysql-connector-license.txt</url>
+        </library>
+      </libraries>
+      <ssh-properties>
+        <enabled>true</enabled>
+        <proxy-host>fog.nemac.org</proxy-host>
+        <proxy-port>22</proxy-port>
+        <user>abuddenb</user>
+        <use-password>true</use-password>
+        <password>dfc1dffddf92dfc8dfc7dff9dff0dff9</password>
+        <private-key-path />
+        <passphrase />
+        <remote-host>localhost</remote-host>
+        <remote-port>3306</remote-port>
+        <local-port>5000</local-port>
+      </ssh-properties>
     </data-source>
   </component>
 </project>
