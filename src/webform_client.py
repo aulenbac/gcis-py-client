@@ -6,7 +6,7 @@ import json
 import re
 
 from domain import Figure, Image
-from gcis_client import update_image, get_figure, create_image, associate_image_with_figure
+from gcis_client import update_image, get_figure, create_image, associate_image_with_figure, upload_image_file
 
 prod = {'base': 'http://resources.assessment.globalchange.gov', 'token': 'mgTD63FAjG'}
 dev_base = 'http://dev.nemac.org/asides10/metadata/figures/all?token=A2PNYxRuG9'
@@ -71,6 +71,7 @@ figure = get_webform('/metadata/figures/3175')
 for image in figure.images:
     image.filename = file_map[image.identifier]
 
+print upload_image_file('69da6d93-4426-4061-a2a1-7b3d01f2dc1c', 'AK.jpg', '../AK.jpg').text
 
 # f = get_figure(report='nca3draft', chapter='our-changing-climate', figure='temperature-change')
 #

@@ -3,9 +3,8 @@
 import httplib
 import urllib
 import json
+import requests
 from domain import Figure, Image
-
-from pickle import dump
 
 base_url = 'data.gcis-dev-front.joss.ucar.edu'
 # base_url = 'http://data-stage.globalchange.gov/report/nca3'
@@ -72,7 +71,10 @@ def associate_image_with_figure(image_id, report, figure_id):
     return resp.status, resp.reason, resp.read()
 
 
-def upload_image_file(image_id)
+def upload_image_file(image_id, filename, filepath):
+    url = 'http://{}/image/files/{}'.format(base_url, image_id)
+    # return requests.put(url, headers=headers, files={'file': (filename, open(filepath, 'rb'))})
+    return requests.put(url, data=open(filepath, 'rb'), headers=headers)
 
 #Full listing
 def get_figure_listing(report, chapter=None):
