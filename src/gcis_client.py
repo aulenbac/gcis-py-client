@@ -1,18 +1,10 @@
 #!/usr/bin/python
 
-import httplib
+from base64 import b64encode
 import urllib
 import json
 import requests
 from domain import Figure, Image
-
-base_url = 'data.gcis-dev-front.joss.ucar.edu'
-# base_url = 'http://data-stage.globalchange.gov/report/nca3'
-headers = {
-    'Accept': 'application/json',
-    'Authorization': 'Basic YW5kcmV3LmJ1ZGRlbmJlcmdAbm9hYS5nb3Y6ZjBiNDc1OTUyMDY2MWY5M2U0N2E5Yzc4NjY1NWJjZjg0ZTZmZTU1NzUyYWI0ZmIx'
-}
-conn = httplib.HTTPConnection(base_url)
 
 
 def check_image(fn):
@@ -26,76 +18,64 @@ def check_image(fn):
     return wrapped
 
 
-def main():
-    f = get_figure(report='nca3draft', chapter='our-changing-climate', figure='temperature-change')
+class GcisClient:
+    headers = {
+        'Accept': 'application/json'
+    }
 
-    for i in f.images:
-        # print i.as_json()
-        i.identifier = ''
-        delete_image(i)
+    def __init__(self, url, username, password):
+        self.base_url = url
+        self.headers['Authorization'] = 'Basic ' + b64encode(username + ':' + password)
 
+    def update_figure(self, report_id, figure):
+        if figure.identifier in (None, ''):
+            raise Exception('Invalid identifier', figure.identifier)
+        update_url = '{b}/report/{rpt}/figure/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure.identifier)
+        return requests.post(update_url, figure.as_json(), headers=self.headers)
 
-def update_figure(figure):
-    if figure.identifier in (None, ''):
-        raise Exception('Invalid identifier', figure.identifier)
+    @check_image
+    def create_image(self, image):
+        update_url = '{b}/image/'.format(b=self.base_url, img=image.identifier)
+        return requests.post(update_url, image.as_json(), headers=self.headers)
 
+    @check_image
+    def update_image(self, image):
+        update_url = '{b}/image/{img}'.format(b=self.base_url, img=image.identifier)
+        return requests.post(update_url, image.as_json(), headers=self.headers)
 
-@check_image
-def create_image(image):
-    update_url = '/image/'.format(img=image.identifier)
-    conn.request('POST', update_url, image.as_json(), headers)
-    resp = conn.getresponse()
-    return resp.status, resp.reason, resp.read()
+    @check_image
+    def delete_image(self, image):
+        delete_url = '{b}/image/{img}'.format(b=self.base_url, img=image.identifier)
+        return requests.delete(delete_url, headers=self.headers)
 
+    def associate_image_with_figure(self, image_id, report_id, figure_id):
+        url = '{b}/report/{rpt}/figure/rel/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
+        return requests.post(url, json.dumps({'add_image_identifier': image_id}), headers=self.headers)
 
-@check_image
-def update_image(image):
-    update_url = '/image/{img}'.format(img=image.identifier)
-    conn.request('POST', update_url, image.as_json(), headers)
-    resp = conn.getresponse()
-    return resp.status, resp.reason, resp.read()
+    def upload_image_file(self, image_id, filepath):
+        url = '{b}/image/files/{id}'.format(b=self.base_url, id=image_id)
+        # For future multi-part encoding support
+        # return requests.put(url, headers=headers, files={'file': (filename, open(filepath, 'rb'))})
+        return requests.put(url, data=open(filepath, 'rb'), headers=self.headers)
 
+    #Full listing
+    def get_figure_listing(self, report_id, chapter_id=None):
+        chapter_filter = '/chapter/' + chapter_id if chapter_id else ''
 
-@check_image
-def delete_image(image):
-    delete_url = '/image/{img}'.format(img=image.identifier)
-    conn.request('DELETE', delete_url, None, headers)
-    resp = conn.getresponse()
-    return resp.status, resp.reason, resp.read()
+        url = '{b}/report/{rpt}{chap}/figure?{p}'.format(
+            b=self.base_url, rpt=report_id, chap=chapter_filter, p=urllib.urlencode({'all': '1'})
+        )
+        resp = requests.get(url, headers=self.headers)
 
+        return [Figure(figure) for figure in resp.json()]
 
-def associate_image_with_figure(image_id, report, figure_id):
-    url = '/report/{rpt}/figure/rel/{fig}'.format(rpt=report, fig=figure_id)
-    conn.request('POST', url, json.dumps({'add_image_identifier': image_id}), headers)
-    resp = conn.getresponse()
-    return resp.status, resp.reason, resp.read()
+    def get_figure(self, report_id, figure_id, chapter_id=None):
+        chapter_filter = '/chapter/' + chapter_id if chapter_id else ''
 
+        url = '{b}/report/{rpt}{chap}/figure/{fig}?{p}'.format(
+            b=self.base_url, rpt=report_id, chap=chapter_filter, fig=figure_id, p=urllib.urlencode({'all': '1'})
+        )
+        resp = requests.get(url, headers=self.headers)
 
-def upload_image_file(image_id, filename, filepath):
-    url = 'http://{}/image/files/{}'.format(base_url, image_id)
-    # return requests.put(url, headers=headers, files={'file': (filename, open(filepath, 'rb'))})
-    return requests.put(url, data=open(filepath, 'rb'), headers=headers)
+        return Figure(resp.json())
 
-#Full listing
-def get_figure_listing(report, chapter=None):
-    chapter_filter = 'chapter/' + chapter if chapter else ''
-
-    url = '/report/{rpt}/{chap}figure?{p}'.format(rpt=report, chap=chapter_filter, p=urllib.urlencode({'all': '1'}))
-    conn.request('GET', url, None, headers)
-    resp = conn.getresponse()
-
-    return [Figure(figure) for figure in json.load(resp.read())]
-
-
-def get_figure(report, figure, chapter=None):
-    chapter_filter = '/chapter' + chapter if chapter else ''
-
-    url = '/report/{rpt}/{chap}figure/{fig}?{p}'.format(rpt=report, chap=chapter_filter, fig=figure, p=urllib.urlencode({'all': '1'}))
-    conn.request('GET', url, None, headers)
-    resp = conn.getresponse()
-
-    return Figure(json.load(resp))
-
-
-if __name__ == "__main__":
-    main()

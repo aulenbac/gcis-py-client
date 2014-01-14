@@ -63,13 +63,15 @@ class Figure(Gcisbase):
         else:
             return None
 
-    def as_json(self):
+    def as_json(self, indent=0):
         #Exclude a couple of fields
         out_fields = set(self._gcis_fields) - set(['images', 'chapter'])
-        return json.dumps({f: self.__dict__[f] for f in out_fields})
+        return json.dumps({f: self.__dict__[f] for f in out_fields}, indent=indent)
 
     def __str__(self):
-        return 'Figure: {f_num}: {f_name}'.format(f_num=self.figure_num, f_name=self.title)
+        return '{f_id}: Figure {f_num}: {f_name}\n\tImages: {imgs}'.format(
+            f_id=self.identifier, f_num=self.figure_num, f_name=self.title, imgs=[i.identifier for i in self.images]
+        )
 
     def __repr__(self):
         return super(Figure, self).__repr__()

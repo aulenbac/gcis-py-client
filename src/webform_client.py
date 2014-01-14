@@ -6,7 +6,7 @@ import json
 import re
 
 from domain import Figure, Image
-from gcis_client import update_image, get_figure, create_image, associate_image_with_figure, upload_image_file
+from gcis_client import GcisClient
 
 prod = {'base': 'http://resources.assessment.globalchange.gov', 'token': 'mgTD63FAjG'}
 dev_base = 'http://dev.nemac.org/asides10/metadata/figures/all?token=A2PNYxRuG9'
@@ -48,9 +48,6 @@ def get_webform(url):
     return f
 
 
-# for listing in get_list():
-#     print listing
-
 #Hack
 file_map = {
     '69da6d93-4426-4061-a2a1-7b3d01f2dc1c': '../AK.jpg',
@@ -65,6 +62,11 @@ file_map = {
     'db4d291d-17c5-4e10-b760-6c8799a8d709': '../NW.jpg',
     '8e74f576-a5af-46c0-b33a-f30072118b86': '../usgcrp_draft-038-012.jpg',
 }
+
+base_url = 'http://data.gcis-dev-front.joss.ucar.edu'
+gcis = GcisClient(base_url, 'andrew.buddenberg@noaa.gov', 'fcee8e3f11f36313e463ece51aab15242f71f3d552d565be')
+
+f = gcis.get_figure('nca3draft', 'temperature-change', chapter_id='our-changing-climate')
 
 figure = get_webform('/metadata/figures/3175')
 
