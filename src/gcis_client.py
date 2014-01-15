@@ -27,16 +27,49 @@ class GcisClient:
         self.base_url = url
         self.headers['Authorization'] = 'Basic ' + b64encode(username + ':' + password)
 
-    def update_figure(self, report_id, figure):
+    def create_figure(self, report_id, chapter_id, figure, skip_images=False):
+        if figure.identifier in (None, ''):
+            raise Exception('Invalid identifier', figure.identifier)
+
+        url = '{b}/report/{rpt}/chapter/{chp}/figure/{fig}'.format(
+            b=self.base_url, rpt=report_id, chp=chapter_id, fig=figure.identifier
+        )
+        responses = [requests.post(url, figure.as_json(), headers=self.headers)]
+
+        if skip_images is False:
+            for image in figure.images:
+                responses.append(
+                    (self.create_image(image),
+                     self.associate_image_with_figure(image.identifier, report_id, figure.identifier))
+                )
+
+        return responses
+
+    def update_figure(self, report_id, figure, skip_images=False):
         if figure.identifier in (None, ''):
             raise Exception('Invalid identifier', figure.identifier)
         update_url = '{b}/report/{rpt}/figure/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure.identifier)
-        return requests.post(update_url, figure.as_json(), headers=self.headers)
+
+        responses = [requests.post(update_url, figure.as_json(), headers=self.headers)]
+
+        if skip_images is False:
+            for image in figure.images:
+                responses.append(self.update_image(image))
+
+        return responses
+
+    def delete_figure(self, report_id, figure_id):
+        url = '{b}/report/{rpt}/figure/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
+        return requests.delete(url, headers=self.headers)
 
     @check_image
     def create_image(self, image):
-        update_url = '{b}/image/'.format(b=self.base_url, img=image.identifier)
-        return requests.post(update_url, image.as_json(), headers=self.headers)
+        url = '{b}/image/'.format(b=self.base_url, img=image.identifier)
+        responses = [requests.post(url, image.as_json(), headers=self.headers)]
+        if image.filename is not None:
+            responses.append(self.upload_image_file(image.identifier, image.filename))
+
+        return responses
 
     @check_image
     def update_image(self, image):
