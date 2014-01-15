@@ -101,12 +101,12 @@ class Image(Gcisbase):
         'what_is_the_name_of_the_image_listed_in_the_report': 'title'
     }
 
-    def __init__(self, data, filename=None):
+    def __init__(self, data, filepath=None):
         super(Image, self).__init__(data, fields=self._gcis_fields, trans=self._translations)
 
         #Hack
         self.identifier = self.identifier.replace('/image/', '')
-        self.filename = filename
+        self.filepath = filepath
 
     def as_json(self):
         out_fields = self._gcis_fields
