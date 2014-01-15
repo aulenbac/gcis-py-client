@@ -11,7 +11,7 @@ def check_image(fn):
     def wrapped(*args, **kwargs):
         # if len(args) < 1 or not isinstance(args[0], Image):
         #     raise Exception('Invalid Image')
-        if args[0].identifier in (None, ''):
+        if args[1].identifier in (None, ''):
             raise Exception('Invalid identifier', args[0].identifier)
         fn(*args, **kwargs)
 
