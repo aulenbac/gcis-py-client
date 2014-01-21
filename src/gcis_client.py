@@ -13,7 +13,7 @@ def check_image(fn):
         #     raise Exception('Invalid Image')
         if args[1].identifier in (None, ''):
             raise Exception('Invalid identifier', args[0].identifier)
-        fn(*args, **kwargs)
+        return fn(*args, **kwargs)
 
     return wrapped
 
@@ -63,11 +63,13 @@ class GcisClient:
         return requests.delete(url, headers=self.headers)
 
     @check_image
-    def create_image(self, image):
+    def create_image(self, image, report_id=None, figure_id=None):
         url = '{b}/image/'.format(b=self.base_url, img=image.identifier)
         responses = [requests.post(url, image.as_json(), headers=self.headers)]
         if image.filename is not None:
             responses.append(self.upload_image_file(image.identifier, image.filename))
+        if figure_id and report_id:
+            responses.append(self.associate_image_with_figure(image.identifier, report_id, figure_id))
 
         return responses
 
@@ -112,3 +114,7 @@ class GcisClient:
 
         return Figure(resp.json())
 
+    def get_image(self, image_id):
+        url = '{b}/image/{img}'.format(b=self.base_url, img=image_id)
+
+        return Image(requests.get(url, headers=self.headers).json())
