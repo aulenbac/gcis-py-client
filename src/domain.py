@@ -39,6 +39,7 @@ class Figure(Gcisbase):
     ]
 
     _translations = {
+        'what_is_the_figure_id': 'identifier',
         'what_is_the_name_of_the_figure_as_listed_in_the_report': 'title',
         'when_was_this_figure_created': 'create_dt'
     }
@@ -54,6 +55,8 @@ class Figure(Gcisbase):
         image_list = data.pop('images', None)
         self.images = [Image(image) for image in image_list] if image_list else None
 
+        #Hack
+        self.identifier = self.identifier.replace('/figure/', '')
 
 
     @property
@@ -108,9 +111,9 @@ class Image(Gcisbase):
         self.identifier = self.identifier.replace('/image/', '')
         self.filepath = filepath
 
-    def as_json(self):
+    def as_json(self, indent=0):
         out_fields = self._gcis_fields
-        return json.dumps({f: self.__dict__[f] for f in out_fields})
+        return json.dumps({f: self.__dict__[f] for f in out_fields}, indent=indent)
 
     def __str__(self):
         return 'Image: {id} {name}'.format(id=self.identifier, name=self.title)
