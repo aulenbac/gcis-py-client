@@ -36,7 +36,7 @@ class GcisClient:
         )
         responses = [requests.post(url, figure.as_json(), headers=self.headers)]
 
-        if skip_images is False:
+        if skip_images is False and responses[0].status_code == 200:
             for image in figure.images:
                 responses.append(
                     (self.create_image(image),
@@ -49,13 +49,11 @@ class GcisClient:
         if figure.identifier in (None, ''):
             raise Exception('Invalid identifier', figure.identifier)
         update_url = '{b}/report/{rpt}/figure/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure.identifier)
-
         responses = [requests.post(update_url, figure.as_json(), headers=self.headers)]
 
-        if skip_images is False:
+        if skip_images is False and responses[0].status_code == 200:
             for image in figure.images:
                 responses.append(self.update_image(image))
-
         return responses
 
     def delete_figure(self, report_id, figure_id):
