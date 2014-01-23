@@ -3,6 +3,7 @@
 .classpath
 .groovy
 .settings
+.pyc
 bin/*
 src/blah.py
 src/Blah.py
