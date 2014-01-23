@@ -53,7 +53,7 @@ class Figure(Gcisbase):
 
         #Special case for images
         image_list = data.pop('images', None)
-        self.images = [Image(image) for image in image_list] if image_list else None
+        self.images = [Image(image) for image in image_list] if image_list else []
 
         #Hack
         self.identifier = self.identifier.replace('/figure/', '')
