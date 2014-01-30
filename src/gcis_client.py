@@ -18,12 +18,12 @@ def check_image(fn):
     return wrapped
 
 
-class GcisClient:
-    headers = {
-        'Accept': 'application/json'
-    }
-
+class GcisClient(object):
     def __init__(self, url, username, password):
+        self.headers = {
+            'Accept': 'application/json'
+        }
+
         self.base_url = url
         self.headers['Authorization'] = 'Basic ' + b64encode(username + ':' + password)
 
@@ -45,10 +45,13 @@ class GcisClient:
 
         return responses
 
-    def update_figure(self, report_id, figure, skip_images=False):
+    def update_figure(self, report_id, chapter, figure, skip_images=False):
         if figure.identifier in (None, ''):
             raise Exception('Invalid identifier', figure.identifier)
-        update_url = '{b}/report/{rpt}/figure/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure.identifier)
+        update_url = '{b}/report/{rpt}/chapter/{chp}/figure/{fig}'.format(
+            b=self.base_url, rpt=report_id, chp=chapter, fig=figure.identifier
+        )
+
         responses = [requests.post(update_url, figure.as_json(), headers=self.headers)]
 
         if skip_images is False and responses[0].status_code == 200:
@@ -59,6 +62,15 @@ class GcisClient:
     def delete_figure(self, report_id, figure_id):
         url = '{b}/report/{rpt}/figure/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
         return requests.delete(url, headers=self.headers)
+
+    # def associate_figure_with_chapter(self, report_id, chapter_id, figure_id):
+    #     url = '{b}/report/{rpt}/chapter/{chp}/figure/rel/{f}'.format(
+    #         b=self.base_url, rpt=report_id, chp=chapter_id, f=figure_id
+    #     )
+    #     print url
+    #
+    #     return requests.post(url, json.dumps({'add_image_identifier': image_id}), headers=self.headers)
+
 
     @check_image
     def create_image(self, image, report_id=None, figure_id=None):
@@ -110,9 +122,17 @@ class GcisClient:
         )
         resp = requests.get(url, headers=self.headers)
 
-        return Figure(resp.json())
+        try:
+            return Figure(resp.json())
+        except ValueError:
+            raise Exception(resp.text)
 
     def get_image(self, image_id):
         url = '{b}/image/{img}'.format(b=self.base_url, img=image_id)
 
         return Image(requests.get(url, headers=self.headers).json())
+
+    def test_login(self):
+        url = '{b}/login.json'.format(b=self.base_url)
+        resp = requests.get(url, headers=self.headers)
+        return resp.status_code, resp.text
