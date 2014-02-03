@@ -3,6 +3,7 @@
 from base64 import b64encode
 import urllib
 import json
+from wsgiref import headers
 import requests
 from domain import Figure, Image
 
@@ -76,8 +77,8 @@ class GcisClient(object):
     def create_image(self, image, report_id=None, figure_id=None):
         url = '{b}/image/'.format(b=self.base_url, img=image.identifier)
         responses = [requests.post(url, image.as_json(), headers=self.headers)]
-        if image.filename is not None:
-            responses.append(self.upload_image_file(image.identifier, image.filename))
+        if image.filepath is not None:
+            responses.append(self.upload_image_file(image.identifier, image.filepath))
         if figure_id and report_id:
             responses.append(self.associate_image_with_figure(image.identifier, report_id, figure_id))
 
@@ -112,7 +113,10 @@ class GcisClient(object):
         )
         resp = requests.get(url, headers=self.headers)
 
-        return [Figure(figure) for figure in resp.json()]
+        try:
+            return [Figure(figure) for figure in resp.json()]
+        except ValueError:
+            raise Exception('Add a better exception string here')
 
     def get_figure(self, report_id, figure_id, chapter_id=None):
         chapter_filter = '/chapter/' + chapter_id if chapter_id else ''
@@ -136,3 +140,21 @@ class GcisClient(object):
         url = '{b}/login.json'.format(b=self.base_url)
         resp = requests.get(url, headers=self.headers)
         return resp.status_code, resp.text
+
+    def get_keyword_listing(self):
+        url = '{b}/gcmd_keyword?{p}'.format(b=self.base_url, p=urllib.urlencode({'all': '1'}))
+        # print url
+        resp = requests.get(url, headers=self.headers)
+        # print resp.headers
+        return resp.json()
+
+    def get_keyword(self, key_id):
+        url = '{b}/gcmd_keyword/{k}'.format(b=self.base_url, k=key_id)
+        return requests.get(url, headers=self.headers).json()
+
+    def associate_keyword_with_figure(self, keyword_id, report_id, figure_id):
+        url = '{b}/report/{rpt}/figure/keywords/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
+        print url
+        # print json.dumps()
+
+        return requests.post(url, data=json.dumps({'identifier': keyword_id}), headers=self.headers)

@@ -28,6 +28,14 @@ for image in fig2_6.images:
 #How about the whole Image?
 print gcis.get_image('69da6d93-4426-4061-a2a1-7b3d01f2dc1c').as_json(indent=4)
 
+#Let's assign some GCMD keywords (The first 4 from the list)
+keyword_ids = [k['identifier'] for k in gcis.get_keyword_listing()[0:4]]
+
+for keyword_id in keyword_ids:
+    resp = gcis.associate_keyword_with_figure(keyword_id, 'nca3draft', 'observed-us-temperature-change')
+    print resp.status_code, resp.text
+
+
 
 
 
