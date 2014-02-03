@@ -30,6 +30,12 @@ class Gcisbase(object):
                 finally:
                     setattr(self, k, data[k])
 
+    def merge(self, other):
+        for k in self.__dict__:
+            if self.__dict__[k] in (None, '') and hasattr(other, k):
+                self.__dict__[k] = getattr(other, k)
+        return self
+
 
 class Figure(Gcisbase):
     _gcis_fields = [
@@ -109,7 +115,13 @@ class Image(Gcisbase):
 
         #Hack
         self.identifier = self.identifier.replace('/image/', '')
-        self.filepath = filepath
+        webform_filename = data.pop('what_is_the_file_name_extension_of_the_image', None)
+        if filepath is not None:
+            self.filepath = filepath
+        elif webform_filename is not None:
+            self.filepath = '/system/files/' + webform_filename.lower()
+        else:
+            self.filepath = None
 
     def as_json(self, indent=0):
         out_fields = self._gcis_fields
