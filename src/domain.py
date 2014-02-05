@@ -62,7 +62,7 @@ class Figure(Gcisbase):
         self.images = [Image(image) for image in image_list] if image_list else []
 
         #Hack
-        self.identifier = self.identifier.replace('/figure/', '')
+        self.identifier = self.identifier.replace('/figure/', '') if self.identifier != '' else '***ID MISSING***'
 
 
     @property
@@ -110,18 +110,21 @@ class Image(Gcisbase):
         'what_is_the_name_of_the_image_listed_in_the_report': 'title'
     }
 
-    def __init__(self, data, filepath=None):
+    def __init__(self, data, local_path=None, remote_path=None):
         super(Image, self).__init__(data, fields=self._gcis_fields, trans=self._translations)
 
         #Hack
         self.identifier = self.identifier.replace('/image/', '')
-        webform_filename = data.pop('what_is_the_file_name_extension_of_the_image', None)
-        if filepath is not None:
-            self.filepath = filepath
-        elif webform_filename is not None:
-            self.filepath = '/system/files/' + webform_filename.lower()
-        else:
-            self.filepath = None
+        # webform_filename = data.pop('what_is_the_file_name_extension_of_the_image', None)
+        # if local_path is not None:
+        #     self.local_path = local_path
+        # elif webform_filename is not None:
+        #     self.local_path = '/system/files/' + webform_filename.lower()
+        # else:
+        #     self.local_path = None
+        self.local_path = local_path
+        self.remote_path = remote_path
+
 
     def as_json(self, indent=0):
         out_fields = self._gcis_fields
