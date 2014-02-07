@@ -3,7 +3,7 @@
 import urllib
 import requests
 import re
-from os.path import exists, join
+from os.path import join
 
 from domain import Figure, Image
 
@@ -62,8 +62,8 @@ class WebformClient:
         if image_json not in (None, '') and image_json[filename_key] not in (None, ''):
             return join(self.images_dir, image_json[filename_key].lower())
 
-    def local_image_exists(self, filename):
-        return exists(join(self.images_dir, filename))
+    # def local_image_exists(self, filename):
+    #     return exists(join(self.images_dir, filename))
 
     def remote_image_exists(self, path):
         url = '{b}{path}?token={t}'.format(b=self.base_url, path=path, t=self.token)
@@ -71,12 +71,12 @@ class WebformClient:
         print resp.status_code, resp.text
         return True if resp.status_code == 200 else False
 
-    def download_image(self, path):
-        url = '{b}{path}?token={t}'.format(b=self.base_url, path=path, t=self.token)
+    def download_image(self, image):
+        url = '{b}{path}?token={t}'.format(b=self.base_url, path=image.remote_path, t=self.token)
         resp = requests.get(url, stream=True)
 
         if resp.status_code == 200:
-            filepath = join(self.images_dir, path.split('/')[-1])
+            filepath = join(self.images_dir, image.remote_path.split('/')[-1])
             with open(filepath, 'wb') as image_out:
                 for bytes in resp.iter_content(chunk_size=4096):
                     image_out.write(bytes)
@@ -84,4 +84,10 @@ class WebformClient:
             return filepath
         else:
             return resp
+
+    def download_all_images(self, figure):
+        responses = []
+        for image in figure.images:
+            responses.append(self.download_image(image))
+        return responses
 

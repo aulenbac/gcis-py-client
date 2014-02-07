@@ -3,8 +3,8 @@
 from base64 import b64encode
 import urllib
 import json
-from wsgiref import headers
 import requests
+from os.path import exists
 from domain import Figure, Image
 
 
@@ -77,8 +77,8 @@ class GcisClient(object):
     def create_image(self, image, report_id=None, figure_id=None):
         url = '{b}/image/'.format(b=self.base_url, img=image.identifier)
         responses = [requests.post(url, image.as_json(), headers=self.headers)]
-        if image.filepath is not None:
-            responses.append(self.upload_image_file(image.identifier, image.filepath))
+        if image.local_path is not None:
+            responses.append(self.upload_image_file(image.identifier, image.local_path))
         if figure_id and report_id:
             responses.append(self.associate_image_with_figure(image.identifier, report_id, figure_id))
 
@@ -98,11 +98,14 @@ class GcisClient(object):
         url = '{b}/report/{rpt}/figure/rel/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
         return requests.post(url, json.dumps({'add_image_identifier': image_id}), headers=self.headers)
 
-    def upload_image_file(self, image_id, filepath):
+    def upload_image_file(self, image_id, local_path):
         url = '{b}/image/files/{id}'.format(b=self.base_url, id=image_id)
         # For future multi-part encoding support
         # return requests.put(url, headers=headers, files={'file': (filename, open(filepath, 'rb'))})
-        return requests.put(url, data=open(filepath, 'rb'), headers=self.headers)
+        if not exists(local_path):
+            raise Exception('File not found: ' + local_path)
+
+        return requests.put(url, data=open(local_path, 'rb'), headers=self.headers)
 
     #Full listing
     def get_figure_listing(self, report_id, chapter_id=None):
