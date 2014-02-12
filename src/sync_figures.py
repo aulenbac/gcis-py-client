@@ -25,10 +25,12 @@ sync_metadata_tree = {
             # ('/metadata/figures/3175', 'observed-us-temperature-change'),
             # ('/metadata/figures/3074', 'ten-indicators-of-a-warming-world'),
             # ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),
-            ('/metadata/figures/3293', 'observed-increase-in-frostfree-season-length'),
+            # ('/metadata/figures/3293', 'observed-increase-in-frostfree-season-length'),
             # ('/metadata/figures/3294', 'projected-changes-in-frostfree-season-length'),
             # ('/metadata/figures/3305', 'variation-of-storm-frequency-and-intensity-during-the-cold-season-november--march') #incomplete
-
+        ],
+        'rural': [
+            ('/metadata/figures/3306', 'length-growing-season')
         ]
     }
 }
@@ -39,45 +41,53 @@ webform_skip_list = []
 
 def main():
     print_webform_list()
-    # sync_images()
-    # sync_metadata()
 
-
+    # print webform_skip_list
+    # sync()
 
 
 def print_webform_list():
     for item in webform.get_list():
         webform_url = item['url']
-        print webform_url
-        print webform.get_webform(webform_url)
+        f = webform.get_webform(webform_url)
+
+        if 'ready_for_publication' in f.original and f.original['ready_for_publication'] == 'yes':
+            print webform_url, '***Ready For Publication***'
+            print f
+        else:
+            webform_skip_list.append(webform_url)
 
 
-def sync_metadata():
-    for report in ['nca3draft']:
-        for chapter in ['our-changing-climate']:
-            for figure_ids in sync_metadata_tree[report][chapter]:
+def sync():
+    for report_id in sync_metadata_tree:
+        for chapter_id in sync_metadata_tree[report_id]:
+            for figure_ids in sync_metadata_tree[report_id][chapter_id]:
                 webform_url, gcis_id = figure_ids
 
-                #Merge data from both systems into one object...
-                figure_obj = webform.get_webform(webform_url).merge(
-                    gcis.get_figure(report, gcis_id, chapter_id=chapter)
-                )
-                #...then send it.
-                gcis.update_figure(report, chapter, figure_obj)
+                if webform_url in webform_skip_list:
+                    print 'Skipping: ' + webform_url
+                    continue
+
+                sync_images(webform_url, gcis_id)
+                sync_metadata(report_id, chapter_id, webform_url, gcis_id)
 
 
-def sync_images():
-    for report in ['nca3draft']:
-        for chapter in ['our-changing-climate']:
-            for figure_ids in sync_metadata_tree[report][chapter]:
-                webform_url, gcis_id = figure_ids
+def sync_metadata(report_id, chapter_id, webform_url, gcis_id):
+    #Merge data from both systems into one object...
+    figure_obj = webform.get_webform(webform_url).merge(
+        gcis.get_figure(report_id, gcis_id, chapter_id=chapter_id)
+    )
+    #...then send it.
+    gcis.update_figure(report_id, chapter_id, figure_obj)
 
-                figure = webform.get_webform(webform_url)
-                #Now identifiers don't need to be matched
-                figure.identifier = gcis_id
 
-                webform.download_all_images(figure)
-                upload_images_to_gcis(figure)
+def sync_images(webform_url, gcis_id):
+    figure = webform.get_webform(webform_url)
+    #Now identifiers don't need to be matched
+    figure.identifier = gcis_id
+
+    webform.download_all_images(figure)
+    upload_images_to_gcis(figure)
 
 
 def upload_images_to_gcis(figure, report_id='nca3draft'):
