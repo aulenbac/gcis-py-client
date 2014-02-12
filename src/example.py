@@ -13,7 +13,7 @@ for partial_figure in gcis.get_figure_listing('nca3draft', chapter_id='our-chang
 
 
 #Let's work with the infamous temperature figure
-fig2_6 = gcis.get_figure('nca3draft', 'temperature-change')
+fig2_6 = gcis.get_figure('nca3draft', 'observed-us-temperature-change')
 
 #Warning: Images and Chapters are specifically excluded from JSON output.  This is what gets sent to GCIS. So...
 print fig2_6.as_json(indent=4)
