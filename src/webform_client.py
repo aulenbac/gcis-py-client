@@ -5,7 +5,7 @@ import requests
 import re
 from os.path import join
 
-from domain import Figure, Image
+from domain import Figure, Image, Dataset
 
 
 def sanitized(pattern):
@@ -38,18 +38,36 @@ class WebformClient:
     @sanitized('^/metadata/figures/\d+$')
     def get_webform(self, fig_url):
         full_url = '{b}{url}?token={t}'.format(b=self.base_url, url=fig_url, t=self.token)
-        figure_json = requests.get(full_url).json()
+        webform_json = requests.get(full_url).json()
 
         #TODO: refactor the service so this isn't necessary
-        figure_id = figure_json.keys()[0]
-        f = Figure(figure_json[figure_id]['figure'][0])
+        webform_nid = webform_json.keys()[0]
+        f = Figure(webform_json[webform_nid]['figure'][0])
 
-        if 'images' in figure_json[figure_id]:
-            f.images = [
-                Image(image, local_path=self.get_local_image_path(image), remote_path=self.get_remote_image_path(image))
-                for image in figure_json[figure_id]['images']
-            ]
+        if 'images' in webform_json[webform_nid]:
+            # f.images = [
+            #     Image(image, local_path=self.get_local_image_path(image), remote_path=self.get_remote_image_path(image))
+            #     for image in webform_json[webform_nid]['images']
+            # ]
+            for img_idx, image in enumerate(webform_json[webform_nid]['images']):
+                image_obj = Image(image, local_path=self.get_local_image_path(image),
+                                  remote_path=self.get_remote_image_path(image))
 
+                #TODO: this just keeps getting worse
+                if 'datasources' in webform_json[webform_nid]['images'][img_idx]:
+                    for dataset_json in webform_json[webform_nid]['images'][img_idx]['datasources']:
+                        dataset = Dataset(dataset_json)
+
+                        #Commence the hacks
+                        dataset.temporal_extent = ' '.join(
+                            [dataset_json[field] for field in ['start_time', 'end_time']])
+                        dataset.spatial_extent = ' '.join(['{k}: {v};'.format(k=key, v=dataset_json[key]) for key in
+                                                           ['maximum_latitude', 'minimum_latitude', 'maximum_longitude',
+                                                            'minimum_longitude']])
+                        #TODO: Extract DOIs from citation
+                        image_obj.datasets.append(dataset)
+
+                f.images.append(image_obj)
         return f
 
     def get_remote_image_path(self, image_json):

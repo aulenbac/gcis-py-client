@@ -5,7 +5,7 @@ import urllib
 import json
 import requests
 from os.path import exists
-from domain import Figure, Image
+from domain import Figure, Image, Dataset
 
 
 def check_image(fn):
@@ -63,15 +63,6 @@ class GcisClient(object):
     def delete_figure(self, report_id, figure_id):
         url = '{b}/report/{rpt}/figure/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
         return requests.delete(url, headers=self.headers)
-
-    # def associate_figure_with_chapter(self, report_id, chapter_id, figure_id):
-    #     url = '{b}/report/{rpt}/chapter/{chp}/figure/rel/{f}'.format(
-    #         b=self.base_url, rpt=report_id, chp=chapter_id, f=figure_id
-    #     )
-    #     print url
-    #
-    #     return requests.post(url, json.dumps({'add_image_identifier': image_id}), headers=self.headers)
-
 
     @check_image
     def create_image(self, image, report_id=None, figure_id=None):
@@ -146,9 +137,8 @@ class GcisClient(object):
 
     def get_keyword_listing(self):
         url = '{b}/gcmd_keyword?{p}'.format(b=self.base_url, p=urllib.urlencode({'all': '1'}))
-        # print url
         resp = requests.get(url, headers=self.headers)
-        # print resp.headers
+
         return resp.json()
 
     def get_keyword(self, key_id):
@@ -157,7 +147,26 @@ class GcisClient(object):
 
     def associate_keyword_with_figure(self, keyword_id, report_id, figure_id):
         url = '{b}/report/{rpt}/figure/keywords/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
-        print url
-        # print json.dumps()
-
         return requests.post(url, data=json.dumps({'identifier': keyword_id}), headers=self.headers)
+
+    def get_dataset(self, dataset_id):
+        url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset_id)
+        resp = requests.get(url, headers=self.headers)
+        try:
+            return Dataset(resp.json())
+        except ValueError:
+            raise Exception(resp.text())
+
+    def create_data(self, dataset):
+        url = '{b}/dataset/'.format(b=self.base_url)
+        return requests.post(url, data=dataset.as_json(), headers=self.headers)
+
+    def update_dataset(self, dataset):
+        url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset.identifier)
+        return requests.post(url, data=dataset.as_json(), headers=self.headers)
+
+    def delete_dataset(self, dataset):
+        url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset.identifier)
+        return requests.delete(url, headers=self.headers)
+
+    # def associate_dataset_with_figure

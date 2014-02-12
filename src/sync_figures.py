@@ -16,10 +16,10 @@ gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', '4cd31dc7173eb47b26f61
 sync_metadata_tree = {
     #Reports
     'nca3draft': {
-        #Chapters
+        #Chapter 2
         'our-changing-climate': [
             #(webform_url, gcis_id)
-            # ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
+            ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
             # ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),
             # ('/metadata/figures/2677', 'observed-us-precipitation-change'),
             # ('/metadata/figures/3175', 'observed-us-temperature-change'),
@@ -29,8 +29,26 @@ sync_metadata_tree = {
             # ('/metadata/figures/3294', 'projected-changes-in-frostfree-season-length'),
             # ('/metadata/figures/3305', 'variation-of-storm-frequency-and-intensity-during-the-cold-season-november--march') #incomplete
         ],
+        #Chapter 6
+        'agriculture': [
+            # ('/metadata/figures/2872', 'drainage')
+        ],
+        #Chapter 9
+        '': [
+            ('/metadata/figures/2896', 'heavy-downpours-disease') #Needs images redone
+        ],
+        #Chapter 14
         'rural': [
-            ('/metadata/figures/3306', 'length-growing-season')
+            # ('/metadata/figures/3306', 'length-growing-season') #Needs images redone
+        ],
+        #Chapter 19
+        'great-plains': [
+            # ('/metadata/figures/2697', 'mean-annual-temp-and-precip') #Needs images redone
+
+        ],
+        #Chapter 25
+        'coastal-zone': [
+            # ('/metadata/figures/2543', 'coastal-ecosystem-services')
         ]
     }
 }
@@ -38,12 +56,21 @@ sync_metadata_tree = {
 #These are artifacts from our collection efforts; largely duplicates
 webform_skip_list = []
 
+dataset_identifiers = [
+    ('Global Historical Climatology Network - Monthly', 'GHCN-M'),
+]
+
 
 def main():
-    print_webform_list()
+    # print_webform_list()
+    # sync(uploads=False)
+    f = webform.get_webform('/metadata/figures/2506')
 
-    # print webform_skip_list
-    # sync()
+    for image in f.images:
+        print image
+        for dataset in image.datasets[0:1]:
+            print dataset
+            gcis.update_dataset(dataset)
 
 
 def print_webform_list():
@@ -58,7 +85,7 @@ def print_webform_list():
             webform_skip_list.append(webform_url)
 
 
-def sync():
+def sync(uploads=True):
     for report_id in sync_metadata_tree:
         for chapter_id in sync_metadata_tree[report_id]:
             for figure_ids in sync_metadata_tree[report_id][chapter_id]:
@@ -67,9 +94,12 @@ def sync():
                 if webform_url in webform_skip_list:
                     print 'Skipping: ' + webform_url
                     continue
-
-                sync_images(webform_url, gcis_id)
+                if uploads:
+                    print 'Attempting to upload: ' + gcis_id
+                    sync_images(webform_url, gcis_id)
+                print 'Attempting to sync: ' + gcis_id
                 sync_metadata(report_id, chapter_id, webform_url, gcis_id)
+                print 'Success!'
 
 
 def sync_metadata(report_id, chapter_id, webform_url, gcis_id):
