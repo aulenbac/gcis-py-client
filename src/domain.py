@@ -22,9 +22,12 @@ class Gcisbase(object):
 
         for k in data:
             if hasattr(self, k):
-                #Strip whitespace from strings for consistency
                 try:
+                    #Strip whitespace from strings for consistency
                     data[k] = data[k].strip()
+
+                    #We now have unicode characters infesting our data.  I'm sure this is wrong.
+                    data[k] = data[k].encode('utf-8')
                 except AttributeError:
                     pass
                 finally:
@@ -47,7 +50,8 @@ class Figure(Gcisbase):
     _translations = {
         'what_is_the_figure_id': 'identifier',
         'what_is_the_name_of_the_figure_as_listed_in_the_report': 'title',
-        'when_was_this_figure_created': 'create_dt'
+        'when_was_this_figure_created': 'create_dt',
+        'what_is_the_chapter_and_figure_number': 'figure_num'
     }
     
     def __init__(self, data):
@@ -64,13 +68,29 @@ class Figure(Gcisbase):
         #Hack
         self.identifier = self.identifier.replace('/figure/', '') if self.identifier != '' else '***ID MISSING***'
 
-
     @property
     def figure_num(self):
         if self.chapter and self.chapter.number and self.ordinal:
             return '{0}.{1}'.format(self.chapter.number, self.ordinal)
         else:
-            return None
+            return self.ordinal
+
+    #TODO: Ordinal handling is unnecessarily complex
+    @figure_num.setter
+    def figure_num(self, value):
+        try:
+            chp, fig = value.split('.')
+            chp = int(chp)
+            fig = int(fig)
+
+        except ValueError:
+            raise Exception('Invalid chapter/figure numbers: ' + value)
+
+        if self.chapter:
+            self.chapter.number = chp
+            self.ordinal = fig
+        else:
+            self.ordinal = value
 
     def as_json(self, indent=0):
         #Exclude a couple of fields
@@ -78,9 +98,10 @@ class Figure(Gcisbase):
         return json.dumps({f: self.__dict__[f] for f in out_fields}, indent=indent)
 
     def __str__(self):
-        return '{f_id}: Figure {f_num}: {f_name}\n\tImages: {imgs}'.format(
+        string = '{f_id}: Figure {f_num}: {f_name}\n\tImages: {imgs}'.format(
             f_id=self.identifier, f_num=self.figure_num, f_name=self.title, imgs=[i.identifier for i in self.images]
         )
+        return string
 
     def __repr__(self):
         return super(Figure, self).__repr__()
@@ -115,16 +136,9 @@ class Image(Gcisbase):
 
         #Hack
         self.identifier = self.identifier.replace('/image/', '')
-        # webform_filename = data.pop('what_is_the_file_name_extension_of_the_image', None)
-        # if local_path is not None:
-        #     self.local_path = local_path
-        # elif webform_filename is not None:
-        #     self.local_path = '/system/files/' + webform_filename.lower()
-        # else:
-        #     self.local_path = None
+
         self.local_path = local_path
         self.remote_path = remote_path
-
 
     def as_json(self, indent=0):
         out_fields = self._gcis_fields
