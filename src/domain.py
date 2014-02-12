@@ -39,6 +39,10 @@ class Gcisbase(object):
                 self.__dict__[k] = getattr(other, k)
         return self
 
+    def as_json(self, indent=0):
+        out_fields = self._gcis_fields
+        return json.dumps({f: self.__dict__[f] for f in out_fields}, indent=indent)
+
 
 class Figure(Gcisbase):
     _gcis_fields = [
@@ -140,9 +144,35 @@ class Image(Gcisbase):
         self.local_path = local_path
         self.remote_path = remote_path
 
-    def as_json(self, indent=0):
-        out_fields = self._gcis_fields
-        return json.dumps({f: self.__dict__[f] for f in out_fields}, indent=indent)
+        #This does not accurately reflect GCIS' data model
+        self.datasets = []
 
     def __str__(self):
         return 'Image: {id} {name}'.format(id=self.identifier, name=self.title)
+
+
+class Dataset(Gcisbase):
+    _gcis_fields = ['contributors', 'vertical_extent', 'native_id', 'href', 'references', 'cite_metadata',
+                    'scale', 'publication_dt', 'temporal_extent', 'version', 'parents', 'scope', 'type',
+                    'processing_level', 'files', 'data_qualifier', 'access_dt', 'description', 'spatial_ref_sys',
+                    'spatial_res', 'spatial_extent', 'doi', 'name', 'url', 'uri', 'identifier']
+
+    _translations = {
+        'data_set_access_date': 'access_dt',
+        'data_set_publication_year': 'publication_dt',
+        # HACK elsewhere 'start_time and end_time': '',
+        'data_set_id': 'native_id',
+        # HACK elsewhere'': 'doi',
+        # HACK elsewhere 'maximum_latitude etc. etc. etc.': '',
+        'data_set_version': 'version',
+        'data_set_name': 'name',
+        'data_set_citation': 'cite_metadata',
+        'data_set_description': 'description',
+        # Not sure'': 'type',
+    }
+
+    def __init__(self, data):
+        super(Dataset, self).__init__(data, fields=self._gcis_fields, trans=self._translations)
+
+    def __str__(self):
+        return 'Dataset: {id} {name}'.format(id=self.identifier, name=self.name)
