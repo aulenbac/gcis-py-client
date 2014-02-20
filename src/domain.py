@@ -1,7 +1,10 @@
+from types import NoneType
+
 __author__ = 'abuddenberg'
 
 from copy import deepcopy
 import json
+from dateutil.parser import parse
 
 
 class Gcisbase(object):
@@ -88,7 +91,7 @@ class Figure(Gcisbase):
             fig = int(fig)
 
         except ValueError:
-            raise Exception('Invalid chapter/figure numbers: ' + value)
+            print 'Invalid chapter/figure numbers: ' + value
 
         if self.chapter:
             self.chapter.number = chp
@@ -171,8 +174,40 @@ class Dataset(Gcisbase):
         # Not sure'': 'type',
     }
 
+    #This desperately needs to get added to the webform
+    _identifiers = {
+        'Global Historical Climatology Network - Daily': 'GHCN-D',
+        'Global Historical Climatology Network - Monthly': 'GHCN-M',
+        'NCDC Merged Land and Ocean Surface Temperature': 'MLOST',
+        'Climate Division Database Version 2': 'CDDv2',
+        'Eighth degree-CONUS Daily Downscaled Climate Projections by Katharine Hayhoe': 'CMIP3-Downscaled', #Problem
+        'Eighth degree-CONUS Daily Downscaled Climate Projections': 'CMIP3-Downscaled', #Problem
+        'Earth Policy Institute Atmospheric Carbon Dioxide Concentration, 1000-2012': 'EPI-CO2',
+        'Daily 1/8-degree gridded meteorological data [1 Jan 1949 - 31 Dec 2010]': 'Maurer',
+        'NCEP/NCAR Reanalysis': 'NCEP-NCAR',
+        'NCDC Global Surface Temperature Anomalies': 'NCDC-GST-Anomalies',
+    }
+
     def __init__(self, data):
         super(Dataset, self).__init__(data, fields=self._gcis_fields, trans=self._translations)
 
+        self.identifier = self._identifiers[self.name] if self.name in self._identifiers else self.name
+
+        try:
+            self.access_dt = parse(self.access_dt).isoformat() if self.access_dt else None
+        except TypeError:
+            # print "Problem with date: " + self.access_dt
+            self.access_dt = None
+
+        try:
+            self.publication_dt = parse(self.publication_dt).isoformat() if self.publication_dt else None
+        except TypeError:
+            self.publication_dt = None
+
     def __str__(self):
         return 'Dataset: {id} {name}'.format(id=self.identifier, name=self.name)
+
+    def as_json(self, indent=0):
+        #Exclude a couple of fields
+        out_fields = set(self._gcis_fields) - set(['files', 'parents', 'contributors', 'references', 'href', 'uri'])
+        return json.dumps({f: self.__dict__[f] for f in out_fields}, indent=indent)
