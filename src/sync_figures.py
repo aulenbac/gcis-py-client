@@ -56,21 +56,28 @@ sync_metadata_tree = {
 #These are artifacts from our collection efforts; largely duplicates
 webform_skip_list = []
 
-dataset_identifiers = [
-    ('Global Historical Climatology Network - Monthly', 'GHCN-M'),
-]
-
 
 def main():
     # print_webform_list()
     # sync(uploads=False)
-    f = webform.get_webform('/metadata/figures/2506')
 
-    for image in f.images:
-        print image
-        for dataset in image.datasets[0:1]:
-            print dataset
-            gcis.update_dataset(dataset)
+    # f = webform.get_webform('/metadata/figures/2506')
+    aggregate_datasets()
+
+
+def aggregate_datasets():
+    dataset_set = {}
+
+    for item in webform.get_list():
+        webform_url = item['url']
+
+        f = webform.get_webform(webform_url)
+
+        #aggregate datasets
+        for image in f.images:
+            for dataset in image.datasets:
+                dataset_set[dataset.identifier] = dataset
+
 
 
 def print_webform_list():

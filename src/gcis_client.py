@@ -157,8 +157,9 @@ class GcisClient(object):
         except ValueError:
             raise Exception(resp.text())
 
-    def create_data(self, dataset):
+    def create_dataset(self, dataset):
         url = '{b}/dataset/'.format(b=self.base_url)
+        print dataset.as_json(indent=4)
         return requests.post(url, data=dataset.as_json(), headers=self.headers)
 
     def update_dataset(self, dataset):
