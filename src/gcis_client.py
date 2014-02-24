@@ -4,7 +4,7 @@ from base64 import b64encode
 import urllib
 import json
 import requests
-from os.path import exists
+from os.path import exists, basename
 from domain import Figure, Image, Dataset
 
 
@@ -32,19 +32,21 @@ class GcisClient(object):
         if figure.identifier in (None, ''):
             raise Exception('Invalid identifier', figure.identifier)
 
-        url = '{b}/report/{rpt}/chapter/{chp}/figure/{fig}'.format(
-            b=self.base_url, rpt=report_id, chp=chapter_id, fig=figure.identifier
+        url = '{b}/report/{rpt}/chapter/{chp}/figure/'.format(
+            b=self.base_url, rpt=report_id, chp=chapter_id
         )
-        responses = [requests.post(url, figure.as_json(), headers=self.headers)]
 
-        if skip_images is False and responses[0].status_code == 200:
+        resp = requests.post(url, data=figure.as_json(), headers=self.headers)
+
+        if resp.status_code != 200:
+            raise Exception(resp.text)
+
+        if skip_images is False:
             for image in figure.images:
-                responses.append(
-                    (self.create_image(image),
-                     self.associate_image_with_figure(image.identifier, report_id, figure.identifier))
-                )
+                self.create_image(image),
+                self.associate_image_with_figure(image.identifier, report_id, figure.identifier)
 
-        return responses
+        return resp
 
     def update_figure(self, report_id, chapter, figure, skip_images=False):
         if figure.identifier in (None, ''):
@@ -53,12 +55,16 @@ class GcisClient(object):
             b=self.base_url, rpt=report_id, chp=chapter, fig=figure.identifier
         )
 
-        responses = [requests.post(update_url, figure.as_json(), headers=self.headers)]
+        resp = requests.post(update_url, figure.as_json(), headers=self.headers)
 
-        if skip_images is False and responses[0].status_code == 200:
+        if resp.status_code != 200:
+            raise Exception(resp.text)
+
+        if skip_images is False:
             for image in figure.images:
-                responses.append(self.update_image(image))
-        return responses
+                self.update_image(image)
+
+        return resp
 
     def delete_figure(self, report_id, figure_id):
         url = '{b}/report/{rpt}/figure/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
@@ -72,12 +78,17 @@ class GcisClient(object):
             responses.append(self.upload_image_file(image.identifier, image.local_path))
         if figure_id and report_id:
             responses.append(self.associate_image_with_figure(image.identifier, report_id, figure_id))
+        for dataset in image.datasets:
+            self.associate_dataset_with_image(dataset.identifier, image.identifier)
 
         return responses
 
     @check_image
     def update_image(self, image):
         update_url = '{b}/image/{img}'.format(b=self.base_url, img=image.identifier)
+        for dataset in image.datasets:
+            self.associate_dataset_with_image(dataset.identifier, image.identifier)
+
         return requests.post(update_url, image.as_json(), headers=self.headers)
 
     @check_image
@@ -90,7 +101,7 @@ class GcisClient(object):
         return requests.post(url, json.dumps({'add_image_identifier': image_id}), headers=self.headers)
 
     def upload_image_file(self, image_id, local_path):
-        url = '{b}/image/files/{id}'.format(b=self.base_url, id=image_id)
+        url = '{b}/image/files/{id}/{fn}'.format(b=self.base_url, id=image_id, fn=basename(local_path))
         # For future multi-part encoding support
         # return requests.put(url, headers=headers, files={'file': (filename, open(filepath, 'rb'))})
         if not exists(local_path):
@@ -170,4 +181,13 @@ class GcisClient(object):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset.identifier)
         return requests.delete(url, headers=self.headers)
 
-    # def associate_dataset_with_figure
+    def associate_dataset_with_image(self, dataset_id, image_id):
+        url = '{b}/image/prov/{img}'.format(b=self.base_url, img=image_id)
+        data = {
+            'parent_uri': '/dataset/' + dataset_id,
+            'parent_rel': 'prov:wasDerivedFrom'
+        }
+        resp = requests.post(url, data=json.dumps(data), headers=self.headers)
+        if resp.status_code != 200:
+            raise Exception('Dataset association failed:\n{url}\n{resp}'.format(url=url, resp=resp.text))
+        return resp
