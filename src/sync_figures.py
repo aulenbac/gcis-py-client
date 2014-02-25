@@ -10,8 +10,8 @@ import json
 webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
 
 gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
-gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', '4cd31dc7173eb47b26f616fb07db607f25ab861552e81195')
-# stage = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'ef427a895acf26d4f0b1f053ba7d922791b76f7852e7efee')
+# gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', '4cd31dc7173eb47b26f616fb07db607f25ab861552e81195')
+gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'ef427a895acf26d4f0b1f053ba7d922791b76f7852e7efee')
 
 sync_metadata_tree = {
     #Reports
@@ -19,7 +19,7 @@ sync_metadata_tree = {
         #Chapter 2
         'our-changing-climate': [
             #(webform_url, gcis_id)
-            ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
+            # ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
             # ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),
             # ('/metadata/figures/2677', 'observed-us-precipitation-change'),
             # ('/metadata/figures/3175', 'observed-us-temperature-change'),
@@ -32,10 +32,11 @@ sync_metadata_tree = {
         #Chapter 6
         'agriculture': [
             # ('/metadata/figures/2872', 'drainage')
+            # ('/metadata/figures/2691', 'variables-affecting-ag') #Needs images redone
         ],
         #Chapter 9
         '': [
-            ('/metadata/figures/2896', 'heavy-downpours-disease') #Needs images redone
+            # ('/metadata/figures/2896', 'heavy-downpours-disease') #Needs images redone
         ],
         #Chapter 14
         'rural': [
@@ -49,7 +50,12 @@ sync_metadata_tree = {
         #Chapter 25
         'coastal-zone': [
             # ('/metadata/figures/2543', 'coastal-ecosystem-services')
+        ],
+        #Climate Science Appendix
+        'appendix-climate-science': [
+            ('/metadata/figures/3147', 'ice-loss-from-greenland-and-antarctica')
         ]
+
     }
 }
 
@@ -59,10 +65,10 @@ webform_skip_list = []
 
 def main():
     # print_webform_list()
-    # sync(uploads=False)
-
-    # f = webform.get_webform('/metadata/figures/2506')
     aggregate_datasets()
+    # sync(uploads=True)
+
+    # f = webform.get_webform('/metadata/figures/3147').merge(gcis.get_figure('nca3draft', 'ice-loss-from-greenland-and-antarctica', chapter_id='appendix-climate-science'))
 
 
 def aggregate_datasets():
@@ -76,7 +82,13 @@ def aggregate_datasets():
         #aggregate datasets
         for image in f.images:
             for dataset in image.datasets:
-                dataset_set[dataset.identifier] = dataset
+                if dataset.identifier not in dataset_set:
+                    dataset_set[dataset.identifier] = dataset
+                else:
+                    dataset_set[dataset.identifier].merge(dataset)
+
+    for ds in dataset_set:
+        print gcis.create_dataset(ds)
 
 
 
@@ -117,7 +129,6 @@ def sync_metadata(report_id, chapter_id, webform_url, gcis_id):
     #...then send it.
     gcis.update_figure(report_id, chapter_id, figure_obj)
 
-
 def sync_images(webform_url, gcis_id):
     figure = webform.get_webform(webform_url)
     #Now identifiers don't need to be matched
@@ -135,6 +146,9 @@ def upload_images_to_gcis(figure, report_id='nca3draft'):
     for image in figure.images:
         for resp in gcis.create_image(image, report_id=report_id, figure_id=figure.identifier):
             print resp.status_code, resp.text
+
+        for dataset in image.datasets:
+            gcis.associate_dataset_with_image(dataset.identifier, report_id, figure.identifier)
 
 
 if __name__ == '__main__':
