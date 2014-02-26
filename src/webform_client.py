@@ -45,10 +45,6 @@ class WebformClient:
         f = Figure(webform_json[webform_nid]['figure'][0])
 
         if 'images' in webform_json[webform_nid]:
-            # f.images = [
-            #     Image(image, local_path=self.get_local_image_path(image), remote_path=self.get_remote_image_path(image))
-            #     for image in webform_json[webform_nid]['images']
-            # ]
             for img_idx, image in enumerate(webform_json[webform_nid]['images']):
                 image_obj = Image(image, local_path=self.get_local_image_path(image),
                                   remote_path=self.get_remote_image_path(image))
@@ -59,8 +55,11 @@ class WebformClient:
                         dataset = Dataset(dataset_json)
 
                         #Commence the hacks
-                        dataset.temporal_extent = ' '.join(
-                            [dataset_json[field] for field in ['start_time', 'end_time']])
+                        dataset.temporal_extent = ' -> '.join(
+                            [dataset_json[field] for field in ['start_time', 'end_time']
+                                if dataset_json[field] not in [None, '']]
+                        )
+
                         dataset.spatial_extent = ' '.join(['{k}: {v};'.format(k=key, v=dataset_json[key]) for key in
                                                            ['maximum_latitude', 'minimum_latitude', 'maximum_longitude',
                                                             'minimum_longitude']])
