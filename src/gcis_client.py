@@ -19,6 +19,18 @@ def check_image(fn):
     return wrapped
 
 
+def exists(fn):
+    def wrapped(*args, **kwargs):
+        resp = fn(*args, **kwargs)
+        if resp.status_code == 200:
+            return True
+        elif resp.status_code == 404:
+            return False
+        else:
+            raise Exception(resp.text)
+    return wrapped
+
+
 class GcisClient(object):
     def __init__(self, url, username, password):
         self.headers = {
@@ -136,10 +148,28 @@ class GcisClient(object):
         except ValueError:
             raise Exception(resp.text)
 
+    @exists
+    def figure_exists(self, report_id, figure_id, chapter_id=None):
+        chapter_filter = '/chapter/' + chapter_id if chapter_id else ''
+
+        url = '{b}/report/{rpt}{chap}/figure/{fig}?{p}'.format(
+            b=self.base_url, rpt=report_id, chap=chapter_filter, fig=figure_id, p=urllib.urlencode({'all': '1'})
+        )
+        return requests.head(url, headers=self.headers)
+
     def get_image(self, image_id):
         url = '{b}/image/{img}'.format(b=self.base_url, img=image_id)
+        resp = requests.get(url, headers=self.headers)
 
-        return Image(requests.get(url, headers=self.headers).json())
+        try:
+            return Image(resp.json())
+        except ValueError:
+            raise Exception(resp.text)
+
+    @exists
+    def image_exists(self, image_id):
+        url = '{b}/image/{img}'.format(b=self.base_url, img=image_id)
+        return requests.head(url, headers=self.headers)
 
     def test_login(self):
         url = '{b}/login.json'.format(b=self.base_url)
@@ -168,6 +198,11 @@ class GcisClient(object):
         except ValueError:
             raise Exception(resp.text())
 
+    @exists
+    def dataset_exists(self, dataset_id):
+        url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset_id)
+        return requests.head(url, headers=self.headers)
+
     def create_dataset(self, dataset):
         url = '{b}/dataset/'.format(b=self.base_url)
         print dataset.as_json(indent=4)
@@ -188,6 +223,13 @@ class GcisClient(object):
             'parent_rel': 'prov:wasDerivedFrom'
         }
         resp = requests.post(url, data=json.dumps(data), headers=self.headers)
-        if resp.status_code != 200:
+
+        if resp.status_code == 200:
+            return resp
+        #TODO: Change to 409 in next release
+        elif resp.status_code == 400:
+            print 'Duplicate dataset association {ds} for image: {img}'.format(ds=dataset_id, img=image_id)
+            return resp
+        else:
             raise Exception('Dataset association failed:\n{url}\n{resp}'.format(url=url, resp=resp.text))
-        return resp
+
