@@ -4,6 +4,7 @@ import urllib
 import requests
 import re
 from os.path import join
+from dateutil.parser import parse
 
 from domain import Figure, Image, Dataset
 
@@ -55,10 +56,18 @@ class WebformClient:
                         dataset = Dataset(dataset_json)
 
                         #Commence the hacks
-                        dataset.temporal_extent = ' -> '.join(
-                            [dataset_json[field] for field in ['start_time', 'end_time']
-                                if dataset_json[field] not in [None, '']]
-                        )
+                        try:
+                            dataset.temporal_extent = ' '.join(
+                                [parse(dataset_json[field]).isoformat() for field in ['start_time', 'end_time']]
+                            )
+                        except TypeError, e:
+                            print 'Problem with start/end time: ', fig_url, f.title, e
+                            print dataset_json['start_time'], dataset_json['end_time']
+                            dataset.temporal_extent = None
+                        except ValueError, e:
+                            print 'Problem with start/end time: ', fig_url, f.title, e
+                            print dataset_json['start_time'], dataset_json['end_time']
+                            dataset.temporal_extent = None
 
                         dataset.spatial_extent = ' '.join(['{k}: {v};'.format(k=key, v=dataset_json[key]) for key in
                                                            ['maximum_latitude', 'minimum_latitude', 'maximum_longitude',
