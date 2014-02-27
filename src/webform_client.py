@@ -94,7 +94,7 @@ class WebformClient:
     def remote_image_exists(self, path):
         url = '{b}{path}?token={t}'.format(b=self.base_url, path=path, t=self.token)
         resp = requests.head(url)
-        print resp.status_code, resp.text
+        # print resp.status_code, resp.text
         return True if resp.status_code == 200 else False
 
     def download_image(self, image):
