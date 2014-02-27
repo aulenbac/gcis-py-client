@@ -79,7 +79,7 @@ class Figure(Gcisbase):
 
     @property
     def figure_num(self):
-        if self.chapter and self.chapter.number and self.ordinal:
+        if isinstance(self.chapter, Chapter) and self.chapter.number and self.ordinal:
             return '{0}.{1}'.format(self.chapter.number, self.ordinal)
         else:
             return self.ordinal
@@ -91,21 +91,20 @@ class Figure(Gcisbase):
             chp, fig = value.split('.')
             chp = int(chp)
             fig = int(fig)
-
         except ValueError:
             print 'Invalid chapter/figure numbers: ' + value
+            chp = None
+            fig = None
+        self.ordinal = fig
 
-        if self.chapter:
+        #If we have an actual Chapter instance, populate it
+        if isinstance(self.chapter, Chapter):
             self.chapter.number = chp
-            self.ordinal = fig
         else:
-            self.ordinal = value
+            self.chapter = chp
 
     def as_json(self, indent=0):
-        return super(Figure, self).as_json(omit_fields=['images', 'chapter'])
-        #Exclude a couple of fields
-        # out_fields = set(self.gcis_fields) - (self.omit_fields | set(['images', 'chapter']))
-        # return json.dumps({f: self.__dict__[f] for f in out_fields}, indent=indent)
+        return super(Figure, self).as_json(omit_fields=['images', 'chapter', 'kindred_figures', 'keywords'])
 
     def __str__(self):
         string = '{f_id}: Figure {f_num}: {f_name}\n\tImages: {imgs}'.format(
