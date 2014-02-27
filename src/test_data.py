@@ -285,3 +285,40 @@ test_image_json = """
     "description": null
 }
 """
+
+webform_json_temp = """
+{
+    "what_type_of_source_provided_this_figure": "person",
+    "when_was_this_figure_created": "2013-08-03 10:04:00",
+    "what_type_of_figure_is_this": "map",
+    "what_is_the_file_name_extension_of_the_figure": "CS_Net Change in Ann Temp_12910_v8.png",
+    "what_is_the_figure_id": "observed-us-temperature-change",
+    "what_is_the_name_of_the_figure_as_listed_in_the_report": "Observed U.S. Temperature Change",
+    "what_is_the_creators_phone_number": "(828) 257-3137",
+    "nid": "3175",
+    "how_many_images_are_included_within_the_figure": "11",
+    "what_is_the_creators_email_address": "ken.kunkel@noaa.gov",
+    "list_the_creator_of_the_figure": "Kenneth Kunkel, NCDC/CICS-NC",
+    "path": "/system/files/cs_net_change_in_ann_temp_12910_v10.png"
+}
+"""
+
+webform_json_precip = """
+{
+    "nid": "2506",
+    "what_type_of_source_provided_this_figure": "person",
+    "when_was_this_figure_created": "2013-07-02 13:07:00",
+    "what_type_of_figure_is_this": "map",
+    "what_is_the_file_name_extension_of_the_figure": "CS_Extreme Heavy precipitation_v7.png",
+    "what_is_the_creators_phone_number": "(828) 257-3137",
+    "what_is_the_figure_id": "observed-change-in-very-heavy-precipitation",
+    "what_is_the_name_of_the_figure_as_listed_in_the_report": "Observed Changes in Very Heavy Precipitation",
+    "what_is_the_figure_orientation": "original_for_the_report",
+    "ready_for_publication": "yes",
+    "what_is_the_chapter_and_figure_number": "2.17",
+    "how_many_images_are_included_within_the_figure": "10",
+    "what_is_the_creators_email_address": "ken.kunkel@noaa.gov",
+    "list_the_creator_of_the_figure": "Kenneth Kunkel, NOAA NCDC/CICS-NC",
+    "path": "/system/files/cs_extreme_heavy_precipitation_v7.png"
+}
+"""
