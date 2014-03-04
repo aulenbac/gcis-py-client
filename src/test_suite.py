@@ -4,7 +4,8 @@ __author__ = 'abuddenberg'
 # py.test -v test_suite.py
 
 
-from test_data import test_figure_json, test_image_json, webform_json_temp, webform_json_precip
+from test_data import test_figure_json, test_image_json, webform_json_temp, webform_json_precip, test_dataset_json
+import pytest
 import json
 from domain import Gcisbase, Figure, Image, Dataset, Chapter
 
@@ -67,5 +68,23 @@ def test_chapter_parsing():
     assert isinstance(merged_figure.chapter, Chapter)
     assert merged_figure.chapter.number == 2
 
+
+def test_dataset_special_properties():
+    ds = Dataset(json.loads(test_dataset_json))
+
+    assert isinstance(ds, Dataset)
+
+    assert ds.release_dt == '2014-01-01T00:00:00'
+    with pytest.raises(ValueError):
+        ds.release_dt = '2014-01-01T99:00:00'
+
+    assert ds.publication_year == '2014'
+    ds.publication_year = '2014 (projected)'
+    assert ds.publication_year == '2014'
+    ds.publication_year = 'TBD'
+    assert ds.publication_year is None
+
+
+
 if __name__ == '__main__':
-    test_chapter_parsing()
+    test_dataset_special_properties()
