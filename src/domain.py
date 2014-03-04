@@ -47,7 +47,7 @@ class Gcisbase(object):
 
     def as_json(self, indent=0, omit_fields=[]):
         out_fields = set(self.gcis_fields) - (set(['uri', 'href']) | set(omit_fields))
-        return json.dumps({f: self.__dict__[f] for f in out_fields}, indent=indent)
+        return json.dumps({f: getattr(self, f) for f in out_fields}, indent=indent)
 
 
 class Figure(Gcisbase):

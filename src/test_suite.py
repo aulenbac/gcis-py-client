@@ -84,6 +84,11 @@ def test_dataset_special_properties():
     ds.publication_year = 'TBD'
     assert ds.publication_year is None
 
+    assert ds.access_dt == '2011-12-31T00:00:00'
+
+    #This one was subtle. Make sure as_json() still works with properties.
+    ds_json_out = json.loads(ds.as_json())
+    assert ds_json_out['access_dt'] == '2011-12-31T00:00:00'
 
 
 if __name__ == '__main__':
