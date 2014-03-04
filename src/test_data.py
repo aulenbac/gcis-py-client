@@ -322,3 +322,30 @@ webform_json_precip = """
     "path": "/system/files/cs_extreme_heavy_precipitation_v7.png"
 }
 """
+
+test_dataset_json = """
+{
+    "vertical_extent": null,
+    "native_id": "TBD",
+    "cite_metadata": "TBD",
+    "scale": null,
+    "temporal_extent": "1895-01-01T00:00:00 2013-08-31T00:00:00",
+    "version": "2",
+    "release_dt": "2014-01-01T00:00:00",
+    "scope": null,
+    "type": null,
+    "processing_level": null,
+    "data_qualifier": null,
+    "access_dt": "2011-12-31T00:00:00",
+    "description": "Historical monthly temperature and precipitation time series for 344 climate divisions in the conterminous United States for 1895-present.",
+    "spatial_ref_sys": null,
+    "spatial_res": null,
+    "spatial_extent": "maximum_latitude: 49; minimum_latitude: 24; maximum_longitude: 125; minimum_longitude: 65;",
+    "doi": null,
+    "name": "Climate Division Database Version 2",
+    "url": "https://www.ncdc.noaa.gov/ersst/merge.php",
+    "publication_year": "2014",
+    "attributes": "Monthly average maximum temperature, monthly average minimum temperature, monthly average temperature, total monthly precipitation",
+    "identifier": "cddv2"
+}
+"""

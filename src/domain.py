@@ -5,6 +5,7 @@ __author__ = 'abuddenberg'
 from copy import deepcopy
 import json
 from dateutil.parser import parse
+import re
 
 
 class Gcisbase(object):
@@ -184,10 +185,10 @@ class Dataset(Gcisbase):
 
         #This desperately needs to get added to the webform
         self._identifiers = {
-            'Global Historical Climatology Network - Daily': 'GHCN-D',
-            'Global Historical Climatology Network - Monthly': 'GHCN-M',
+            'Global Historical Climatology Network - Daily': 'ghcn-daily',
+            'Global Historical Climatology Network - Monthly': 'ghcn-monthly',
             'NCDC Merged Land and Ocean Surface Temperature': 'MLOST',
-            'Climate Division Database Version 2': 'CDDv2',
+            'Climate Division Database Version 2': 'cddv2',
             'Eighth degree-CONUS Daily Downscaled Climate Projections by Katharine Hayhoe': 'CMIP3-Downscaled', #Problem
             'Eighth degree-CONUS Daily Downscaled Climate Projections': 'CMIP3-Downscaled', #Problem
             'Earth Policy Institute Atmospheric Carbon Dioxide Concentration, 1000-2012': 'EPI-CO2',
@@ -196,21 +197,13 @@ class Dataset(Gcisbase):
             'NCDC Global Surface Temperature Anomalies': 'NCDC-GST-Anomalies',
             'GRACE Static Field Geopotential Coefficients JPL Release 5.0 GSM': 'GRACE'
         }
+        self._release_dt = None
+        self._access_dt = None
+        self._publication_year = None
 
         super(Dataset, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
 
         self.identifier = self._identifiers[self.name] if self.name in self._identifiers else self.name
-
-        try:
-            self.access_dt = parse(self.access_dt).isoformat() if self.access_dt else None
-        except TypeError:
-            # print "Problem with date: " + self.access_dt
-            self.access_dt = None
-
-        try:
-            self.release_dt = parse(self.release_dt).isoformat() if self.release_dt else None
-        except TypeError:
-            self.release_dt = None
 
     def __str__(self):
         return 'Dataset: {id} {name}'.format(id=self.identifier, name=self.name)
@@ -225,3 +218,38 @@ class Dataset(Gcisbase):
             if hasattr(other, k) and (self.__dict__[k] in (None, '') or len(getattr(other, k)) > self.__dict__[k]):
                 self.__dict__[k] = getattr(other, k)
             return self
+
+    @property
+    def release_dt(self):
+        return self._release_dt
+
+    @release_dt.setter
+    def release_dt(self, value):
+        try:
+            self._release_dt = parse(value).isoformat() if value else None
+        except TypeError:
+            self._release_dt = None
+
+    @property
+    def access_dt(self):
+        return self._access_dt
+
+    @access_dt.setter
+    def access_dt(self, value):
+        try:
+            self._access_dt = parse(value).isoformat() if value else None
+        except TypeError:
+            # print "Problem with date: " + self.access_dt
+            self._access_dt = None
+
+    @property
+    def publication_year(self):
+        return self._publication_year
+
+    @publication_year.setter
+    def publication_year(self, value):
+        match = re.search('\d{4}', value) if value else None
+        if match:
+            self._publication_year = match.group()
+        else:
+            self._publication_year = None
