@@ -37,7 +37,7 @@ class WebformClient:
 
 
     @sanitized('^/metadata/figures/\d+$')
-    def get_webform(self, fig_url):
+    def get_webform(self, fig_url, download_images=False):
         full_url = '{b}{url}?token={t}'.format(b=self.base_url, url=fig_url, t=self.token)
         webform_json = requests.get(full_url).json()
 
@@ -76,6 +76,9 @@ class WebformClient:
                         image_obj.datasets.append(dataset)
 
                 f.images.append(image_obj)
+            #If download_images arg is set, attempt to download all images for this figure
+            if download_images:
+                self.download_all_images(f)
         return f
 
     def get_remote_image_path(self, image_json):
@@ -108,12 +111,13 @@ class WebformClient:
                     image_out.write(bytes)
 
             return filepath
+        elif resp.status_code == 404:
+            raise Exception('Image not found: {u}'.format(u=url))
         else:
-            return resp
+            raise Exception(resp.status_code)
 
     def download_all_images(self, figure):
-        responses = []
         for image in figure.images:
-            responses.append(self.download_image(image))
-        return responses
+            self.download_image(image)
+
 
