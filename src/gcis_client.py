@@ -42,7 +42,11 @@ class GcisClient(object):
 
     def create_figure(self, report_id, chapter_id, figure, skip_images=False):
         if figure.identifier in (None, ''):
-            raise Exception('Invalid identifier', figure.identifier)
+            raise Exception('Invalid figure identifier', figure.identifier)
+
+        #Is GCIS not inferring this from the url parameter?
+        if figure.chapter_identifier in (None, ''):
+            figure.chapter_identifier = chapter_id
 
         url = '{b}/report/{rpt}/chapter/{chp}/figure/'.format(
             b=self.base_url, rpt=report_id, chp=chapter_id
@@ -60,11 +64,11 @@ class GcisClient(object):
 
         return resp
 
-    def update_figure(self, report_id, chapter, figure, skip_images=False):
+    def update_figure(self, report_id, chapter_id, figure, skip_images=False):
         if figure.identifier in (None, ''):
             raise Exception('Invalid identifier', figure.identifier)
         update_url = '{b}/report/{rpt}/chapter/{chp}/figure/{fig}'.format(
-            b=self.base_url, rpt=report_id, chp=chapter, fig=figure.identifier
+            b=self.base_url, rpt=report_id, chp=chapter_id, fig=figure.identifier
         )
 
         resp = requests.post(update_url, figure.as_json(), headers=self.headers)
@@ -171,9 +175,20 @@ class GcisClient(object):
         url = '{b}/image/{img}'.format(b=self.base_url, img=image_id)
         return requests.head(url, headers=self.headers)
 
+    def has_all_associated_images(self, report_id, figure_id, target_image_ids):
+        try:
+            figure_image_ids = [i.identifier for i in self.get_figure(self, report_id, figure_id).images]
+        except Exception:
+            return False
+
+        if set(target_image_ids).issubset(set(figure_image_ids)):
+            return True
+        else:
+            return False
+
     def test_login(self):
         url = '{b}/login.json'.format(b=self.base_url)
-        resp = requests.get(url, headers=self.headers)
+        resp = requests.get(url, headers=self.headers, verify=False)
         return resp.status_code, resp.text
 
     def get_keyword_listing(self):
@@ -192,7 +207,7 @@ class GcisClient(object):
 
     def get_dataset(self, dataset_id):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset_id)
-        resp = requests.get(url, headers=self.headers)
+        resp = requests.get(url, headers=self.headers, verify=False)
         try:
             return Dataset(resp.json())
         except ValueError:
@@ -205,7 +220,6 @@ class GcisClient(object):
 
     def create_dataset(self, dataset):
         url = '{b}/dataset/'.format(b=self.base_url)
-        print dataset.as_json(indent=4)
         return requests.post(url, data=dataset.as_json(), headers=self.headers)
 
     def update_dataset(self, dataset):
