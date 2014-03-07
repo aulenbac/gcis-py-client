@@ -55,13 +55,15 @@ def test_chapter_parsing():
     gcis_fig = Figure(json.loads(test_figure_json))
 
     assert isinstance(webform_fig.ordinal, int)
-    assert webform_fig.figure_num == 17
+    assert webform_fig.figure_num == '2.17'
     assert webform_fig.ordinal == 17
-    assert webform_fig.chapter is None
+    assert webform_fig.chapter == 2
 
     merged_figure = webform_fig.merge(gcis_fig)
     #FYI, these are identical; I just wanted the variable name to reflect the merge
     assert id(merged_figure) == id(webform_fig)
+
+    assert isinstance(gcis_fig.chapter, Chapter)
 
     assert merged_figure.figure_num == '2.17'
     assert merged_figure.ordinal == 17
@@ -92,4 +94,4 @@ def test_dataset_special_properties():
 
 
 if __name__ == '__main__':
-    test_dataset_special_properties()
+    test_chapter_parsing()
