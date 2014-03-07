@@ -6,7 +6,7 @@ from copy import deepcopy
 import json
 from dateutil.parser import parse
 import re
-
+import inspect
 
 class Gcisbase(object):
     def __init__(self, data, fields=[], trans={}):
@@ -40,9 +40,13 @@ class Gcisbase(object):
                     setattr(self, k, data[k])
 
     def merge(self, other):
-        for k in self.__dict__:
-            if self.__dict__[k] in (None, '') and hasattr(other, k):
-                self.__dict__[k] = getattr(other, k)
+        #This sucks
+        attrs_we_care_about = [(attr, v) for attr, v in inspect.getmembers(self, lambda a: not (inspect.isroutine(a)))
+                               if not attr.startswith('__')]
+
+        for attr, value in attrs_we_care_about:
+            if value in (None, '') and hasattr(other, attr):
+                setattr(self, attr, value)
         return self
 
     def as_json(self, indent=0, omit_fields=[]):
@@ -69,7 +73,7 @@ class Figure(Gcisbase):
 
         #Special case for chapter
         chap_tree = data.pop('chapter', None)
-        self.chapter = Chapter(chap_tree) if chap_tree else None
+        self.chapter = Chapter(chap_tree) if chap_tree else self.chapter
 
         #Special case for images
         image_list = data.pop('images', None)
@@ -83,7 +87,7 @@ class Figure(Gcisbase):
         if isinstance(self.chapter, Chapter) and self.chapter.number and self.ordinal:
             return '{0}.{1}'.format(self.chapter.number, self.ordinal)
         else:
-            return self.ordinal
+            return '{0}.{1}'.format(self.chapter, self.ordinal)
 
     #TODO: Ordinal handling is unnecessarily complex
     @figure_num.setter
@@ -114,7 +118,21 @@ class Figure(Gcisbase):
         return string
 
     def __repr__(self):
-        return super(Figure, self).__repr__()
+        # return super(Figure, self).__repr__()
+        return self.__str__()
+
+    def merge(self, other):
+        #Special handling for Chapters
+        if isinstance(other.chapter, Chapter) and isinstance(self.chapter, Chapter):
+            self.chapter.merge(other.chapter)
+
+        #This might want to move to Chapter's merge()
+        elif isinstance(other.chapter, Chapter) and not isinstance(self.chapter, Chapter):
+            chapter_num = self.chapter
+            self.chapter = other.chapter
+            self.chapter.number = chapter_num
+
+        return super(Figure, self).merge(other)
 
 
 class Chapter(Gcisbase):
