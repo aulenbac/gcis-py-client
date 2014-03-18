@@ -67,6 +67,11 @@ class GcisClient(object):
     def update_figure(self, report_id, chapter_id, figure, skip_images=False):
         if figure.identifier in (None, ''):
             raise Exception('Invalid identifier', figure.identifier)
+
+        #Is GCIS not inferring this from the url parameter?
+        if figure.chapter_identifier in (None, ''):
+            figure.chapter_identifier = chapter_id
+
         update_url = '{b}/report/{rpt}/chapter/{chp}/figure/{fig}'.format(
             b=self.base_url, rpt=report_id, chp=chapter_id, fig=figure.identifier
         )
@@ -177,14 +182,19 @@ class GcisClient(object):
 
     def has_all_associated_images(self, report_id, figure_id, target_image_ids):
         try:
-            figure_image_ids = [i.identifier for i in self.get_figure(self, report_id, figure_id).images]
-        except Exception:
-            return False
+            figure_image_ids = [i.identifier for i in self.get_figure(report_id, figure_id).images]
+        except Exception, e:
+            print e.message
+            return False, set()
 
-        if set(target_image_ids).issubset(set(figure_image_ids)):
-            return True
+        target_set = set(target_image_ids)
+        gcis_set = set(figure_image_ids)
+        deltas = target_set - gcis_set
+
+        if target_set.issubset(gcis_set):
+            return True, deltas
         else:
-            return False
+            return False, deltas
 
     def test_login(self):
         url = '{b}/login.json'.format(b=self.base_url)
