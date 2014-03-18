@@ -46,7 +46,8 @@ class Gcisbase(object):
 
         for attr, value in attrs_we_care_about:
             if value in (None, '') and hasattr(other, attr):
-                setattr(self, attr, value)
+                setattr(self, attr, getattr(other, attr))
+
         return self
 
     def as_json(self, indent=0, omit_fields=[]):
@@ -122,7 +123,7 @@ class Figure(Gcisbase):
         return self.__str__()
 
     def merge(self, other):
-        #Special handling for Chapters
+        # Special handling for Chapters
         if isinstance(other.chapter, Chapter) and isinstance(self.chapter, Chapter):
             self.chapter.merge(other.chapter)
 
