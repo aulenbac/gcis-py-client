@@ -37,7 +37,7 @@ def test_domain_as_json():
     assert f.original['images'] not in (None, '')
     assert f.original['uri'] not in (None, '')
 
-    #Make sured fields specifically
+    #Make sure fields specifically omitted are actually omitted
     fig_json_out = json.loads(f.as_json())
     assert all([omitted_key not in fig_json_out for omitted_key in ['chapter', 'images', 'uri', 'href']])
 
@@ -48,6 +48,17 @@ def test_domain_as_json():
 
     img_json_out = json.loads(i.as_json())
     assert all([omitted_key not in img_json_out for omitted_key in ['uri', 'href']])
+
+    #Make sure merges work
+    f2_json = json.loads(test_figure_json)
+    f2_json['caption'] = ''
+    f2 = Figure(f2_json)
+
+    assert f2.caption in ('', None)
+
+    f2.merge(f)
+
+    assert f2.caption == f.caption
 
 
 def test_chapter_parsing():
@@ -94,4 +105,4 @@ def test_dataset_special_properties():
 
 
 if __name__ == '__main__':
-    test_chapter_parsing()
+    test_domain_as_json()
