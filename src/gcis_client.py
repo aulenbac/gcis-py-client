@@ -5,7 +5,7 @@ import urllib
 import json
 import requests
 from os.path import exists, basename
-from domain import Figure, Image, Dataset
+from domain import Figure, Image, Dataset, Activity
 
 
 def check_image(fn):
@@ -26,6 +26,16 @@ def exists(fn):
             return True
         elif resp.status_code == 404:
             return False
+        else:
+            raise Exception(resp.text)
+    return wrapped
+
+
+def http_resp(fn):
+    def wrapped(*args, **kwargs):
+        resp = fn(*args, **kwargs)
+        if resp.status_code == 200:
+            return resp
         else:
             raise Exception(resp.text)
     return wrapped
@@ -94,21 +104,25 @@ class GcisClient(object):
     @check_image
     def create_image(self, image, report_id=None, figure_id=None):
         url = '{b}/image/'.format(b=self.base_url, img=image.identifier)
-        responses = [requests.post(url, image.as_json(), headers=self.headers)]
+        resp = requests.post(url, image.as_json(), headers=self.headers)
         if image.local_path is not None:
-            responses.append(self.upload_image_file(image.identifier, image.local_path))
+            self.upload_image_file(image.identifier, image.local_path)
         if figure_id and report_id:
-            responses.append(self.associate_image_with_figure(image.identifier, report_id, figure_id))
+            self.associate_image_with_figure(image.identifier, report_id, figure_id)
         for dataset in image.datasets:
-            self.associate_dataset_with_image(dataset.identifier, image.identifier)
+            self.create_activity(dataset.activity)
+            self.associate_dataset_with_image(dataset.identifier, image.identifier,
+                                              activity_id=dataset.activity.identifier)
 
-        return responses
+        return resp
 
     @check_image
     def update_image(self, image):
         update_url = '{b}/image/{img}'.format(b=self.base_url, img=image.identifier)
         for dataset in image.datasets:
-            self.associate_dataset_with_image(dataset.identifier, image.identifier)
+            self.update_activity(dataset.activity)
+            self.associate_dataset_with_image(dataset.identifier, image.identifier,
+                                              activity_id=dataset.activity.identifier)
 
         return requests.post(update_url, image.as_json(), headers=self.headers)
 
@@ -240,20 +254,78 @@ class GcisClient(object):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset.identifier)
         return requests.delete(url, headers=self.headers)
 
-    def associate_dataset_with_image(self, dataset_id, image_id):
+    def associate_dataset_with_image(self, dataset_id, image_id, activity_id=None):
         url = '{b}/image/prov/{img}'.format(b=self.base_url, img=image_id)
+
         data = {
             'parent_uri': '/dataset/' + dataset_id,
             'parent_rel': 'prov:wasDerivedFrom'
         }
+        if activity_id:
+            data['activity'] = activity_id
+
+        self.delete_dataset_image_assoc(dataset_id, image_id)
         resp = requests.post(url, data=json.dumps(data), headers=self.headers)
 
         if resp.status_code == 200:
             return resp
         #TODO: Change to 409 in next release
         elif resp.status_code == 400:
+            print resp.text
             print 'Duplicate dataset association {ds} for image: {img}'.format(ds=dataset_id, img=image_id)
             return resp
         else:
             raise Exception('Dataset association failed:\n{url}\n{resp}'.format(url=url, resp=resp.text))
+
+    def delete_dataset_image_assoc(self, dataset_id, image_id):
+        url = '{b}/image/prov/{img}'.format(b=self.base_url, img=image_id)
+
+        data = {
+            'delete': {
+                'parent_uri': '/dataset/' + dataset_id,
+                'parent_rel': 'prov:wasDerivedFrom'
+            }
+        }
+        print data
+
+        print json.dumps(data)
+        resp = requests.post(url, data=json.dumps(data), headers=self.headers)
+
+        if resp.status_code == 200:
+            return resp
+        else:
+            print resp.status_code
+            raise Exception('Dataset dissociation failed:\n{url}\n{resp}'.format(url=url, resp=resp.text))
+
+    # @exists
+    def activity_exists(self, activity_id):
+        url = '{b}/activity/{act}'.format(b=self.base_url, act=activity_id)
+        resp = requests.head(url, headers=self.headers)
+        if resp.status_code == 200:
+            return True
+        else:
+            return False
+
+    def get_activity(self, activity_id):
+        url = '{b}/activity/{act}'.format(b=self.base_url, act=activity_id)
+        resp = requests.get(url, headers=self.headers, verify=False)
+        try:
+            return Activity(resp.json())
+        except ValueError:
+            raise Exception(resp.text())
+
+    @http_resp
+    def create_activity(self, activity):
+        url = '{b}/activity/'.format(b=self.base_url)
+        return requests.post(url, data=activity.as_json(), headers=self.headers)
+
+    @http_resp
+    def update_activity(self, activity):
+        url = '{b}/activity/{act}'.format(b=self.base_url, act=activity.identifier)
+        return requests.post(url, data=activity.as_json(), headers=self.headers)
+
+    @http_resp
+    def delete_activity(self, activity):
+        url = '{b}/activity/{act}'.format(b=self.base_url, act=activity.identifier)
+        return requests.delete(url, headers=self.headers)
 

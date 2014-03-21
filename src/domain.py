@@ -287,3 +287,25 @@ class Dataset(Gcisbase):
             self._publication_year = match.group()
         else:
             self._publication_year = None
+            
+            
+class Activity(Gcisbase):
+    def __init__(self, data):
+        self.gcis_fields = ['start_time', 'uri', 'methodology', 'data_usage', 'href', 'metholodogies', 'end_time',
+                            'output_artifacts', 'duration', 'identifier', 'publication_maps', 'computing_environment']
+
+        self.translations = {
+            'how_much_time_was_invested_in_creating_the_image': 'duration',
+            '35_what_are_all_of_the_files_names_and_extensions_associated_with_this_image': 'output_artifacts',
+            'what_operating_systems_and_platforms_were_used': 'computing_environment',
+            'what_analytical_statistical_methods_were_employed_to_the_data': 'methodology',
+            'describe_how_the_data_was_used_in_the_image_figure_creation': 'data_usage'
+
+        }
+
+        super(Activity, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
+
+    def as_json(self, indent=0):
+        return super(Activity, self).as_json(omit_fields=['metholodogies', 'publication_maps'])
+
+

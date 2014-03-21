@@ -4,6 +4,7 @@ from webform_client import WebformClient
 from gcis_client import GcisClient
 from os.path import exists
 import json
+import pickle
 
 # webform_dev = ('http://dev.nemac.org/asides10/metadata/figures/all?token=A2PNYxRuG9')
 
@@ -19,72 +20,84 @@ sync_metadata_tree = {
         #Chapter 2
         'our-changing-climate': [
             #(webform_url, gcis_id)
-            ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
-            ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),
+            # ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
+            # ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),
             ('/metadata/figures/2677', 'observed-us-precipitation-change'),
-            # ('/metadata/figures/3175', 'observed-us-temperature-change'),
-            # ('/metadata/figures/3074', 'ten-indicators-of-a-warming-world'),
-            # ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),
-            # ('/metadata/figures/3293', 'observed-increase-in-frostfree-season-length'),
-            ('/metadata/figures/3294', 'projected-changes-in-frostfree-season-length'), #Good
+            # # ('/metadata/figures/3175', 'observed-us-temperature-change'),
+            # # ('/metadata/figures/3074', 'ten-indicators-of-a-warming-world'),
+            # # ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),
+            # # ('/metadata/figures/3293', 'observed-increase-in-frostfree-season-length'),
+            # ('/metadata/figures/3294', 'projected-changes-in-frostfree-season-length'), #Good
             # ('/metadata/figures/3305', 'variation-of-storm-frequency') #incomplete
         ],
-        #Chapter 4
-        'energy-supply-and-use': [
-            # ('/metadata/figures/3292', 'cooling-degree-days')
-        ],
-        #Chapter 6
-        'agriculture': [
-        #     ('/metadata/figures/2872', 'drainage'),
-        #     ('/metadata/figures/2691', 'variables-affecting-ag') #Needs images redone
-            ('/metadata/figures/2691', 'projected-changes-in-key-climate-variables-affecting-agricultural-productivity')
-        ],
-        #Chapter 9
-        # 'human-health': [
-        #     ('/metadata/figures/2896', 'heavy-downpours-disease') #Needs images redone
+        # #Chapter 4
+        # 'energy-supply-and-use': [
+        #     # ('/metadata/figures/3292', 'cooling-degree-days')
         # ],
-        #Chapter 10
-        'water-energy-land-use': [
-            ('/metadata/figures/2410', 'coasttocoast-100degree-days-in-2011')
-        ],
-        #Chapter 14
-        'rural': [
-            ('/metadata/figures/3306', 'growing-season-lengthens') #Needs images redone
-        ],
-        #Chapter 16
-        'northeast': [
-            ('/metadata/figures/2995', 'projected-increases-in-the-number-of-days-over-90f')
-        ],
-        #Chapter 17
-        'southeast': [
-            ('/metadata/figures/2998', 'projected-change-in-number-of-days-over-95-f'),
-            ('/metadata/figures/2999', 'projected-change-in-number-of-nights-below-32f')
-        ],
-        #Chapter 18
-        'midwest': [
-            ('/metadata/figures/2992', 'projected-midcentury-temperature-changes-in-the-midwest'),
-            ('/metadata/figures/2994', 'when-it-rains-it-pours')
-        ],
-        #Chapter 19
-        # 'great-plains': [
-        #     ('/metadata/figures/2697', 'temperature-and-precipitation-distribution-in-the-great-plains') #Needs images redone
-        #
+        # #Chapter 6
+        # 'agriculture': [
+        # #     ('/metadata/figures/2872', 'drainage'),
+        # #     ('/metadata/figures/2691', 'variables-affecting-ag') #Needs images redone
+        #     ('/metadata/figures/2691', 'projected-changes-in-key-climate-variables-affecting-agricultural-productivity')
         # ],
-        #Chapter 25
-        'coastal-zone': [
-            ('/metadata/figures/2543', 'coastal-ecosystem-services')
-        ],
-        # Climate Science Appendix
-        'appendix-climate-science': [
-            ('/metadata/figures/3147', 'ice-loss-from-greenland-and-antarctica')
-        ]
+        # #Chapter 9
+        # # 'human-health': [
+        # #     ('/metadata/figures/2896', 'heavy-downpours-disease') #Needs images redone
+        # # ],
+        # #Chapter 10
+        # 'water-energy-land-use': [
+        #     ('/metadata/figures/2410', 'coasttocoast-100degree-days-in-2011')
+        # ],
+        # #Chapter 14
+        # 'rural': [
+        #     ('/metadata/figures/3306', 'growing-season-lengthens') #Needs images redone
+        # ],
+        # #Chapter 16
+        # 'northeast': [
+        #     ('/metadata/figures/2995', 'projected-increases-in-the-number-of-days-over-90f')
+        # ],
+        # #Chapter 17
+        # 'southeast': [
+        #     ('/metadata/figures/2998', 'projected-change-in-number-of-days-over-95-f'),
+        #     ('/metadata/figures/2999', 'projected-change-in-number-of-nights-below-32f')
+        # ],
+        # #Chapter 18
+        # 'midwest': [
+        #     ('/metadata/figures/2992', 'projected-midcentury-temperature-changes-in-the-midwest'),
+        #     ('/metadata/figures/2994', 'when-it-rains-it-pours')
+        # ],
+        # #Chapter 19
+        # # 'great-plains': [
+        # #     ('/metadata/figures/2697', 'temperature-and-precipitation-distribution-in-the-great-plains') #Needs images redone
+        # #
+        # # ],
+        # #Chapter 25
+        # 'coastal-zone': [
+        #     ('/metadata/figures/2543', 'coastal-ecosystem-services')
+        # ],
+        # # Climate Science Appendix
+        # 'appendix-climate-science': [
+        #     ('/metadata/figures/3147', 'ice-loss-from-greenland-and-antarctica')
+        # ]
 
     }
 }
 
 
 def main():
-    sync(replace=True)
+    # sync_dataset_metadata(aggregate_webform_datasets())
+    sync(replace=False)
+
+    # with open('../datasets.pk1', 'wb') as outfile:
+    #     pickle.dump(aggregate_webform_datasets(), outfile)
+    #
+    # datasets = pickle.load(open('../datasets.pk1', 'r'))
+    # # sync_dataset_metadata(datasets)
+    # for ds in datasets:
+    #     print ds.identifier, ': '
+    #     print ds.activity.as_json(indent=4)
+    #     print ds.activity.uri
+
 
 
 def sync(replace=False):
@@ -146,6 +159,8 @@ def sync_dataset_metadata(datasets):
             print 'Creating: {ds}'.format(ds=ds)
             gcis.create_dataset(ds)
 
+        create_or_update_activity(ds.activity)
+
 
 def aggregate_webform_datasets():
     dataset_map = {}
@@ -162,8 +177,18 @@ def aggregate_webform_datasets():
                     dataset_map[dataset.identifier] = dataset
                 else:
                     dataset_map[dataset.identifier].merge(dataset)
+                    dataset_map[dataset.identifier].activity.merge(dataset.activity)
 
     return dataset_map.values()
+
+
+def create_or_update_activity(activity):
+    if gcis.activity_exists(activity.identifier):
+        print 'Updating: {act}'.format(act=activity)
+        gcis.update_activity(activity)
+    else:
+        print 'Creating: {act}'.format(act=activity)
+        gcis.create_activity(activity)
 
 
 if __name__ == '__main__':
