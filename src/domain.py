@@ -8,6 +8,7 @@ from dateutil.parser import parse
 import re
 import inspect
 
+
 class Gcisbase(object):
     def __init__(self, data, fields=[], trans={}):
         #Setup class variables
@@ -214,11 +215,25 @@ class Dataset(Gcisbase):
             'Daily 1/8-degree gridded meteorological data [1 Jan 1949 - 31 Dec 2010]': 'Maurer',
             'NCEP/NCAR Reanalysis': 'NCEP-NCAR',
             'NCDC Global Surface Temperature Anomalies': 'NCDC-GST-Anomalies',
-            'GRACE Static Field Geopotential Coefficients JPL Release 5.0 GSM': 'GRACE'
+            'GRACE Static Field Geopotential Coefficients JPL Release 5.0 GSM': 'GRACE',
+            'UW/NCDC Satellite Derived Hurricane Intensity Dataset': 'Hurricane-Intensity',
+            'Bias-Corrected and Spatially Downscaled Surface Water Projections Hydrologic Data': 'Water-Projections',
+            'International Best Track Archive for Climate Stewardship (IBTrACS)': 'IBTrACS',
+            'the World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'CMIP3',
+            'North American Regional Climate Change Assessment Program dataset': 'NARCCAP',
+            'Gridded Population of the World Version 3 (GPWv3): Population Count Grid': 'GPWv3'
+
+
         }
+
+        #Private attributes for handling date parsing
         self._release_dt = None
         self._access_dt = None
         self._publication_year = None
+
+        #These do not accurately reflect GCIS' data model
+        self.note = None
+        self.activity = None
 
         super(Dataset, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
 
