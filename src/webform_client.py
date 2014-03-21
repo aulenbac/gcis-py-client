@@ -6,7 +6,7 @@ import re
 from os.path import join
 from dateutil.parser import parse
 
-from domain import Figure, Image, Dataset
+from domain import Figure, Image, Dataset, Activity
 
 
 def sanitized(pattern):
@@ -72,6 +72,15 @@ class WebformClient:
                         dataset.spatial_extent = ' '.join(['{k}: {v};'.format(k=key, v=dataset_json[key]) for key in
                                                            ['maximum_latitude', 'minimum_latitude', 'maximum_longitude',
                                                             'minimum_longitude']])
+
+                        #Filter overlapping Dataset keys out
+                        activity_json = {k: dataset_json[k] for k in dataset_json if
+                                         k not in ['href', 'uri', 'identifier', 'start_time', 'end_time']}
+
+                        #Add synthetic identifier
+                        activity_json['identifier'] = dataset.identifier + '-process'
+                        dataset.activity = Activity(activity_json)
+
                         #TODO: Extract DOIs from citation
                         image_obj.datasets.append(dataset)
 
