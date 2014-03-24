@@ -4,6 +4,10 @@
 .groovy
 .settings
 *.pyc
+*.pk1
 bin/*
 src/blah.py
 src/Blah.py
+dist/images/*.png
+gcis-py-client.iml
+.idea/*
