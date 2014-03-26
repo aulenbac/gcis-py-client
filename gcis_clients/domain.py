@@ -1,12 +1,11 @@
-from types import NoneType
-
 __author__ = 'abuddenberg'
 
 from copy import deepcopy
 import json
-from dateutil.parser import parse
 import re
 import inspect
+
+from dateutil.parser import parse
 
 
 class Gcisbase(object):

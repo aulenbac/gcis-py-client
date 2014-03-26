@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
 import urllib
-import requests
 import re
 from os.path import join
+
+import requests
 from dateutil.parser import parse
 
 from domain import Figure, Image, Dataset, Activity
@@ -78,7 +79,7 @@ class WebformClient:
                                          k not in ['href', 'uri', 'identifier', 'start_time', 'end_time']}
 
                         #Add synthetic identifier
-                        activity_json['identifier'] = dataset.identifier + '-process'
+                        activity_json['identifier'] = dataset.identifier.lower() + '-process'
                         dataset.activity = Activity(activity_json)
 
                         #TODO: Extract DOIs from citation

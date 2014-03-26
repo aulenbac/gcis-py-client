@@ -1,4 +1,6 @@
-from gcis_client import GcisClient
+#!/usr/bin/env python
+
+from gcis_clients import GcisClient
 
 base_url = 'http://data.gcis-dev-front.joss.ucar.edu'
 

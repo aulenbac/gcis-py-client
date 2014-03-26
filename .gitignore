@@ -9,5 +9,7 @@ bin/*
 src/blah.py
 src/Blah.py
 dist/images/*.png
+dist/*.tar.gz
 gcis-py-client.iml
 .idea/*
+*.egg-info

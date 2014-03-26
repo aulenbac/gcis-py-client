@@ -3,8 +3,10 @@
 from base64 import b64encode
 import urllib
 import json
-import requests
 from os.path import exists, basename
+
+import requests
+
 from domain import Figure, Image, Dataset, Activity
 
 

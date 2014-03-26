@@ -4,10 +4,12 @@ __author__ = 'abuddenberg'
 # py.test -v test_suite.py
 
 
-from test_data import test_figure_json, test_image_json, webform_json_temp, webform_json_precip, test_dataset_json
-import pytest
 import json
-from domain import Gcisbase, Figure, Image, Dataset, Chapter
+
+import pytest
+
+from test_data import test_figure_json, test_image_json, webform_json_precip, test_dataset_json
+from gcis_client.domain import Gcisbase, Figure, Image, Dataset, Chapter
 
 
 def test_gcis_client_version():
@@ -104,5 +106,6 @@ def test_dataset_special_properties():
     assert ds_json_out['access_dt'] == '2011-12-31T00:00:00'
 
 
-if __name__ == '__main__':
+if __name__ == "__main__" and __package__ is None:
+    __package__ = "gcis_client.test.test_suite"
     test_domain_as_json()

@@ -1,7 +1,8 @@
+#!/usr/bin/env python
 __author__ = 'abuddenberg'
 
-from webform_client import WebformClient
-from gcis_client import GcisClient
+from gcis_clients import WebformClient
+from gcis_clients import GcisClient
 from os.path import exists
 import json
 import pickle
@@ -11,8 +12,8 @@ import pickle
 webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
 
 gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
-gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'd9fcfd947c1785ab1cd329a9920e05e5c5d3d7f35315f164')
-# gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'a6efcc7cf39c55e9329a8b027e0817e3354bada65310d192')
+# gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'd9fcfd947c1785ab1cd329a9920e05e5c5d3d7f35315f164')
+gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'a6efcc7cf39c55e9329a8b027e0817e3354bada65310d192')
 
 sync_metadata_tree = {
     #Reports
@@ -20,8 +21,8 @@ sync_metadata_tree = {
         #Chapter 2
         'our-changing-climate': [
             #(webform_url, gcis_id)
-            # ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
-            # ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),
+            ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
+            ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),
             ('/metadata/figures/2677', 'observed-us-precipitation-change'),
             # # ('/metadata/figures/3175', 'observed-us-temperature-change'),
             # # ('/metadata/figures/3074', 'ten-indicators-of-a-warming-world'),
@@ -90,13 +91,10 @@ def main():
 
     # with open('../datasets.pk1', 'wb') as outfile:
     #     pickle.dump(aggregate_webform_datasets(), outfile)
-    #
+
     # datasets = pickle.load(open('../datasets.pk1', 'r'))
-    # # sync_dataset_metadata(datasets)
-    # for ds in datasets:
-    #     print ds.identifier, ': '
-    #     print ds.activity.as_json(indent=4)
-    #     print ds.activity.uri
+    # sync_dataset_metadata(datasets)
+
 
 
 
