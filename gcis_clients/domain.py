@@ -206,21 +206,21 @@ class Dataset(Gcisbase):
         self._identifiers = {
             'Global Historical Climatology Network - Daily': 'ghcn-daily',
             'Global Historical Climatology Network - Monthly': 'ghcn-monthly',
-            'NCDC Merged Land and Ocean Surface Temperature': 'MLOST',
+            'NCDC Merged Land and Ocean Surface Temperature': 'mlost',
             'Climate Division Database Version 2': 'cddv2',
-            'Eighth degree-CONUS Daily Downscaled Climate Projections by Katharine Hayhoe': 'CMIP3-Downscaled', #Problem
-            'Eighth degree-CONUS Daily Downscaled Climate Projections': 'CMIP3-Downscaled', #Problem
-            'Earth Policy Institute Atmospheric Carbon Dioxide Concentration, 1000-2012': 'EPI-CO2',
-            'Daily 1/8-degree gridded meteorological data [1 Jan 1949 - 31 Dec 2010]': 'Maurer',
-            'NCEP/NCAR Reanalysis': 'NCEP-NCAR',
-            'NCDC Global Surface Temperature Anomalies': 'NCDC-GST-Anomalies',
-            'GRACE Static Field Geopotential Coefficients JPL Release 5.0 GSM': 'GRACE',
-            'UW/NCDC Satellite Derived Hurricane Intensity Dataset': 'Hurricane-Intensity',
-            'Bias-Corrected and Spatially Downscaled Surface Water Projections Hydrologic Data': 'Water-Projections',
-            'International Best Track Archive for Climate Stewardship (IBTrACS)': 'IBTrACS',
-            'the World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'CMIP3',
-            'North American Regional Climate Change Assessment Program dataset': 'NARCCAP',
-            'Gridded Population of the World Version 3 (GPWv3): Population Count Grid': 'GPWv3'
+            'Eighth degree-CONUS Daily Downscaled Climate Projections by Katharine Hayhoe': 'cmip3-downscaled', #Problem
+            'Eighth degree-CONUS Daily Downscaled Climate Projections': 'cmip3-downscaled', #Problem
+            'Earth Policy Institute Atmospheric Carbon Dioxide Concentration, 1000-2012': 'epi-co2',
+            'Daily 1/8-degree gridded meteorological data [1 Jan 1949 - 31 Dec 2010]': 'maurer',
+            'NCEP/NCAR Reanalysis': 'ncep-ncar',
+            'NCDC Global Surface Temperature Anomalies': 'ncdc-gst-anomalies',
+            'GRACE Static Field Geopotential Coefficients JPL Release 5.0 GSM': 'grace',
+            'UW/NCDC Satellite Derived Hurricane Intensity Dataset': 'hurricane-intensity',
+            'Bias-Corrected and Spatially Downscaled Surface Water Projections Hydrologic Data': 'water-projections',
+            'International Best Track Archive for Climate Stewardship (IBTrACS)': 'ibtracs',
+            'the World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'cmip3',
+            'North American Regional Climate Change Assessment Program dataset': 'narccap',
+            'Gridded Population of the World Version 3 (GPWv3): Population Count Grid': 'gpwv3'
 
 
         }

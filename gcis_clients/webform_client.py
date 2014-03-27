@@ -79,7 +79,7 @@ class WebformClient:
                                          k not in ['href', 'uri', 'identifier', 'start_time', 'end_time']}
 
                         #Add synthetic identifier
-                        activity_json['identifier'] = dataset.identifier.lower() + '-process'
+                        activity_json['identifier'] = dataset.identifier + '-process'
                         dataset.activity = Activity(activity_json)
 
                         #TODO: Extract DOIs from citation

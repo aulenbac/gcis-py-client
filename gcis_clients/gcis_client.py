@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from base64 import b64encode
 import urllib
 import json
@@ -271,11 +269,6 @@ class GcisClient(object):
 
         if resp.status_code == 200:
             return resp
-        #TODO: Change to 409 in next release
-        elif resp.status_code == 400:
-            print resp.text
-            print 'Duplicate dataset association {ds} for image: {img}'.format(ds=dataset_id, img=image_id)
-            return resp
         else:
             raise Exception('Dataset association failed:\n{url}\n{resp}'.format(url=url, resp=resp.text))
 
@@ -288,15 +281,11 @@ class GcisClient(object):
                 'parent_rel': 'prov:wasDerivedFrom'
             }
         }
-        print data
-
-        print json.dumps(data)
         resp = requests.post(url, data=json.dumps(data), headers=self.headers)
 
         if resp.status_code == 200:
             return resp
         else:
-            print resp.status_code
             raise Exception('Dataset dissociation failed:\n{url}\n{resp}'.format(url=url, resp=resp.text))
 
     # @exists
