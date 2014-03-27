@@ -2,8 +2,8 @@
 __author__ = 'abuddenberg'
 
 import pickle
-from gcis_client import GcisClient
-from webform_client import WebformClient
+from gcis_clients import GcisClient
+from gcis_clients import WebformClient
 from sync_figures import upload_images_to_gcis
 
 webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
