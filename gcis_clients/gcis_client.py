@@ -41,6 +41,14 @@ def http_resp(fn):
     return wrapped
 
 
+class AssociationException(Exception):
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
+
 class GcisClient(object):
     def __init__(self, url, username, password):
         self.headers = {
@@ -50,6 +58,7 @@ class GcisClient(object):
         self.base_url = url
         self.headers['Authorization'] = 'Basic ' + b64encode(username + ':' + password)
 
+    @http_resp
     def create_figure(self, report_id, chapter_id, figure, skip_images=False):
         if figure.identifier in (None, ''):
             raise Exception('Invalid figure identifier', figure.identifier)
@@ -62,10 +71,7 @@ class GcisClient(object):
             b=self.base_url, rpt=report_id, chp=chapter_id
         )
 
-        resp = requests.post(url, data=figure.as_json(), headers=self.headers)
-
-        if resp.status_code != 200:
-            raise Exception(resp.text)
+        resp = requests.post(url, data=figure.as_json(), headers=self.headers, verify=False)
 
         if skip_images is False:
             for image in figure.images:
@@ -74,6 +80,7 @@ class GcisClient(object):
 
         return resp
 
+    @http_resp
     def update_figure(self, report_id, chapter_id, figure, skip_images=False):
         if figure.identifier in (None, ''):
             raise Exception('Invalid identifier', figure.identifier)
@@ -86,10 +93,7 @@ class GcisClient(object):
             b=self.base_url, rpt=report_id, chp=chapter_id, fig=figure.identifier
         )
 
-        resp = requests.post(update_url, figure.as_json(), headers=self.headers)
-
-        if resp.status_code != 200:
-            raise Exception(resp.text)
+        resp = requests.post(update_url, figure.as_json(), headers=self.headers, verify=False)
 
         if skip_images is False:
             for image in figure.images:
@@ -97,20 +101,22 @@ class GcisClient(object):
 
         return resp
 
+    @http_resp
     def delete_figure(self, report_id, figure_id):
         url = '{b}/report/{rpt}/figure/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
-        return requests.delete(url, headers=self.headers)
+        return requests.delete(url, headers=self.headers, verify=False)
 
     @check_image
     def create_image(self, image, report_id=None, figure_id=None):
         url = '{b}/image/'.format(b=self.base_url, img=image.identifier)
-        resp = requests.post(url, image.as_json(), headers=self.headers)
+        resp = requests.post(url, image.as_json(), headers=self.headers, verify=False)
         if image.local_path is not None:
             self.upload_image_file(image.identifier, image.local_path)
         if figure_id and report_id:
             self.associate_image_with_figure(image.identifier, report_id, figure_id)
         for dataset in image.datasets:
-            self.create_activity(dataset.activity)
+            self.create_or_update_dataset(dataset)
+            self.create_or_update_activity(dataset.activity)
             self.associate_dataset_with_image(dataset.identifier, image.identifier,
                                               activity_id=dataset.activity.identifier)
 
@@ -124,16 +130,16 @@ class GcisClient(object):
             self.associate_dataset_with_image(dataset.identifier, image.identifier,
                                               activity_id=dataset.activity.identifier)
 
-        return requests.post(update_url, image.as_json(), headers=self.headers)
+        return requests.post(update_url, image.as_json(), headers=self.headers, verify=False)
 
     @check_image
     def delete_image(self, image):
         delete_url = '{b}/image/{img}'.format(b=self.base_url, img=image.identifier)
-        return requests.delete(delete_url, headers=self.headers)
+        return requests.delete(delete_url, headers=self.headers, verify=False)
 
     def associate_image_with_figure(self, image_id, report_id, figure_id):
         url = '{b}/report/{rpt}/figure/rel/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
-        return requests.post(url, json.dumps({'add_image_identifier': image_id}), headers=self.headers)
+        return requests.post(url, json.dumps({'add_image_identifier': image_id}), headers=self.headers, verify=False)
 
     def upload_image_file(self, image_id, local_path):
         url = '{b}/image/files/{id}/{fn}'.format(b=self.base_url, id=image_id, fn=basename(local_path))
@@ -142,7 +148,7 @@ class GcisClient(object):
         if not exists(local_path):
             raise Exception('File not found: ' + local_path)
 
-        return requests.put(url, data=open(local_path, 'rb'), headers=self.headers)
+        return requests.put(url, data=open(local_path, 'rb'), headers=self.headers, verify=False)
 
     #Full listing
     def get_figure_listing(self, report_id, chapter_id=None):
@@ -151,7 +157,7 @@ class GcisClient(object):
         url = '{b}/report/{rpt}{chap}/figure?{p}'.format(
             b=self.base_url, rpt=report_id, chap=chapter_filter, p=urllib.urlencode({'all': '1'})
         )
-        resp = requests.get(url, headers=self.headers)
+        resp = requests.get(url, headers=self.headers, verify=False)
 
         try:
             return [Figure(figure) for figure in resp.json()]
@@ -164,7 +170,7 @@ class GcisClient(object):
         url = '{b}/report/{rpt}{chap}/figure/{fig}?{p}'.format(
             b=self.base_url, rpt=report_id, chap=chapter_filter, fig=figure_id, p=urllib.urlencode({'all': '1'})
         )
-        resp = requests.get(url, headers=self.headers)
+        resp = requests.get(url, headers=self.headers, verify=False)
 
         try:
             return Figure(resp.json())
@@ -178,11 +184,11 @@ class GcisClient(object):
         url = '{b}/report/{rpt}{chap}/figure/{fig}?{p}'.format(
             b=self.base_url, rpt=report_id, chap=chapter_filter, fig=figure_id, p=urllib.urlencode({'all': '1'})
         )
-        return requests.head(url, headers=self.headers)
+        return requests.head(url, headers=self.headers, verify=False)
 
     def get_image(self, image_id):
         url = '{b}/image/{img}'.format(b=self.base_url, img=image_id)
-        resp = requests.get(url, headers=self.headers)
+        resp = requests.get(url, headers=self.headers, verify=False)
 
         try:
             return Image(resp.json())
@@ -192,7 +198,7 @@ class GcisClient(object):
     @exists
     def image_exists(self, image_id):
         url = '{b}/image/{img}'.format(b=self.base_url, img=image_id)
-        return requests.head(url, headers=self.headers)
+        return requests.head(url, headers=self.headers, verify=False)
 
     def has_all_associated_images(self, report_id, figure_id, target_image_ids):
         try:
@@ -217,17 +223,17 @@ class GcisClient(object):
 
     def get_keyword_listing(self):
         url = '{b}/gcmd_keyword?{p}'.format(b=self.base_url, p=urllib.urlencode({'all': '1'}))
-        resp = requests.get(url, headers=self.headers)
+        resp = requests.get(url, headers=self.headers, verify=False)
 
         return resp.json()
 
     def get_keyword(self, key_id):
         url = '{b}/gcmd_keyword/{k}'.format(b=self.base_url, k=key_id)
-        return requests.get(url, headers=self.headers).json()
+        return requests.get(url, headers=self.headers, verify=False).json()
 
     def associate_keyword_with_figure(self, keyword_id, report_id, figure_id):
         url = '{b}/report/{rpt}/figure/keywords/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
-        return requests.post(url, data=json.dumps({'identifier': keyword_id}), headers=self.headers)
+        return requests.post(url, data=json.dumps({'identifier': keyword_id}), headers=self.headers, verify=False)
 
     def get_dataset(self, dataset_id):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset_id)
@@ -240,19 +246,19 @@ class GcisClient(object):
     @exists
     def dataset_exists(self, dataset_id):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset_id)
-        return requests.head(url, headers=self.headers)
+        return requests.head(url, headers=self.headers, verify=False)
 
     def create_dataset(self, dataset):
         url = '{b}/dataset/'.format(b=self.base_url)
-        return requests.post(url, data=dataset.as_json(), headers=self.headers)
+        return requests.post(url, data=dataset.as_json(), headers=self.headers, verify=False)
 
     def update_dataset(self, dataset):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset.identifier)
-        return requests.post(url, data=dataset.as_json(), headers=self.headers)
+        return requests.post(url, data=dataset.as_json(), headers=self.headers, verify=False)
 
     def delete_dataset(self, dataset):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset.identifier)
-        return requests.delete(url, headers=self.headers)
+        return requests.delete(url, headers=self.headers, verify=False)
 
     def associate_dataset_with_image(self, dataset_id, image_id, activity_id=None):
         url = '{b}/image/prov/{img}'.format(b=self.base_url, img=image_id)
@@ -264,8 +270,12 @@ class GcisClient(object):
         if activity_id:
             data['activity'] = activity_id
 
-        self.delete_dataset_image_assoc(dataset_id, image_id)
-        resp = requests.post(url, data=json.dumps(data), headers=self.headers)
+        try:
+            self.delete_dataset_image_assoc(dataset_id, image_id)
+        except AssociationException as e:
+            print e.value
+
+        resp = requests.post(url, data=json.dumps(data), headers=self.headers, verify=False)
 
         if resp.status_code == 200:
             return resp
@@ -281,17 +291,27 @@ class GcisClient(object):
                 'parent_rel': 'prov:wasDerivedFrom'
             }
         }
-        resp = requests.post(url, data=json.dumps(data), headers=self.headers)
+        resp = requests.post(url, data=json.dumps(data), headers=self.headers, verify=False)
 
         if resp.status_code == 200:
             return resp
         else:
-            raise Exception('Dataset dissociation failed:\n{url}\n{resp}'.format(url=url, resp=resp.text))
+            raise AssociationException(
+                'Dataset dissociation failed:\n{url}\n{resp}\n{d}'.format(url=url, resp=resp.text, d=data))
+
+    def create_or_update_dataset(self, dataset):
+        if self.dataset_exists(dataset.identifier):
+            print 'Updating dataset: ' + dataset.identifier
+            print self.update_dataset(dataset)
+        else:
+            print 'Creating dataset: ' + dataset.identifier
+            print self.create_dataset(dataset)
+
 
     # @exists
     def activity_exists(self, activity_id):
         url = '{b}/activity/{act}'.format(b=self.base_url, act=activity_id)
-        resp = requests.head(url, headers=self.headers)
+        resp = requests.head(url, headers=self.headers, verify=False)
         if resp.status_code == 200:
             return True
         else:
@@ -308,15 +328,20 @@ class GcisClient(object):
     @http_resp
     def create_activity(self, activity):
         url = '{b}/activity/'.format(b=self.base_url)
-        return requests.post(url, data=activity.as_json(), headers=self.headers)
+        return requests.post(url, data=activity.as_json(), headers=self.headers, verify=False)
 
     @http_resp
     def update_activity(self, activity):
         url = '{b}/activity/{act}'.format(b=self.base_url, act=activity.identifier)
-        return requests.post(url, data=activity.as_json(), headers=self.headers)
+        return requests.post(url, data=activity.as_json(), headers=self.headers, verify=False)
 
     @http_resp
     def delete_activity(self, activity):
         url = '{b}/activity/{act}'.format(b=self.base_url, act=activity.identifier)
-        return requests.delete(url, headers=self.headers)
+        return requests.delete(url, headers=self.headers, verify=False)
 
+    def create_or_update_activity(self, activity):
+        if self.activity_exists(activity.identifier):
+            self.update_activity(activity)
+        else:
+            self.create_activity(activity)

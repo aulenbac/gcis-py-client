@@ -150,14 +150,8 @@ def upload_images_to_gcis(webform_url, gcis_id, report_id, subset_images=None):
 
 def sync_dataset_metadata(datasets):
     for ds in datasets:
-        if gcis.dataset_exists(ds.identifier):
-            print 'Updating: {ds}'.format(ds=ds)
-            gcis.update_dataset(ds)
-        else:
-            print 'Creating: {ds}'.format(ds=ds)
-            gcis.create_dataset(ds)
-
-        create_or_update_activity(ds.activity)
+        gcis.create_or_update_dataset(ds)
+        gcis.create_or_update_activity(ds.activity)
 
 
 def aggregate_webform_datasets():
@@ -178,16 +172,6 @@ def aggregate_webform_datasets():
                     dataset_map[dataset.identifier].activity.merge(dataset.activity)
 
     return dataset_map.values()
-
-
-def create_or_update_activity(activity):
-    if gcis.activity_exists(activity.identifier):
-        print 'Updating: {act}'.format(act=activity)
-        gcis.update_activity(activity)
-    else:
-        print 'Creating: {act}'.format(act=activity)
-        gcis.create_activity(activity)
-
 
 if __name__ == '__main__':
     main()
