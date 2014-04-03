@@ -219,10 +219,11 @@ class Dataset(Gcisbase):
             'Bias-Corrected and Spatially Downscaled Surface Water Projections Hydrologic Data': 'water-projections',
             'International Best Track Archive for Climate Stewardship (IBTrACS)': 'ibtracs',
             'the World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'cmip3',
+            'World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'cmip3',
             'North American Regional Climate Change Assessment Program dataset': 'narccap',
-            'Gridded Population of the World Version 3 (GPWv3): Population Count Grid': 'gpwv3'
-
-
+            'Gridded Population of the World Version 3 (GPWv3): Population Count Grid': 'gpwv3',
+            'ETCCDI Extremes Indices Archive': 'etccdi',
+            'Historical Climatology Network Monthly (USHCN) Version 2.5': 'ushcn'
         }
 
         #Private attributes for handling date parsing
