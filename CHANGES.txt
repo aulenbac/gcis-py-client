@@ -1,2 +1,3 @@
+v0.68, Thu mar 27 11:55:43 EDT 2014 -- Renamed datasets identifiers to lowercase now that GCIS enforces that
 v0.67, Mon Mar 24 13:24:01 EDT 2014 -- Initial release.
 

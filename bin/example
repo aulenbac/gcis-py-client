@@ -6,7 +6,12 @@ base_url = 'http://data.gcis-dev-front.joss.ucar.edu'
 
 gcis = GcisClient(base_url, 'andrew.buddenberg@noaa.gov', 'fcee8e3f11f36313e463ece51aab15242f71f3d552d565be')
 
-# #Let's pull a list of all figures in Chapter 2 of the NCA3draft
+#Make sure our credentials work
+status_code, resp_text = gcis.test_login()
+print status_code, resp_text
+assert 'auth_required' not in resp_text
+
+#Let's pull a list of all figures in Chapter 2 of the NCA3draft
 for partial_figure in gcis.get_figure_listing('nca3draft', chapter_id='our-changing-climate'):
     #The listing doesn't provide all available fields for the figure (Images, for instance).
     #There aren't very many figures, so let's go ahead and grab a complete version of each

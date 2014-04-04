@@ -4,6 +4,7 @@ import json
 from os.path import exists, basename
 
 import requests
+from requests.exceptions import ConnectionError
 
 from domain import Figure, Image, Dataset, Activity
 
@@ -93,7 +94,7 @@ class GcisClient(object):
             b=self.base_url, rpt=report_id, chp=chapter_id, fig=figure.identifier
         )
 
-        resp = requests.post(update_url, figure.as_json(), headers=self.headers, verify=False)
+        resp = requests.post(update_url, data=figure.as_json(), headers=self.headers, verify=False)
 
         if skip_images is False:
             for image in figure.images:
@@ -108,18 +109,20 @@ class GcisClient(object):
 
     @check_image
     def create_image(self, image, report_id=None, figure_id=None):
-        url = '{b}/image/'.format(b=self.base_url, img=image.identifier)
-        resp = requests.post(url, image.as_json(), headers=self.headers, verify=False)
-        if image.local_path is not None:
-            self.upload_image_file(image.identifier, image.local_path)
-        if figure_id and report_id:
-            self.associate_image_with_figure(image.identifier, report_id, figure_id)
-        for dataset in image.datasets:
-            self.create_or_update_dataset(dataset)
-            self.create_or_update_activity(dataset.activity)
-            self.associate_dataset_with_image(dataset.identifier, image.identifier,
-                                              activity_id=dataset.activity.identifier)
-
+        url = '{b}/image/'.format(b=self.base_url)
+        resp = requests.post(url, data=image.as_json(), headers=self.headers, verify=False)
+        try:
+            if image.local_path is not None:
+                self.upload_image_file(image.identifier, image.local_path)
+            if figure_id and report_id:
+                self.associate_image_with_figure(image.identifier, report_id, figure_id)
+            for dataset in image.datasets:
+                self.create_or_update_dataset(dataset)
+                self.create_or_update_activity(dataset.activity)
+                self.associate_dataset_with_image(dataset.identifier, image.identifier,
+                                                  activity_id=dataset.activity.identifier)
+        except ConnectionError, e:
+            print e
         return resp
 
     @check_image
@@ -130,7 +133,7 @@ class GcisClient(object):
             self.associate_dataset_with_image(dataset.identifier, image.identifier,
                                               activity_id=dataset.activity.identifier)
 
-        return requests.post(update_url, image.as_json(), headers=self.headers, verify=False)
+        return requests.post(update_url, data=image.as_json(), headers=self.headers, verify=False)
 
     @check_image
     def delete_image(self, image):
@@ -139,7 +142,7 @@ class GcisClient(object):
 
     def associate_image_with_figure(self, image_id, report_id, figure_id):
         url = '{b}/report/{rpt}/figure/rel/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
-        return requests.post(url, json.dumps({'add_image_identifier': image_id}), headers=self.headers, verify=False)
+        return requests.post(url, data=json.dumps({'add_image_identifier': image_id}), headers=self.headers, verify=False)
 
     def upload_image_file(self, image_id, local_path):
         url = '{b}/image/files/{id}/{fn}'.format(b=self.base_url, id=image_id, fn=basename(local_path))

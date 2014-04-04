@@ -4,13 +4,14 @@ __author__ = 'abuddenberg'
 import pickle
 from gcis_clients import GcisClient
 from gcis_clients import WebformClient
-from sync_figures import upload_images_to_gcis
+from gcis_clients.sync_utils import move_images_to_gcis
 
 webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
 
 gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
 gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'd9fcfd947c1785ab1cd329a9920e05e5c5d3d7f35315f164')
-# gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'a6efcc7cf39c55e9329a8b027e0817e3354bada65310d192')
+# gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
+
 
 def main():
     hitlist_file = '../hitlist.pk1'
@@ -42,7 +43,7 @@ def solve_problems(path, report_id):
         assocs = img_assoc_broken - creates
 
         if len(creates) > 0:
-            upload_images_to_gcis(webform_id, gcis_id, report_id, subset_images=creates)
+            move_images_to_gcis(webform_id, gcis_id, report_id, subset_images=creates)
 
         for image_id in assocs:
             print 'Associating image: {i} with figure: {f}'.format(i=image_id, f=gcis_id)

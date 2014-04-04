@@ -9,7 +9,7 @@ import json
 import pytest
 
 from test_data import test_figure_json, test_image_json, webform_json_precip, test_dataset_json
-from gcis_client.domain import Gcisbase, Figure, Image, Dataset, Chapter
+from gcis_clients.domain import Gcisbase, Figure, Image, Dataset, Chapter
 
 
 def test_gcis_client_version():

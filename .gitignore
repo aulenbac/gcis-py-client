@@ -5,8 +5,8 @@
 .settings
 *.pyc
 *.pk1
-src/blah.py
-src/Blah.py
+blah.py
+Blah.py
 dist/images/*.png
 dist/*.tar.gz
 gcis-py-client.iml

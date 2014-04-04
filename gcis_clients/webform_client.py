@@ -130,4 +130,21 @@ class WebformClient:
         for image in figure.images:
             self.download_image(image)
 
+    def get_aggregated_datasets(self):
+        dataset_map = {}
 
+        for item in self.get_list():
+            webform_url = item['url']
+
+            f = self.get_webform(webform_url)
+
+            #aggregate datasets
+            for image in f.images:
+                for dataset in image.datasets:
+                    if dataset.identifier not in dataset_map:
+                        dataset_map[dataset.identifier] = dataset
+                    else:
+                        dataset_map[dataset.identifier].merge(dataset)
+                        dataset_map[dataset.identifier].activity.merge(dataset.activity)
+
+        return dataset_map.values()

@@ -19,11 +19,11 @@ class PyTest(TestCommand):
 
 setup(
     name='GcisPyClient',
-    version='0.67',
+    version='0.68',
     author='Andrew Buddenberg',
     author_email='andrew.buddenberg@noaa.gov',
     packages=find_packages(),
-    scripts=['bin/example', 'bin/problems', 'bin/sync_figures'],
+    scripts=['bin/example', 'bin/problems', 'bin/sync_figures.py'],
     url='http://data.globalchange.gov',
     description='CLient for GCIS webservices',
     long_description=open('README.txt').read(),
