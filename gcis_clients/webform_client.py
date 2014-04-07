@@ -2,7 +2,8 @@
 
 import urllib
 import re
-from os.path import join
+from os.path import join, expanduser, exists
+from os import makedirs
 
 import requests
 from dateutil.parser import parse
@@ -21,13 +22,19 @@ def sanitized(pattern):
     return dec
 
 
+def build_image_dir():
+    image_dir = expanduser('~/.gcis-py-client/images/')
+    if not exists(image_dir):
+        makedirs(image_dir)
+    return image_dir
+
 class WebformClient:
 
-    def __init__(self, url, token, local_image_dir='../dist/images/'):
+    def __init__(self, url, token, local_image_dir=None, remote_dir='/system/files/'):
         self.base_url = url
         self.token = token
-        self.images_dir = local_image_dir
-        self.remote_image_dir = '/system/files/'
+        self.images_dir = local_image_dir if local_image_dir else build_image_dir()
+        self.remote_image_dir = remote_dir
 
     def get_list(self):
         url = '{b}/metadata/list?token={t}'.format(b=self.base_url, t=self.token)
