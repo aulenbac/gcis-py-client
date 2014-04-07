@@ -16,12 +16,16 @@ gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'd9fcfd947c1785ab1cd32
 def main():
     hitlist_file = '../hitlist.pk1'
 
-    create_problem_list('nca3', hitlist_file)
-    print_problem_list(hitlist_file)
+#    create_problem_list('nca3', hitlist_file)
+#    print_problem_list(hitlist_file)
     # solve_problems(hitlist_file, 'nca3')
+    problems = load_problem_list(hitlist_file)
 
-    #WTF:
-    #requests.exceptions.ConnectionError: HTTPConnectionPool(host='data.gcis-dev-front.joss.ucar.edu', port=80): Max retries exceeded with url: /report/nca3/figure/rel/observed-change-in-very-heavy-precipitation (Caused by <class 'httplib.BadStatusLine'>: '')
+    for webform in problems:
+        print webform
+        if 'duplicate_image_id' in problems[webform]:
+            for key in problems[webform]['duplicate_image_id']:
+                print '\t', key
 
 
 def solve_problems(path, report_id):
@@ -77,6 +81,8 @@ def sort_webform_list(report_id):
     all_forms = []
     ready = []
     problems = {}
+    
+    global_image_ids = {}
 
     for item in webform.get_list():
         webform_url = item['url']
@@ -93,6 +99,9 @@ def sort_webform_list(report_id):
                     (f.identifier, f.figure_num, f.title))
             #Check if each image exists in GCIS
             for image in f.images:
+                #Squirrel the image identifier away from later
+                global_image_ids.setdefault(image.identifier, []).append(key)
+
                 if not gcis.image_exists(image.identifier):
                     problems.setdefault(key, {}).setdefault('image_id_not_found', []).append(
                         image.identifier)
@@ -117,6 +126,14 @@ def sort_webform_list(report_id):
 
             if key not in problems:
                 ready.append(key)
+
+    #Last but not least, check if image UUIDs are actually unique
+    for image_id, keys in global_image_ids.iteritems():
+        if len(keys) > 1:
+
+            for key in keys:
+#                ready.pop(key, None)
+                problems.setdefault(key, {}).setdefault('duplicate_image_id', []).append((image_id, key))
 
     return all_forms, ready, problems
 

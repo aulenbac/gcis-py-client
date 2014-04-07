@@ -23,9 +23,9 @@ setup(
     author='Andrew Buddenberg',
     author_email='andrew.buddenberg@noaa.gov',
     packages=find_packages(),
-    scripts=['bin/example', 'bin/problems', 'bin/sync_figures.py'],
+    scripts=['bin/example', 'bin/problems', 'bin/sync_figures'],
     url='http://data.globalchange.gov',
-    description='CLient for GCIS webservices',
+    description='Client for GCIS webservices',
     long_description=open('README.txt').read(),
     install_requires=[
         "requests >= 2.1.0",
