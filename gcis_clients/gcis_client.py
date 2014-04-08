@@ -111,18 +111,16 @@ class GcisClient(object):
     def create_image(self, image, report_id=None, figure_id=None):
         url = '{b}/image/'.format(b=self.base_url)
         resp = requests.post(url, data=image.as_json(), headers=self.headers, verify=False)
-        try:
-            if image.local_path is not None:
-                self.upload_image_file(image.identifier, image.local_path)
-            if figure_id and report_id:
-                self.associate_image_with_figure(image.identifier, report_id, figure_id)
-            for dataset in image.datasets:
-                self.create_or_update_dataset(dataset)
-                self.create_or_update_activity(dataset.activity)
-                self.associate_dataset_with_image(dataset.identifier, image.identifier,
-                                                  activity_id=dataset.activity.identifier)
-        except ConnectionError, e:
-            print e
+        
+        if image.local_path is not None:
+            self.upload_image_file(image.identifier, image.local_path)
+        if figure_id and report_id:
+            self.associate_image_with_figure(image.identifier, report_id, figure_id)
+        for dataset in image.datasets:
+            self.create_or_update_dataset(dataset)
+            self.create_or_update_activity(dataset.activity)
+            self.associate_dataset_with_image(dataset.identifier, image.identifier,
+                                              activity_id=dataset.activity.identifier)
         return resp
 
     @check_image
@@ -305,10 +303,10 @@ class GcisClient(object):
     def create_or_update_dataset(self, dataset):
         if self.dataset_exists(dataset.identifier):
             print 'Updating dataset: ' + dataset.identifier
-            print self.update_dataset(dataset)
+            self.update_dataset(dataset)
         else:
             print 'Creating dataset: ' + dataset.identifier
-            print self.create_dataset(dataset)
+            self.create_dataset(dataset)
 
 
     # @exists
