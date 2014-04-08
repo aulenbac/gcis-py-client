@@ -147,16 +147,6 @@ def main():
     sync(replace=True)
 
 
-#    ids = ['2799']
-#    chapter = 'appendix-climate-science'
-#
-#    for id in ids:
-#        print id
-#        f = webform.get_webform('/metadata/figures/' + id, download_images=True)
-#        print 'Dev: ', gcis.create_figure('nca3', chapter, f)
-#        print 'Stage: ', stage.create_figure('nca3', chapter, f)
-
-
 def sync(replace=False):
     for report_id in sync_metadata_tree:
         for chapter_id in sync_metadata_tree[report_id]:
