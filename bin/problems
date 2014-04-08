@@ -16,9 +16,9 @@ gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.
 def main():
     hitlist_file = '../hitlist.pk1'
 
-    create_problem_list('nca3', hitlist_file)
-    print_problem_list(hitlist_file)
-#    solve_problems(hitlist_file, 'nca3')
+#    create_problem_list('nca3', hitlist_file)
+#    print_problem_list(hitlist_file)
+    solve_problems(hitlist_file, 'nca3')
 #    print_ready_list(hitlist_file)
 
 def solve_problems(path, report_id):
@@ -44,7 +44,7 @@ def solve_problems(path, report_id):
 
         for image_id in assocs:
             print 'Associating image: {i} with figure: {f}'.format(i=image_id, f=gcis_id)
-            print gcis.associate_image_with_figure(image_id, report_id, gcis_id)
+            gcis.associate_image_with_figure(image_id, report_id, gcis_id)
 
 
 def create_problem_list(report_id, path):

@@ -134,14 +134,17 @@ class GcisClient(object):
         return requests.post(update_url, data=image.as_json(), headers=self.headers, verify=False)
 
     @check_image
+    @http_resp
     def delete_image(self, image):
         delete_url = '{b}/image/{img}'.format(b=self.base_url, img=image.identifier)
         return requests.delete(delete_url, headers=self.headers, verify=False)
 
+    @http_resp
     def associate_image_with_figure(self, image_id, report_id, figure_id):
         url = '{b}/report/{rpt}/figure/rel/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
         return requests.post(url, data=json.dumps({'add_image_identifier': image_id}), headers=self.headers, verify=False)
 
+    @http_resp
     def upload_image_file(self, image_id, local_path):
         url = '{b}/image/files/{id}/{fn}'.format(b=self.base_url, id=image_id, fn=basename(local_path))
         # For future multi-part encoding support
