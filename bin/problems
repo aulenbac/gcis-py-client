@@ -6,27 +6,20 @@ from gcis_clients import GcisClient
 from gcis_clients import WebformClient
 from gcis_clients.sync_utils import move_images_to_gcis
 
-webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
+webform_client = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
 
 gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
-gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'd9fcfd947c1785ab1cd329a9920e05e5c5d3d7f35315f164')
-# gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
+#gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
+gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
 
 
 def main():
     hitlist_file = '../hitlist.pk1'
 
-#    create_problem_list('nca3', hitlist_file)
-#    print_problem_list(hitlist_file)
-    # solve_problems(hitlist_file, 'nca3')
-    problems = load_problem_list(hitlist_file)
-
-    for webform in problems:
-        print webform
-        if 'duplicate_image_id' in problems[webform]:
-            for key in problems[webform]['duplicate_image_id']:
-                print '\t', key
-
+    create_problem_list('nca3', hitlist_file)
+    print_problem_list(hitlist_file)
+#    solve_problems(hitlist_file, 'nca3')
+#    print_ready_list(hitlist_file)
 
 def solve_problems(path, report_id):
     problems = load_problem_list(path)
@@ -47,7 +40,7 @@ def solve_problems(path, report_id):
         assocs = img_assoc_broken - creates
 
         if len(creates) > 0:
-            move_images_to_gcis(webform_id, gcis_id, report_id, subset_images=creates)
+            move_images_to_gcis(webform_client, gcis, webform_id, gcis_id, report_id, subset_images=creates)
 
         for image_id in assocs:
             print 'Associating image: {i} with figure: {f}'.format(i=image_id, f=gcis_id)
@@ -77,6 +70,11 @@ def print_problem_list(path):
             print '\t', problem_type, problems[webform][problem_type]
 
 
+def print_ready_list(path):
+    for x in sorted(load_ready_list(path), key=lambda t: float(t[1])):
+        print x
+
+
 def sort_webform_list(report_id):
     all_forms = []
     ready = []
@@ -84,9 +82,9 @@ def sort_webform_list(report_id):
     
     global_image_ids = {}
 
-    for item in webform.get_list():
+    for item in webform_client.get_list():
         webform_url = item['url']
-        f = webform.get_webform(webform_url)
+        f = webform_client.get_webform(webform_url)
         key = (webform_url, f.figure_num, f.identifier)
 
         all_forms.append(key)
@@ -113,7 +111,7 @@ def sort_webform_list(report_id):
                             []).append(dataset.identifier)
 
                 #Check if the filename fields are filled out and correct for what's been uploaded
-                if image.remote_path in (None, '') or not webform.remote_image_exists(image.remote_path):
+                if image.remote_path in (None, '') or not webform_client.remote_image_exists(image.remote_path):
                     problems.setdefault(key, {}).setdefault('missing_image_files', []).append(
                         image.identifier)
 
