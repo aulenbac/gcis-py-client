@@ -11,8 +11,8 @@ import pickle
 webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
 
 gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
-gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'd9fcfd947c1785ab1cd329a9920e05e5c5d3d7f35315f164')
-#gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
+#gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
+gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
 
 sync_metadata_tree = {
     #Reports
@@ -20,18 +20,19 @@ sync_metadata_tree = {
         #Chapter 2
         ('our-changing-climate', [
             # (webform_url, gcis_id)
-            ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
-            ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),
-            ('/metadata/figures/2677', 'observed-us-precipitation-change'),
-            ('/metadata/figures/3175', 'observed-us-temperature-change'),
             ('/metadata/figures/3074', 'ten-indicators-of-a-warming-world'),
-            ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),
             ('/metadata/figures/3293', 'observed-increase-in-frostfree-season-length'),
             ('/metadata/figures/3294', 'projected-changes-in-frostfree-season-length'), #Good
-            ('/metadata/figures/3305', 'variation-of-storm-frequency-and-intensity-during-the-cold-season-november--march'),
-            ('/metadata/figures/2939', 'projected-changes-in-soil-moisture-for-the-western-us'),
+            ('/metadata/figures/2677', 'observed-us-precipitation-change'),
             ('/metadata/figures/3298', 'observed-us-trend-in-heavy-precipitation'),
-            ('/metadata/figures/2523', 'shells-dissolve-in-acidified-ocean-water')
+            ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
+            ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),
+            ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),
+            ('/metadata/figures/2939', 'projected-changes-in-soil-moisture-for-the-western-us'),
+            ('/metadata/figures/3305', 'variation-of-storm-frequency-and-intensity-during-the-cold-season-november--march'),
+            ('/metadata/figures/3067', 'ice-cover-in-the-great-lakes'),
+            ('/metadata/figures/2523', 'shells-dissolve-in-acidified-ocean-water'),
+            ('/metadata/figures/3175', 'observed-us-temperature-change'),
 
         ]),
         #Chapter 4
@@ -41,18 +42,18 @@ sync_metadata_tree = {
         #Chapter 5
         ('transportation', [
             ('/metadata/figures/3568', 'hurricane-sandy-causes-flooding-in-new-york-city-subway-stations'),
+            ('/metadata/figures/2952', 'role-of-adaptive-strategies-and-tactics-in-reducing-impacts-and-consequences'),
             ('/metadata/figures/3169', 'tropical-storm-impact-on-vermont-road'),
-            ('/metadata/figures/2952', 'role-of-adaptive-strategies-and-tactics-in-reducing-impacts-and-consequences')
         ]),
         #Chapter 6
         ('agriculture', [
+            ('/metadata/figures/2691', 'projected-changes-in-key-climate-variables-affecting-agricultural-productivity'),
             ('/metadata/figures/2872', 'drainage-tiles'),
-            ('/metadata/figures/2691', 'projected-changes-in-key-climate-variables-affecting-agricultural-productivity')
         ]),
         #Chapter 7
         ('forests', [
             ('/metadata/figures/2977', 'effectiveness-of-forest-management-in-reducing-wildfire-risk'),
-            ('/metadata/figures/2978', 'forest-vulnerability-to-changing-climate'), #Create
+            ('/metadata/figures/2978', 'forest-vulnerability-to-changing-climate'), 
             ('/metadata/figures/2985', 'forests-can-be-a-source--or-a-sink--for-carbon')
 
         ]),
@@ -101,37 +102,59 @@ sync_metadata_tree = {
         ]),
         #Chapter 18
         ('midwest', [
+            ('/metadata/figures/2550', 'temperatures-are-rising-in-the-midwest'),
             ('/metadata/figures/2992', 'projected-midcentury-temperature-changes-in-the-midwest'),
             ('/metadata/figures/2994', 'when-it-rains-it-pours'),
-            ('/metadata/figures/2550', 'temperatures-are-rising-in-the-midwest')
         ]),
         #Chapter 19
         ('great-plains', [
-            ('/metadata/figures/2697', 'temperature-and-precipitation-distribution-in-the-great-plains'), #Needs images redone
+            ('/metadata/figures/2697', 'temperature-and-precipitation-distribution-in-the-great-plains'), 
             ('/metadata/figures/2989', 'projected-change-in-number-of-hot-days'),
+            ('/metadata/figures/2990', 'projected-change-in-number-of-warm-nights'),
             ('/metadata/figures/2991', 'projected-change-in-number-of-heavy-precipitation-days'),
             ('/metadata/figures/3002', 'projected-change-in-number-of-consecutive-dry-days'),
-            ('/metadata/figures/2990', 'projected-change-in-number-of-warm-nights')
         ]),
         #Chapter 25
         ('coastal-zone', [
             ('/metadata/figures/2543', 'coastal-ecosystem-services')
         ]),
-        # Climate Science Appendix
+        #Chapter 33: Climate Science Appendix
         ('appendix-climate-science', [
-            ('/metadata/figures/3147', 'ice-loss-from-greenland-and-antarctica')
+            ('/metadata/figures/3301', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),            
+            ('/metadata/figures/2798', 'detection-and-attribution-as-forensics'),
+            ('/metadata/figures/2799', 'human-influences-apparent-in-many-climate-variables'),
+            ('/metadata/figures/2802', 'modeling-the-climate-system'),
+            ('/metadata/figures/2803', 'increasing-model-resolution'),
+            ('/metadata/figures/2533', 'us-seasonal-temperatures'),
+            ('/metadata/figures/2534', 'app-extreme-precipitation'),
+            ('/metadata/figures/3147', 'ice-loss-from-greenland-and-antarctica'),
+        ]),
+        #Chapter 34: FAQ/CAQ
+        ('appendix-climate-science-faqs', [
+            ('/metadata/figures/2663', 'us-annual-temperature'),
+            # ('/metadata/figures/3300', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),#Manually associate existing figure               
+            # ('/metadata/figures/3075', 'ten-indicators-of-a-warming-world'), #Manually associate existing figure 
+            ('/metadata/figures/2520', 'ocean-acidification-and-the-food-web'), 
+            ('/metadata/figures/3134', 'temperature-trends-1900-2012'),
         ])
     ])
 }
 
 
 def main():
-    # print gcis.test_login()
+#    print gcis.test_login()
     # sync_dataset_metadata(aggregate_webform_datasets())
     sync(replace=True)
 
-    # f = webform.get_webform('/metadata/figures/2575', download_images=True)
-    # print gcis.create_figure('nca3', 'biogeochemical-cycles', f)
+
+#    ids = ['2799']
+#    chapter = 'appendix-climate-science'
+#
+#    for id in ids:
+#        print id
+#        f = webform.get_webform('/metadata/figures/' + id, download_images=True)
+#        print 'Dev: ', gcis.create_figure('nca3', chapter, f)
+#        print 'Stage: ', stage.create_figure('nca3', chapter, f)
 
 
 def sync(replace=False):

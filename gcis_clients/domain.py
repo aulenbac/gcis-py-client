@@ -223,7 +223,8 @@ class Dataset(Gcisbase):
             'North American Regional Climate Change Assessment Program dataset': 'narccap',
             'Gridded Population of the World Version 3 (GPWv3): Population Count Grid': 'gpwv3',
             'ETCCDI Extremes Indices Archive': 'etccdi',
-            'Historical Climatology Network Monthly (USHCN) Version 2.5': 'ushcn'
+            'Historical Climatology Network Monthly (USHCN) Version 2.5': 'ushcn',
+            'Annual Maximum Ice Coverage (AMIC)': 'amic'
         }
 
         #Private attributes for handling date parsing
