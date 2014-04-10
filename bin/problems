@@ -14,12 +14,13 @@ gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.
 
 
 def main():
-    hitlist_file = '../hitlist.pk1'
+    hitlist_file = 'hitlist.pk1'
 
 #    create_problem_list('nca3', hitlist_file)
 #    print_problem_list(hitlist_file)
     solve_problems(hitlist_file, 'nca3')
 #    print_ready_list(hitlist_file)
+
 
 def solve_problems(path, report_id):
     problems = load_problem_list(path)
