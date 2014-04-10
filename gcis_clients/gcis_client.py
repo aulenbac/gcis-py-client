@@ -2,11 +2,11 @@ from base64 import b64encode
 import urllib
 import json
 from os.path import exists, basename
-
+import re
 import requests
 from requests.exceptions import ConnectionError
 
-from domain import Figure, Image, Dataset, Activity
+from domain import Figure, Image, Dataset, Activity, Person, Organization
 
 
 def check_image(fn):
@@ -117,8 +117,10 @@ class GcisClient(object):
         if figure_id and report_id:
             self.associate_image_with_figure(image.identifier, report_id, figure_id)
         for dataset in image.datasets:
-            self.create_or_update_dataset(dataset)
-            self.create_or_update_activity(dataset.activity)
+            if not self.dataset_exists(dataset.identifier):
+                self.create_dataset(dataset)
+            if not self.activity_exists(dataset.activity.identifier):
+                self.create_activity(dataset.activity)
             self.associate_dataset_with_image(dataset.identifier, image.identifier,
                                               activity_id=dataset.activity.identifier)
         return resp
@@ -245,7 +247,7 @@ class GcisClient(object):
         try:
             return Dataset(resp.json())
         except ValueError:
-            raise Exception(resp.text())
+            raise Exception(resp.text)
 
     @exists
     def dataset_exists(self, dataset_id):
@@ -327,7 +329,7 @@ class GcisClient(object):
         try:
             return Activity(resp.json())
         except ValueError:
-            raise Exception(resp.text())
+            raise Exception(resp.text)
 
     @http_resp
     def create_activity(self, activity):
@@ -349,3 +351,74 @@ class GcisClient(object):
             self.update_activity(activity)
         else:
             self.create_activity(activity)
+
+    @exists
+    def person_exists(self, person_id):
+        url = '{b}/person/{pid}'.format(b=self.base_url, pid=person_id)
+        return requests.head(url, headers=self.headers, verfiy=False)
+
+    def get_person(self, person_id):
+        url = '{b}/person/{pid}'.format(b=self.base_url, pid=person_id)
+        resp = requests.get(url, headers=self.headers, verify=False)
+        try:
+            return Person(resp.json())
+        except ValueError:
+            raise Exception(resp.text)
+
+    def lookup_person(self, name):
+        url = '{b}/autocomplete'.format(b=self.base_url)
+        resp = requests.get(url, params={'q': name, 'items': 15, 'type': 'person'}, headers=self.headers, verify=False)
+
+        if resp.status_code == 200:
+            return [re.match(r'\[person\] \{(\d+)\} (.*)', r).groups() for r in resp.json()]
+        else:
+            raise Exception(resp.text)
+
+    @http_resp
+    def create_person(self, person):
+        url = '{b}/person/'.format(b=self.base_url)
+        return requests.post(url, data=person.as_json(), headers=self.headers, verify=False)
+
+    @http_resp
+    def update_person(self, person):
+        url = '{b}/person/{pid}'.format(b=self.base_url, pid=person.identifier)
+        return requests.post(url, data=person.as_json(), headers=self.headers, verify=False)
+
+    @http_resp
+    def delete_person(self, person):
+        url = '{b}/person/{pid}'.format(b=self.base_url, pid=person.identifier)
+        return requests.delete(url, headers=self.headers, verify=False)
+
+    @exists
+    def organization_exists(self, org_id):
+        url = '{b}/organization/{org_id)'.format(b=self.base_url, org_id=org_id)
+        return requests.head(url, headers=self.headers, verify=False)
+
+    def get_organization(self, org_id):
+        url = '{b}/organization/{org_id)'.format(b=self.base_url, org_id=org_id)
+        resp = requests.get(url, headers=self.headers, verify=False)
+
+        try:
+            return Organization(resp.json())
+        except ValueError:
+            raise Exception(resp.text)
+
+    @http_resp
+    def lookup_organization(self, name):
+        url = '{b}/organization/lookup/name'.format(b=self.base_url)
+        return requests.post(url, data=json.dumps(name), headers=self.headers, verify=False)
+
+    @http_resp
+    def create_organization(self, org):
+        url = '{b}/organization/'.format(b=self.base_url)
+        return requests.post(url, data=org.as_json(), headers=self.headers, verify=False)
+
+    @http_resp
+    def update_organization(self, org):
+        url = '{b}/organization/{org_id}'.format(b=self.base_url, org_id=org.identifier)
+        return requests.post(url, data=org.as_json(), headers=self.headers, verify=False)
+
+    @http_resp
+    def delete_organization(self, org):
+        url = '{b}/organization/{org_id}'.format(b=self.base_url, org_id=org.identifier)
+        return requests.delete(url, headers=self.headers, verify=False)

@@ -20,6 +20,8 @@ class Gcisbase(object):
         #Create attributes from the master list
         self. __dict__.update(dict.fromkeys(self.gcis_fields, None))
 
+        self.contributors = []
+
         #Perform translations
         for term in self.translations:
             val = data.pop(term, None)
@@ -38,6 +40,12 @@ class Gcisbase(object):
                     pass
                 finally:
                     setattr(self, k, data[k])
+
+    def add_contributor(self, contributor):
+        self.contributors.append(contributor)
+
+    def add_person(self, person):
+        self.contributors.append(Contributor(person, Organization()))
 
     def merge(self, other):
         #This sucks
@@ -310,3 +318,47 @@ class Activity(Gcisbase):
         return super(Activity, self).as_json(omit_fields=['metholodogies', 'publication_maps'])
 
 
+class Person(Gcisbase):
+    def __init__(self, data):
+        self.gcis_fields = ['first_name', 'last_name', 'middle_name', 'contributors', 'url', 'uri', 'href', 'orcid',
+                            'id']
+
+        self.translations = {}
+
+        super(Person, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
+
+    def as_json(self, indent=0):
+        return super(Person, self).as_json(omit_fields=['contributors'])
+
+    def __repr__(self):
+        return '{id}: {fn} {ln}'.format(id=self.id, fn=self.first_name, ln=self.last_name)
+
+    def __str__(self):
+        return self.__repr__()
+
+
+class Organization(Gcisbase):
+    def __init__(self, data):
+        self.gcis_fields = ['organization_type_identifier', 'url', 'uri', 'href', 'country_code', 'identifier', 'name']
+
+        self.translations = {}
+
+        super(Organization, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
+
+    def __repr__(self):
+        return '{id}: {name}'.format(id=self.identifier, name=self.name)
+
+    def __str__(self):
+        return self.__repr__()
+
+
+class Contributor(object):
+    def __init__(self, person, organization):
+        self.person = person
+        self.organization = organization
+
+    def __repr__(self):
+        return '({p}/{o})'.format(p=self.person, o=self.organization)
+
+    def __str__(self):
+        return self.__repr__()
