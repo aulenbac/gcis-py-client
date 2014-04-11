@@ -3,15 +3,15 @@ __author__ = 'abuddenberg'
 
 from gcis_clients import WebformClient
 from gcis_clients import GcisClient
-from gcis_clients.sync_utils import move_images_to_gcis, sync_dataset_metadata
+from gcis_clients.sync_utils import move_images_to_gcis, sync_dataset_metadata, populate_contributors
 from collections import OrderedDict
 import json
 import pickle
 
 webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
 
-gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
-#gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
+# gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
+# gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
 gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
 
 sync_metadata_tree = {
@@ -53,7 +53,7 @@ sync_metadata_tree = {
         #Chapter 7
         ('forests', [
             ('/metadata/figures/2977', 'effectiveness-of-forest-management-in-reducing-wildfire-risk'),
-            ('/metadata/figures/2978', 'forest-vulnerability-to-changing-climate'), 
+            ('/metadata/figures/2978', 'forest-vulnerability-to-changing-climate'),
             ('/metadata/figures/2985', 'forests-can-be-a-source--or-a-sink--for-carbon')
 
         ]),
@@ -108,7 +108,7 @@ sync_metadata_tree = {
         ]),
         #Chapter 19
         ('great-plains', [
-            ('/metadata/figures/2697', 'temperature-and-precipitation-distribution-in-the-great-plains'), 
+            ('/metadata/figures/2697', 'temperature-and-precipitation-distribution-in-the-great-plains'),
             ('/metadata/figures/2989', 'projected-change-in-number-of-hot-days'),
             ('/metadata/figures/2990', 'projected-change-in-number-of-warm-nights'),
             ('/metadata/figures/2991', 'projected-change-in-number-of-heavy-precipitation-days'),
@@ -120,7 +120,7 @@ sync_metadata_tree = {
         ]),
         #Chapter 33: Climate Science Appendix
         ('appendix-climate-science', [
-            ('/metadata/figures/3301', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),            
+            ('/metadata/figures/3301', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),
             ('/metadata/figures/2798', 'detection-and-attribution-as-forensics'),
             ('/metadata/figures/2799', 'human-influences-apparent-in-many-climate-variables'),
             ('/metadata/figures/2802', 'modeling-the-climate-system'),
@@ -132,9 +132,9 @@ sync_metadata_tree = {
         #Chapter 34: FAQ/CAQ
         ('appendix-climate-science-faqs', [
             ('/metadata/figures/2663', 'us-annual-temperature'),
-            # ('/metadata/figures/3300', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),#Manually associate existing figure               
-            # ('/metadata/figures/3075', 'ten-indicators-of-a-warming-world'), #Manually associate existing figure 
-            ('/metadata/figures/2520', 'ocean-acidification-and-the-food-web'), 
+            # ('/metadata/figures/3300', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),#Manually associate existing figure
+            # ('/metadata/figures/3075', 'ten-indicators-of-a-warming-world'), #Manually associate existing figure
+            ('/metadata/figures/2520', 'ocean-acidification-and-the-food-web'),
             ('/metadata/figures/3134', 'temperature-trends-1900-2012'),
         ])
     ])
@@ -144,7 +144,17 @@ sync_metadata_tree = {
 def main():
 #    print gcis.test_login()
     # sync_dataset_metadata(aggregate_webform_datasets())
-    sync(replace=True)
+    sync(replace=False)
+
+    # s = 'Vose, R.S., S. Applequist, M.A. Bourassa, S.C. Pryor, R.J. Barthelmie, B. Blanton, P.D. Bromirski, H.E. Brooks, A.T. D,'
+    #
+    # for author in s.split(','):
+    #     frags = author.strip().rsplit()
+    #     if len(frags) > 0 and len(frags[-1]) > 1:
+    #         # print frags
+    #         print '{t}: {r}'.format(t=frags[-1], r=gcis.lookup_person(frags[-1]))
+
+
 
 
 def sync(replace=False):
@@ -153,26 +163,32 @@ def sync(replace=False):
             for figure_ids in sync_metadata_tree[report_id][chapter_id]:
                 webform_url, gcis_id = figure_ids
 
-                print 'Attempting to sync: {id}'.format(id=gcis_id)
+                print 'Attempting to sync: {id}'.format(id=gcis_id), ' ', webform_url
 
-                #Merge data from both systems into one object...
-                figure_obj = webform.get_webform(webform_url).merge(
-                    gcis.get_figure(report_id, gcis_id, chapter_id=chapter_id)
-                )
+                f = webform.get_webform(webform_url)
+                populate_contributors(gcis, f.contributors)
+                print f.contributors
 
-                if replace:
-                    for image in figure_obj.images:
-                        #TODO: There are better ways to do this. Build File support.
-                        print 'Deleting {img}'.format(img=image.identifier)
-                        gcis.delete_image(image)
-
-                    print 'Attempting to upload: {id}'.format(id=gcis_id)
-                    move_images_to_gcis(webform, gcis, webform_url, gcis_id, report_id)
-
-                #...then send it.
-                gcis.update_figure(report_id, chapter_id, figure_obj)
-
-                print 'Success!'
+                # #Merge data from both systems into one object...
+                # gcis_fig = gcis.get_figure(report_id, gcis_id, chapter_id=chapter_id)
+                # figure_obj = webform.get_webform(webform_url).merge(gcis_fig)
+                #
+                # #Hack: override webform's title in favor of gcis
+                # figure_obj.title = gcis_fig.title if gcis_fig.title not in (None, '') else figure_obj.title
+                #
+                # if replace:
+                #     for image in figure_obj.images:
+                #         #TODO: There are better ways to do this. Build File support.
+                #         print 'Deleting {img}'.format(img=image.identifier)
+                #         gcis.delete_image(image)
+                #
+                #     print 'Attempting to upload: {id}'.format(id=gcis_id)
+                #     move_images_to_gcis(webform, gcis, webform_url, gcis_id, report_id)
+                #
+                # #...then send it.
+                # gcis.update_figure(report_id, chapter_id, figure_obj)
+                #
+                # print 'Success!'
 
 if __name__ == '__main__':
     main()

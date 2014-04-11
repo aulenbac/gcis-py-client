@@ -27,3 +27,18 @@ def sync_dataset_metadata(gcis_client, datasets):
     for ds in datasets:
         gcis_client.create_or_update_dataset(ds)
         gcis_client.create_or_update_activity(ds.activity)
+
+
+def populate_contributors(gcis_client, contributors):
+    for cont in contributors:
+        person = cont.person
+        org = cont.organization
+
+        matches = gcis_client.lookup_person(person.last_name)
+        if len(matches) == 1:
+            person.id = matches[0][0]
+        elif len(matches) == 0:
+            print 'No ID found for ' + person.last_name
+        else:
+            print 'Ambiguous results for ' + person.last_name
+            print '\t', matches

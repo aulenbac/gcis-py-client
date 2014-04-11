@@ -7,7 +7,7 @@ from os.path import join
 import requests
 from dateutil.parser import parse
 
-from domain import Figure, Image, Dataset, Activity
+from domain import Figure, Image, Dataset, Activity, Contributor, Person, Organization
 
 
 def sanitized(pattern):
@@ -20,6 +20,19 @@ def sanitized(pattern):
         return wrapped
     return dec
 
+
+def parse_creators(field):
+    s = field.split(',')
+    name, rest = s[0], s[1:]
+
+    name_split = name.split()
+    first_name, last_name = name_split[0], name_split[-1]
+    org_name = rest[0] if len(rest) > 0 else None
+
+    return Contributor(
+        Person({'first_name': first_name, 'last_name': last_name}),
+        Organization({'name': org_name})
+    )
 
 
 class WebformClient:
@@ -50,12 +63,22 @@ class WebformClient:
 
         #TODO: refactor the service so this isn't necessary
         webform_nid = webform_json.keys()[0]
-        f = Figure(webform_json[webform_nid]['figure'][0])
+        figure_json = webform_json[webform_nid]['figure'][0]
+        f = Figure(figure_json)
+
+        #Add contributor info
+        if 'list_the_creator_of_the_figure' in figure_json:
+            f.add_contributor(parse_creators(figure_json['list_the_creator_of_the_figure']))
 
         if 'images' in webform_json[webform_nid]:
             for img_idx, image in enumerate(webform_json[webform_nid]['images']):
                 image_obj = Image(image, local_path=self.get_local_image_path(image),
                                   remote_path=self.get_remote_image_path(image))
+
+                #Add contributor info
+                if 'list_the_creator_of_the_image' in figure_json:
+                    f.add_contributor(parse_creators(image['list_the_creator_of_the_image']))
+
 
                 #TODO: this just keeps getting worse
                 if 'datasources' in webform_json[webform_nid]['images'][img_idx]:
