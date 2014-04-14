@@ -10,9 +10,9 @@ import pickle
 
 webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
 
-# gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
-# gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
-gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
+gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
+gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
+# gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
 
 sync_metadata_tree = {
     #Reports
@@ -144,7 +144,7 @@ sync_metadata_tree = {
 def main():
 #    print gcis.test_login()
     # sync_dataset_metadata(aggregate_webform_datasets())
-    sync(replace=False)
+     sync(replace=False)
 
     # s = 'Vose, R.S., S. Applequist, M.A. Bourassa, S.C. Pryor, R.J. Barthelmie, B. Blanton, P.D. Bromirski, H.E. Brooks, A.T. D,'
     #

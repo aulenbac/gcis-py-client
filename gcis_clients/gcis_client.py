@@ -403,10 +403,14 @@ class GcisClient(object):
         except ValueError:
             raise Exception(resp.text)
 
-    @http_resp
     def lookup_organization(self, name):
-        url = '{b}/organization/lookup/name'.format(b=self.base_url)
-        return requests.post(url, data=json.dumps(name), headers=self.headers, verify=False)
+        url = '{b}/autocomplete'.format(b=self.base_url)
+        resp = requests.get(url, params={'q': name, 'items': 15, 'type': 'organization'}, headers=self.headers, verify=False)
+        
+        if resp.status_code == 200:
+            return [re.match(r'\[organization\] \{(.*)\} (.*)', r).groups() for r in resp.json()]
+        else:
+            raise Exception(resp.text)
 
     @http_resp
     def create_organization(self, org):
@@ -422,3 +426,12 @@ class GcisClient(object):
     def delete_organization(self, org):
         url = '{b}/organization/{org_id}'.format(b=self.base_url, org_id=org.identifier)
         return requests.delete(url, headers=self.headers, verify=False)
+
+    @http_resp
+    def associate_contributor_with_figure(self, contrib, report_id, chapter_id, figure_id):
+        url = '{b}/report/{rpt}/chapter/{chp}/figure/contributors/{fig}'.format(b=self.base_url, rpt=report_id, chp=chapter_id, fig=figure_id)
+
+        data = {}
+
+        return requests.post(url, data=json.dumps(data), headers=self.headers, verify=False)
+

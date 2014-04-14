@@ -343,7 +343,16 @@ class Organization(Gcisbase):
 
         self.translations = {}
 
+        self._identifiers = {
+            'NOAA NCDC/CICS-NC': 'cooperative-institute-climate-satellites-nc',
+            'NESDIS/NCDC': 'noaa-national-climatic-data-center',
+            'U.S. Forest Service': 'us-forest-service',
+
+        }
+
         super(Organization, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
+        
+        self.identifier = self._identifiers[self.name] if self.name in self._identifiers else self.name
 
     def __repr__(self):
         return '{id}: {name}'.format(id=self.identifier, name=self.name)
