@@ -23,13 +23,13 @@ def move_images_to_gcis(webform_client, gcis_client, webform_url, gcis_id, repor
             gcis_client.create_image(image, report_id=report_id, figure_id=figure.identifier)
 
 
-def sync_dataset_metadata(gcis_client, datasets):
-    for ds in datasets:
+def sync_dataset_metadata(gcis_client, datasets, skip=[]):
+    for ds in [ds for ds in datasets if ds.identifier not in skip]:
         gcis_client.create_or_update_dataset(ds)
         gcis_client.create_or_update_activity(ds.activity)
 
 
-def populate_contributors(gcis_client, contributors):
+def realize_contributors(gcis_client, contributors):
     for cont in contributors:
         person = cont.person
         org = cont.organization
@@ -43,8 +43,8 @@ def populate_contributors(gcis_client, contributors):
             print '\t', 'Ambiguous results for ' + person.last_name
             print '\t\t', name_matches
 
-        if org.identifier in (None, ''):
-            print org.name
+        if org.identifier in (None, '') and org.name not in (None, ''):
+            print 'No ID found for ' + org.name
 
 #        if org.name not in (None, ''):
 #            org_matches = gcis_client.lookup_organization(org.name)
