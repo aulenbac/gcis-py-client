@@ -78,7 +78,7 @@ class GcisClient(object):
         return resp
 
     @http_resp
-    def update_figure(self, report_id, chapter_id, figure, skip_images=False):
+    def update_figure(self, report_id, chapter_id, figure, skip_images=False, old_id=None):
         if figure.identifier in (None, ''):
             raise Exception('Invalid identifier', figure.identifier)
 
@@ -86,11 +86,11 @@ class GcisClient(object):
         if figure.chapter_identifier in (None, ''):
             figure.chapter_identifier = chapter_id
 
-        update_url = '{b}/report/{rpt}/chapter/{chp}/figure/{fig}'.format(
-            b=self.base_url, rpt=report_id, chp=chapter_id, fig=figure.identifier
+        url = '{b}/report/{rpt}/chapter/{chp}/figure/{fig}'.format(
+            b=self.base_url, rpt=report_id, chp=chapter_id, fig=old_id or figure.identifier
         )
 
-        resp = self.s.post(update_url, data=figure.as_json(), verify=False)
+        resp = self.s.post(url, data=figure.as_json(), verify=False)
 
         if skip_images is False:
             for image in figure.images:
@@ -125,8 +125,8 @@ class GcisClient(object):
         return resp
 
     @check_image
-    def update_image(self, image):
-        update_url = '{b}/image/{img}'.format(b=self.base_url, img=image.identifier)
+    def update_image(self, image, old_id=None):
+        url = '{b}/image/{img}'.format(b=self.base_url, img=old_id or image.identifier)
         for dataset in image.datasets:
             self.update_activity(dataset.activity)
             self.associate_dataset_with_image(dataset.identifier, image.identifier,
@@ -134,7 +134,7 @@ class GcisClient(object):
         for c in image.contributors:
             self.associate_contributor_with_image(c, image.identifier)
 
-        return self.s.post(update_url, data=image.as_json(), verify=False)
+        return self.s.post(url, data=image.as_json(), verify=False)
 
     @check_image
     @http_resp
@@ -259,8 +259,8 @@ class GcisClient(object):
         url = '{b}/dataset/'.format(b=self.base_url)
         return self.s.post(url, data=dataset.as_json(), verify=False)
 
-    def update_dataset(self, dataset):
-        url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset.identifier)
+    def update_dataset(self, dataset, old_id=None):
+        url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=old_id or dataset.identifier)
         return self.s.post(url, data=dataset.as_json(), verify=False)
 
     def delete_dataset(self, dataset):
@@ -314,7 +314,6 @@ class GcisClient(object):
             print 'Creating dataset: ' + dataset.identifier
             self.create_dataset(dataset)
 
-
     # @exists
     def activity_exists(self, activity_id):
         url = '{b}/activity/{act}'.format(b=self.base_url, act=activity_id)
@@ -338,8 +337,8 @@ class GcisClient(object):
         return self.s.post(url, data=activity.as_json(), verify=False)
 
     @http_resp
-    def update_activity(self, activity):
-        url = '{b}/activity/{act}'.format(b=self.base_url, act=activity.identifier)
+    def update_activity(self, activity, old_id=None):
+        url = '{b}/activity/{act}'.format(b=self.base_url, act=old_id or activity.identifier)
         return self.s.post(url, data=activity.as_json(), verify=False)
 
     @http_resp
@@ -381,8 +380,8 @@ class GcisClient(object):
         return self.s.post(url, data=person.as_json(), verify=False)
 
     @http_resp
-    def update_person(self, person):
-        url = '{b}/person/{pid}'.format(b=self.base_url, pid=person.identifier)
+    def update_person(self, person, old_id=None):
+        url = '{b}/person/{pid}'.format(b=self.base_url, pid=old_id or person.identifier)
         return self.s.post(url, data=person.as_json(), verify=False)
 
     @http_resp
@@ -419,8 +418,8 @@ class GcisClient(object):
         return self.s.post(url, data=org.as_json(), verify=False)
 
     @http_resp
-    def update_organization(self, org):
-        url = '{b}/organization/{org_id}'.format(b=self.base_url, org_id=org.identifier)
+    def update_organization(self, org, old_id=None):
+        url = '{b}/organization/{org_id}'.format(b=self.base_url, org_id=old_id or org.identifier)
         return self.s.post(url, data=org.as_json(), verify=False)
 
     @http_resp
