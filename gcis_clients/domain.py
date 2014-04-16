@@ -20,8 +20,6 @@ class Gcisbase(object):
         #Create attributes from the master list
         self. __dict__.update(dict.fromkeys(self.gcis_fields, None))
 
-        self.contributors = []
-
         #Perform translations
         for term in self.translations:
             val = data.pop(term, None)
@@ -41,12 +39,6 @@ class Gcisbase(object):
                 finally:
                     setattr(self, k, data[k])
 
-    def add_contributor(self, contributor):
-        self.contributors.append(contributor)
-
-    def add_person(self, person):
-        self.contributors.append(Contributor(person, Organization()))
-
     def merge(self, other):
         #This sucks
         attrs_we_care_about = [(attr, v) for attr, v in inspect.getmembers(self, lambda a: not (inspect.isroutine(a)))
@@ -63,7 +55,22 @@ class Gcisbase(object):
         return json.dumps({f: getattr(self, f) for f in out_fields}, indent=indent)
 
 
-class Figure(Gcisbase):
+class GcisObject(Gcisbase):
+    def __init__(self, data, **kwargs):
+        #Special case for contributors
+        contrib_list = data.pop('contributors', None)
+        self.contributors = [Contributor(contrib) for contrib in contrib_list] if contrib_list else []
+
+        super(GcisObject, self).__init__(data, **kwargs)
+
+    def add_contributor(self, contributor):
+        self.contributors.append(contributor)
+
+    def add_person(self, person):
+        self.contributors.append(Contributor(person, Organization()))
+
+
+class Figure(GcisObject):
     def __init__(self, data):
         self.gcis_fields = [
             'usage_limits', 'kindred_figures', 'time_end', 'keywords', 'lat_min', 'create_dt', 'lat_max', 'time_start',
@@ -144,14 +151,14 @@ class Figure(Gcisbase):
         return super(Figure, self).merge(other)
 
 
-class Chapter(Gcisbase):
+class Chapter(GcisObject):
     def __init__(self, data):
         self.gcis_fields = ['report_identifier', 'identifier', 'number', 'url', 'title']
 
         super(Chapter, self).__init__(data, fields=self.gcis_fields)
 
 
-class Image(Gcisbase):
+class Image(GcisObject):
     def __init__(self, data, local_path=None, remote_path=None):
         self.gcis_fields = ['attributes', 'create_dt', 'description', 'identifier', 'lat_max', 'lat_min', 'lon_max',
                             'uri', 'lon_min', 'position', 'submission_dt', 'time_end', 'time_start', 'title', 'href',
@@ -182,10 +189,10 @@ class Image(Gcisbase):
         self.datasets = []
 
     def __str__(self):
-        return 'Image: {id} {name}'.format(id=self.identifier, name=self.title)
+        return 'Image: {id}: {name}'.format(id=self.identifier, name=self.title)
 
 
-class Dataset(Gcisbase):
+class Dataset(GcisObject):
     def __init__(self, data):
         self.gcis_fields = ['contributors', 'vertical_extent', 'native_id', 'href', 'references', 'cite_metadata',
                         'scale', 'publication_year', 'temporal_extent', 'version', 'parents', 'scope', 'type',
@@ -215,6 +222,7 @@ class Dataset(Gcisbase):
             'Global Historical Climatology Network - Daily': 'ghcn-daily',
             'Global Historical Climatology Network - Monthly': 'ghcn-monthly',
             'NCDC Merged Land and Ocean Surface Temperature': 'mlost',
+            'U.S. Climate Divisional Dataset Version 2': 'cddv2',
             'Climate Division Database Version 2': 'cddv2',
             'Eighth degree-CONUS Daily Downscaled Climate Projections by Katharine Hayhoe': 'cmip3-downscaled', #Problem
             'Eighth degree-CONUS Daily Downscaled Climate Projections': 'cmip3-downscaled', #Problem
@@ -228,11 +236,14 @@ class Dataset(Gcisbase):
             'International Best Track Archive for Climate Stewardship (IBTrACS)': 'ibtracs',
             'the World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'cmip3',
             'World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'cmip3',
+            'World Climate Research Program\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'cmip3',
             'North American Regional Climate Change Assessment Program dataset': 'narccap',
             'Gridded Population of the World Version 3 (GPWv3): Population Count Grid': 'gpwv3',
             'ETCCDI Extremes Indices Archive': 'etccdi',
             'Historical Climatology Network Monthly (USHCN) Version 2.5': 'ushcn',
-            'Annual Maximum Ice Coverage (AMIC)': 'amic'
+            'Annual Maximum Ice Coverage (AMIC)': 'amic',
+            'Global Historical Climatology Network-Daily (GHCN-D) Monthly Summaries: North American subset': 'ghcnd-monthly-summaries',
+            'Global Sea Level From TOPEX & Jason Altimetry': 'topex-jason-altimetry'
         }
 
         #Private attributes for handling date parsing
@@ -249,7 +260,7 @@ class Dataset(Gcisbase):
         self.identifier = self._identifiers[self.name] if self.name in self._identifiers else self.name
 
     def __str__(self):
-        return 'Dataset: {id} {name}'.format(id=self.identifier, name=self.name)
+        return 'Dataset: {id}: {name}'.format(id=self.identifier, name=self.name)
 
     def as_json(self, indent=0):
         return super(Dataset, self).as_json(omit_fields=['files', 'parents', 'contributors', 'references'])
@@ -298,7 +309,7 @@ class Dataset(Gcisbase):
             self._publication_year = None
             
             
-class Activity(Gcisbase):
+class Activity(GcisObject):
     def __init__(self, data):
         self.gcis_fields = ['start_time', 'uri', 'methodology', 'data_usage', 'href', 'metholodogies', 'end_time',
                             'output_artifacts', 'duration', 'identifier', 'publication_maps', 'computing_environment']
@@ -331,7 +342,7 @@ class Person(Gcisbase):
         return super(Person, self).as_json(omit_fields=['contributors'])
 
     def __repr__(self):
-        return '{id}: {fn} {ln}'.format(id=self.id, fn=self.first_name, ln=self.last_name)
+        return 'Person: {id}: {fn} {ln}'.format(id=self.id, fn=self.first_name, ln=self.last_name)
 
     def __str__(self):
         return self.__repr__()
@@ -345,29 +356,88 @@ class Organization(Gcisbase):
 
         self._identifiers = {
             'NOAA NCDC/CICS-NC': 'cooperative-institute-climate-satellites-nc',
+            'NCDC/CICS-NC': 'cooperative-institute-climate-satellites-nc',
+            'NOAA NCDC/CICS NC': 'cooperative-institute-climate-satellites-nc',
             'NESDIS/NCDC': 'noaa-national-climatic-data-center',
+            'NCDC': 'noaa-national-climatic-data-center',
             'U.S. Forest Service': 'us-forest-service',
+            'NOAA Pacific Marine Environmental Laboratory': 'noaa-pacific-marine-environmental-laboratory',
+            'Jet Propulsion Laboratory': 'nasa-jet-propulsion-laboratory',
+            'HGS Consulting': 'hgs-consulting-llc',
+            'University of Virginia': 'university-virginia',
+            'Miami-Dade Dept. of Regulatory and Economic Resources': 'miami-dade-dept-regulatory-economic-resources',
+            'Nansen Environmental and Remote Sensing Center': 'nansen-environmental-and-remote-sensing-center',
+            'University of Illinois at Urbana-Champaign': 'university-illinois'
+
 
         }
 
         super(Organization, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
         
-        self.identifier = self._identifiers[self.name] if self.name in self._identifiers else self.name
+        self.identifier = self._identifiers[self.name] if self.name in self._identifiers else None
 
     def __repr__(self):
-        return '{id}: {name}'.format(id=self.identifier, name=self.name)
+        return 'Organization: {id}: {name}'.format(id=self.identifier, name=self.name)
 
     def __str__(self):
         return self.__repr__()
 
 
-class Contributor(object):
-    def __init__(self, person, organization):
-        self.person = person
-        self.organization = organization
+class Contributor(Gcisbase):
+    def __init__(self, data):
+        self.gcis_fields = ['role_type_identifier', 'organization_uri', 'uri', 'href', 'person_uri']
+
+        #Hack
+        self.people_role_map = {
+            'Kenneth Kunkel': 'scientist',
+            'Xungang Yin': 'scientist',
+            'Nina Bednarsek': 'scientist',
+            'Henry Schwartz': 'scientist',
+            'Jessicca Griffin': 'graphic_artist',
+            'James Youtz': 'scientist',
+            'Chris Fenimore': 'scientist',
+            'Deb Misch': 'graphic_artist',
+            'James Galloway': 'scientist',
+            'Laura Stevens': 'scientist',
+            'Nichole Hefty': 'point_of_contact',
+            'Mike Squires': 'scientist',
+            'Peter Thorne': 'scientist',
+            'Donald Wuebbles': 'scientist',
+            'Felix Landerer': 'scientist',
+            'David Wuertz': 'scientist',
+            'Russell Vose': 'scientist'
+        }
+
+        super(Contributor, self).__init__(data, fields=self.gcis_fields)
+
+        self.person = None
+        self.organization = None
+        self._role = None
+
+    @property
+    def role(self):
+
+        #Hack hack hack
+        if self._role is None:
+            horrible_key = ' '.join((self.person.first_name, self.person.last_name))
+            self._role = Role(self.people_role_map[horrible_key]) if horrible_key in self.people_role_map else None
+
+        return self._role
 
     def __repr__(self):
-        return '({p}/{o})'.format(p=self.person, o=self.organization)
+        return '({p}/{o}/{r})'.format(p=self.person, o=self.organization, r=self.role)
 
     def __str__(self):
         return self.__repr__()
+
+
+class Role(object):
+    def __init__(self, type_id):
+        self.type_id = type_id
+
+    def __repr__(self):
+        return self.type_id
+
+    def __str__(self):
+        return self.__repr__()
+

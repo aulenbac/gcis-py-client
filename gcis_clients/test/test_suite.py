@@ -1,3 +1,5 @@
+from domain import Contributor
+
 __author__ = 'abuddenberg'
 
 #To run the tests:
@@ -9,7 +11,7 @@ import json
 import pytest
 
 from test_data import test_figure_json, test_image_json, webform_json_precip, test_dataset_json
-from gcis_clients.domain import Gcisbase, Figure, Image, Dataset, Chapter
+from gcis_clients.domain import Gcisbase, Figure, Image, Dataset, Chapter, Contributor
 
 
 def test_gcis_client_version():
@@ -30,6 +32,9 @@ def test_domain():
 
     i = Image(json.loads(test_image_json))
     assert isinstance(i, Image)
+
+    assert len(f.contributors) == 2
+    assert all([isinstance(cont, Contributor) for cont in f.contributors])
 
 
 def test_domain_as_json():
@@ -106,6 +111,12 @@ def test_dataset_special_properties():
     assert ds_json_out['access_dt'] == '2011-12-31T00:00:00'
 
 
+# def test_contributors():
+#     f = Figure(json.loads(test_figure_json))
+#     contribs = f.contributors
+
+
+
 if __name__ == "__main__" and __package__ is None:
     __package__ = "gcis_client.test.test_suite"
-    test_domain_as_json()
+    # test_contributors()

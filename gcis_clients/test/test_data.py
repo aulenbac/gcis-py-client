@@ -219,7 +219,23 @@ test_figure_json = """
     "source_citation": "NOAA NCDC / CICS-NC",
     "attributes": null,
     "identifier": "observed-us-temperature-change",
-    "chapter_identifier": "our-changing-climate"
+    "chapter_identifier": "our-changing-climate",
+    "contributors": [
+        {
+            "role_type_identifier": "contributing_author",
+            "organization_uri": "/organization/university-california-san-diego",
+            "href": "https://data-stage.globalchange.gov/contributor/1882.json",
+            "person_uri": "/person/1028",
+            "uri": "/contributor/1882"
+        },
+        {
+            "role_type_identifier": "convening_lead_author",
+            "organization_uri": "/organization/university-illinois",
+            "href": "https://data-stage.globalchange.gov/contributor/1256.json",
+            "person_uri": "/person/1008",
+            "uri": "/contributor/1256"
+        }
+    ]
 }
 """
 

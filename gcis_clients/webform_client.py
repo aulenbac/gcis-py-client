@@ -29,10 +29,11 @@ def parse_creators(field):
     first_name, last_name = name_split[0], name_split[-1]
     org_name = rest[0] if len(rest) > 0 else None
 
-    return Contributor(
-        Person({'first_name': first_name, 'last_name': last_name}),
-        Organization({'name': org_name})
-    )
+    contributor = Contributor({})
+    contributor.person = Person({'first_name': first_name, 'last_name': last_name})
+    contributor.organization = Organization({'name': org_name})
+
+    return contributor
 
 
 class WebformClient:
@@ -76,9 +77,8 @@ class WebformClient:
                                   remote_path=self.get_remote_image_path(image))
 
                 #Add contributor info
-                if 'list_the_creator_of_the_image' in figure_json:
-                    f.add_contributor(parse_creators(image['list_the_creator_of_the_image']))
-
+                if 'list_the_creator_of_the_image' in image:
+                    image_obj.add_contributor(parse_creators(image['list_the_creator_of_the_image']))
 
                 #TODO: this just keeps getting worse
                 if 'datasources' in webform_json[webform_nid]['images'][img_idx]:
