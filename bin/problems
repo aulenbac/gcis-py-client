@@ -96,11 +96,17 @@ def sort_webform_list(report_id):
             if not gcis.figure_exists(report_id, f.identifier):
                 problems.setdefault(key, {}).setdefault('figure_id_not_found', []).append(
                     (f.identifier, f.figure_num, f.title))
-            #Check if each image exists in GCIS
+
+            #Check if organizations have been proper identified
+            for cont in f.contributors:
+                if cont.identifier is None:
+                    problems.setdefault(key, {}).setdefault('org_id_not_found', []).append(cont)
+
             for image in f.images:
                 #Squirrel the image identifier away from later
                 global_image_ids.setdefault(image.identifier, []).append(key)
 
+                #Check if each image exists in GCIS
                 if not gcis.image_exists(image.identifier):
                     problems.setdefault(key, {}).setdefault('image_id_not_found', []).append(
                         image.identifier)
@@ -115,6 +121,11 @@ def sort_webform_list(report_id):
                 if image.remote_path in (None, '') or not webform_client.remote_image_exists(image.remote_path):
                     problems.setdefault(key, {}).setdefault('missing_image_files', []).append(
                         image.identifier)
+
+                #Check if organizations have been proper identified
+                for cont in image.contributors:
+                    if cont.identifier is None:
+                        problems.setdefault(key, {}).setdefault('org_id_not_found', []).append(cont)
 
             #Check for broken image associations
             has_all_images, image_deltas = gcis.has_all_associated_images(report_id, f.identifier,
