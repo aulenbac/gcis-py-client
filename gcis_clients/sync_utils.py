@@ -44,16 +44,10 @@ def realize_contributors(gcis_client, contributors):
             print '\t\t', name_matches
 
         if org.identifier in (None, '') and org.name not in (None, ''):
+
             print 'No ID found for ' + org.name
 
-#        if org.name not in (None, ''):
-#            org_matches = gcis_client.lookup_organization(org.name)
-#            if len(org_matches) == 1:
-#                org.identifier = org_matches[0][0]
-#            elif len(org_matches) == 0:
-#                print 'No ID found for ' + org.name
-#            else:
-#                print 'Ambiguous results for ' + org.name
-#                print '\t', org_matches
-
+    #Check if we missed any organizations in our hardcoding...
+    if not all(map(lambda c: c.organization.identifier is not None, contributors)):
+        print contributors
 

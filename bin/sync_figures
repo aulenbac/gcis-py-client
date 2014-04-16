@@ -3,16 +3,15 @@ __author__ = 'abuddenberg'
 
 from gcis_clients import WebformClient
 from gcis_clients import GcisClient
-from gcis_clients.sync_utils import move_images_to_gcis, sync_dataset_metadata, populate_contributors
+from gcis_clients.sync_utils import move_images_to_gcis, sync_dataset_metadata, realize_contributors
 from collections import OrderedDict
 import json
 import pickle
 
 webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
 
-gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
-gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
-# gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
+# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
+gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
 
 sync_metadata_tree = {
     #Reports
@@ -64,7 +63,7 @@ sync_metadata_tree = {
         ]),
         #Chapter 9
         ('human-health', [
-            ('/metadata/figures/2896', 'heavy-downpours-disease') #Needs images redone
+            ('/metadata/figures/2896', 'heavy-downpours-disease')
         ]),
         #Chapter 10
         ('water-energy-land-use', [
@@ -82,7 +81,7 @@ sync_metadata_tree = {
         ]),
         #Chapter 14
         ('rural', [
-            ('/metadata/figures/3306', 'growing-season-lengthens') #Needs images redone
+            ('/metadata/figures/3306', 'growing-season-lengthens')
         ]),
         # Chapter 15
         ('biogeochemical-cycles', [
@@ -92,7 +91,7 @@ sync_metadata_tree = {
         ('northeast', [
             ('/metadata/figures/2995', 'projected-increases-in-the-number-of-days-over-90f'),
             ('/metadata/figures/2844', 'coney-island-after-hurricane-irene'),
-            ('/metadata/figures/2846', 'storm-surge-barrier') #Wrong figurenum in GCIS
+            ('/metadata/figures/2846', 'storm-surge-barrier')
         ]),
         #Chapter 17
         ('southeast', [
@@ -122,7 +121,7 @@ sync_metadata_tree = {
         ('appendix-climate-science', [
             ('/metadata/figures/3301', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),
             ('/metadata/figures/2798', 'detection-and-attribution-as-forensics'),
-            ('/metadata/figures/2799', 'human-influences-apparent-in-many-climate-variables'),
+            # ('/metadata/figures/2799', 'human-influences-apparent-in-many-climate-variables'), #Dupe, not used
             ('/metadata/figures/2802', 'modeling-the-climate-system'),
             ('/metadata/figures/2803', 'increasing-model-resolution'),
             ('/metadata/figures/2533', 'us-seasonal-temperatures'),
@@ -142,19 +141,9 @@ sync_metadata_tree = {
 
 
 def main():
-#    print gcis.test_login()
-    # sync_dataset_metadata(aggregate_webform_datasets())
-     sync(replace=False)
-
-    # s = 'Vose, R.S., S. Applequist, M.A. Bourassa, S.C. Pryor, R.J. Barthelmie, B. Blanton, P.D. Bromirski, H.E. Brooks, A.T. D,'
-    #
-    # for author in s.split(','):
-    #     frags = author.strip().rsplit()
-    #     if len(frags) > 0 and len(frags[-1]) > 1:
-    #         # print frags
-    #         print '{t}: {r}'.format(t=frags[-1], r=gcis.lookup_person(frags[-1]))
-
-
+    # print gcis.test_login()
+    # sync_dataset_metadata(gcis, webform.get_aggregated_datasets(), skip=['Proxy Data', 'Projected Sea Level Rise', 'Tide Gauge Data'])
+    sync(replace=False)
 
 
 def sync(replace=False):
@@ -163,32 +152,33 @@ def sync(replace=False):
             for figure_ids in sync_metadata_tree[report_id][chapter_id]:
                 webform_url, gcis_id = figure_ids
 
-                print 'Attempting to sync: {id}'.format(id=gcis_id), ' ', webform_url
+                print 'Attempting to sync: {id}'.format(id=gcis_id), webform_url
 
-                f = webform.get_webform(webform_url)
-                populate_contributors(gcis, f.contributors)
-                print f.contributors
+                #Merge data from both systems into one object...
+                gcis_fig = gcis.get_figure(report_id, gcis_id, chapter_id=chapter_id)
+                figure_obj = webform.get_webform(webform_url).merge(gcis_fig)
 
-                # #Merge data from both systems into one object...
-                # gcis_fig = gcis.get_figure(report_id, gcis_id, chapter_id=chapter_id)
-                # figure_obj = webform.get_webform(webform_url).merge(gcis_fig)
-                #
-                # #Hack: override webform's title in favor of gcis
-                # figure_obj.title = gcis_fig.title if gcis_fig.title not in (None, '') else figure_obj.title
-                #
-                # if replace:
-                #     for image in figure_obj.images:
-                #         #TODO: There are better ways to do this. Build File support.
-                #         print 'Deleting {img}'.format(img=image.identifier)
-                #         gcis.delete_image(image)
-                #
-                #     print 'Attempting to upload: {id}'.format(id=gcis_id)
-                #     move_images_to_gcis(webform, gcis, webform_url, gcis_id, report_id)
-                #
-                # #...then send it.
-                # gcis.update_figure(report_id, chapter_id, figure_obj)
-                #
-                # print 'Success!'
+                #Lookup and populate contributor information for figures and images
+                realize_contributors(gcis, figure_obj.contributors)
+                for i in figure_obj.images:
+                    realize_contributors(gcis, i.contributors)
+
+                #Hack: override webform's title in favor of gcis
+                figure_obj.title = gcis_fig.title if gcis_fig.title not in (None, '') else figure_obj.title
+
+                if replace:
+                    for image in figure_obj.images:
+                        #TODO: There are better ways to do this. Build File support.
+                        print 'Deleting {img}'.format(img=image.identifier)
+                        gcis.delete_image(image)
+
+                    print 'Attempting to upload: {id}'.format(id=gcis_id)
+                    move_images_to_gcis(webform, gcis, webform_url, gcis_id, report_id)
+
+                #...then send it.
+                gcis.update_figure(report_id, chapter_id, figure_obj)
+
+                print 'Success!'
 
 if __name__ == '__main__':
     main()
