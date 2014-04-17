@@ -1,8 +1,10 @@
-import urllib
 import json
-from os.path import exists, basename
+import os
+from os.path import basename, expanduser
 import re
 import requests
+import yaml
+import getpass
 
 from domain import Figure, Image, Dataset, Activity, Person, Organization
 
@@ -40,6 +42,34 @@ def http_resp(fn):
     return wrapped
 
 
+def get_credentials(url):
+    #First check our magic enviroment variables (GCIS_USER and GCIS_KEY)
+    from gcis_clients import gcis_auth
+    env_user, env_key = gcis_auth
+
+    if env_user is not None and env_key is not None:
+        return env_user, env_key
+
+    #Next, see if we can find Gcis.conf somewhere
+    conf_possibilities = [expanduser(f) for f in ['~/etc/Gcis.conf', '~/.gcis-py-client/Gcis.conf'] if
+                          os.path.exists(expanduser(f))]
+
+    for gcis_config in conf_possibilities:
+        print 'Using {gc} for credentials...'.format(gc=gcis_config)
+        all_creds = yaml.load(open(gcis_config, 'r'))
+        instance_creds = [c for c in all_creds if c['url'] == url][0]
+
+        return instance_creds['userinfo'].split(':')[0], instance_creds['key']
+
+    #Else prompt for credentials
+    #Wow, I managed to use it
+    else:
+        username = raw_input('Username: ')
+        api_key = getpass.getpass('API key: ')
+
+        return username, api_key
+
+
 class AssociationException(Exception):
     def __init__(self, value):
         self.value = value
@@ -49,10 +79,15 @@ class AssociationException(Exception):
 
 
 class GcisClient(object):
-    def __init__(self, url, username, password):
+    def __init__(self, url, username, api_key):
         self.base_url = url
+
+        #If credentials were not provided, obtain them
+        if username is None or api_key is None:
+            username, api_key = get_credentials(url)
+
         self.s = requests.Session()
-        self.s.auth = (username, password)
+        self.s.auth = (username, api_key)
         self.s.headers.update({'Accept': 'application/json'})
 
     @http_resp
@@ -152,7 +187,7 @@ class GcisClient(object):
         url = '{b}/image/files/{id}/{fn}'.format(b=self.base_url, id=image_id, fn=basename(local_path))
         # For future multi-part encoding support
         # return self.s.put(url, headers=headers, files={'file': (filename, open(filepath, 'rb'))})
-        if not exists(local_path):
+        if not os.path.exists(local_path):
             raise Exception('File not found: ' + local_path)
 
         return self.s.put(url, data=open(local_path, 'rb'), verify=False)
@@ -161,15 +196,13 @@ class GcisClient(object):
     def get_figure_listing(self, report_id, chapter_id=None):
         chapter_filter = '/chapter/' + chapter_id if chapter_id else ''
 
-        url = '{b}/report/{rpt}{chap}/figure?{p}'.format(
-            b=self.base_url, rpt=report_id, chap=chapter_filter, p=urllib.urlencode({'all': '1'})
-        )
-        resp = self.s.get(url, verify=False)
+        url = '{b}/report/{rpt}{chap}/figure'.format(b=self.base_url, rpt=report_id, chap=chapter_filter)
+        resp = self.s.get(url, params={'all': '1'}, verify=False)
 
         try:
             return [Figure(figure) for figure in resp.json()]
         except ValueError:
-            raise Exception('Add a better exception string here')
+            raise Exception(resp.text)
 
     def get_figure(self, report_id, figure_id, chapter_id=None):
         chapter_filter = '/chapter/' + chapter_id if chapter_id else ''
@@ -188,8 +221,8 @@ class GcisClient(object):
     def figure_exists(self, report_id, figure_id, chapter_id=None):
         chapter_filter = '/chapter/' + chapter_id if chapter_id else ''
 
-        url = '{b}/report/{rpt}{chap}/figure/{fig}?{p}'.format(
-            b=self.base_url, rpt=report_id, chap=chapter_filter, fig=figure_id, p=urllib.urlencode({'all': '1'})
+        url = '{b}/report/{rpt}{chap}/figure/{fig}'.format(
+            b=self.base_url, rpt=report_id, chap=chapter_filter, fig=figure_id
         )
         return self.s.head(url, verify=False)
 
@@ -229,8 +262,8 @@ class GcisClient(object):
         return resp.status_code, resp.text
 
     def get_keyword_listing(self):
-        url = '{b}/gcmd_keyword?{p}'.format(b=self.base_url, p=urllib.urlencode({'all': '1'}))
-        resp = self.s.get(url, verify=False)
+        url = '{b}/gcmd_keyword'.format(b=self.base_url)
+        resp = self.s.get(url, params={'all': '1'}, verify=False)
 
         return resp.json()
 

@@ -19,7 +19,7 @@ class PyTest(TestCommand):
 
 setup(
     name='GcisPyClient',
-    version='0.68',
+    version='1.0',
     author='Andrew Buddenberg',
     author_email='andrew.buddenberg@noaa.gov',
     packages=find_packages(),
@@ -29,7 +29,8 @@ setup(
     long_description=open('README.txt').read(),
     install_requires=[
         "requests >= 2.1.0",
-        "python-dateutil >= 2.2"
+        "python-dateutil >= 2.2",
+        "PyYAML >= 3.11"
     ],
     tests_require=["pytest >= 2.5.2"],
     cmdclass={'test': PyTest},

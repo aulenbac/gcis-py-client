@@ -2,23 +2,21 @@
 __author__ = 'abuddenberg'
 
 import pickle
-from gcis_clients import GcisClient
-from gcis_clients import WebformClient
+from gcis_clients import GcisClient, WebformClient, gcis_dev_auth, gcis_stage_auth, webform_token
 from gcis_clients.sync_utils import move_images_to_gcis
 
-webform_client = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
+webform_client = WebformClient('http://resources.assessment.globalchange.gov', webform_token)
 
-gcis_url = 'http://data.gcis-dev-front.joss.ucar.edu'
-#gcis = GcisClient(gcis_url, 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
-gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
+gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
+gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
 
 
 def main():
     hitlist_file = 'hitlist.pk1'
 
-#    create_problem_list('nca3', hitlist_file)
-#    print_problem_list(hitlist_file)
-    solve_problems(hitlist_file, 'nca3')
+    create_problem_list('nca3', hitlist_file)
+    print_problem_list(hitlist_file)
+#     solve_problems(hitlist_file, 'nca3')
 #    print_ready_list(hitlist_file)
 
 
@@ -99,7 +97,7 @@ def sort_webform_list(report_id):
 
             #Check if organizations have been proper identified
             for cont in f.contributors:
-                if cont.identifier is None:
+                if cont.organization.identifier is None:
                     problems.setdefault(key, {}).setdefault('org_id_not_found', []).append(cont)
 
             for image in f.images:
@@ -124,7 +122,7 @@ def sort_webform_list(report_id):
 
                 #Check if organizations have been proper identified
                 for cont in image.contributors:
-                    if cont.identifier is None:
+                    if cont.organization.identifier is None:
                         problems.setdefault(key, {}).setdefault('org_id_not_found', []).append(cont)
 
             #Check for broken image associations

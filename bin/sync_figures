@@ -1,17 +1,14 @@
 #!/usr/bin/env python
 __author__ = 'abuddenberg'
 
-from gcis_clients import WebformClient
-from gcis_clients import GcisClient
+from gcis_clients import WebformClient, GcisClient, gcis_dev_auth, gcis_stage_auth, webform_token
 from gcis_clients.sync_utils import move_images_to_gcis, sync_dataset_metadata, realize_contributors
 from collections import OrderedDict
-import json
-import pickle
 
-webform = WebformClient('http://resources.assessment.globalchange.gov', 'mgTD63FAjG')
+webform = WebformClient('http://resources.assessment.globalchange.gov', webform_token)
 
-# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', 'andrew.buddenberg@noaa.gov', 'ad90c05b37d4128ae514bc6caa7a41911d2f1de353443a54')
-gcis = GcisClient('http://data-stage.globalchange.gov', 'andrew.buddenberg@noaa.gov', 'b4f1458c3cf28248c982428c46e170019327bd4c533c23dd')
+# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
+gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
 
 sync_metadata_tree = {
     #Reports
@@ -141,8 +138,8 @@ sync_metadata_tree = {
 
 
 def main():
-    # print gcis.test_login()
-    # sync_dataset_metadata(gcis, webform.get_aggregated_datasets(), skip=['Proxy Data', 'Projected Sea Level Rise', 'Tide Gauge Data'])
+    print gcis.test_login()
+    sync_dataset_metadata(gcis, webform.get_aggregated_datasets(), skip=['Proxy Data', 'Projected Sea Level Rise', 'Tide Gauge Data'])
     sync(replace=False)
 
 

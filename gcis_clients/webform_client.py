@@ -3,7 +3,7 @@
 import urllib
 import re
 from os.path import join
-
+import getpass
 import requests
 from dateutil.parser import parse
 
@@ -16,7 +16,7 @@ def sanitized(pattern):
             if re.match(pattern, urllib.quote(args[1])):
                 return fn(*args, **kwargs)
             else:
-                print 'Shitlisted: ', args[1]
+                print 'Rejected: ', args[1]
         return wrapped
     return dec
 
@@ -36,10 +36,26 @@ def parse_creators(field):
     return contributor
 
 
+def get_credentials():
+    #First check our magic enviroment variable (WEBFORM_TOKEN)
+    from gcis_clients import webform_token
+
+    if webform_token is not None:
+        return webform_token
+
+    else:
+        return getpass.getpass('Webform token: ')
+
+
 class WebformClient:
 
     def __init__(self, url, token, local_image_dir=None, remote_dir='/system/files/'):
         self.base_url = url
+
+        #If token was not provided, obtain it
+        if token is None:
+            token = get_credentials()
+
         self.token = token
 
         if local_image_dir:
