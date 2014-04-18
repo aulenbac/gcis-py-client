@@ -26,7 +26,7 @@ setup(
     scripts=['bin/example', 'bin/problems', 'bin/sync_figures'],
     url='http://data.globalchange.gov',
     description='Client for GCIS webservices',
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     install_requires=[
         "requests >= 2.1.0",
         "python-dateutil >= 2.2",
