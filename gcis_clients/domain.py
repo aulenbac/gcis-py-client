@@ -177,6 +177,9 @@ class Image(GcisObject):
             'what_is_the_name_of_the_image_listed_in_the_report': 'title'
         }
 
+        #Private attributes for handling date parsing
+        self._create_dt = None
+
         super(Image, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
 
         #Hack
@@ -187,6 +190,17 @@ class Image(GcisObject):
 
         #This does not accurately reflect GCIS' data model
         self.datasets = []
+
+    @property
+    def create_dt(self):
+        return self._create_dt
+
+    @create_dt.setter
+    def create_dt(self, value):
+        try:
+            self._create_dt = parse(value).isoformat() if value else None
+        except TypeError:
+            self._create_dt = None
 
     def __str__(self):
         return 'Image: {id}: {name}'.format(id=self.identifier, name=self.title)
@@ -367,7 +381,13 @@ class Organization(Gcisbase):
             'University of Virginia': 'university-virginia',
             'Miami-Dade Dept. of Regulatory and Economic Resources': 'miami-dade-dept-regulatory-economic-resources',
             'Nansen Environmental and Remote Sensing Center': 'nansen-environmental-and-remote-sensing-center',
-            'University of Illinois at Urbana-Champaign': 'university-illinois'
+            'University of Illinois at Urbana-Champaign': 'university-illinois',
+            'USGCRP': 'us-global-change-research-program',
+            'National Park Service': 'national-park-service',
+            'Institute of the Environment': 'university-arizona',
+            'USGS': 'us-geological-survey',
+            'University of Puerto Rico': 'university-puerto-rico',
+            'University of Alaska': 'university-alaska'
 
 
         }
