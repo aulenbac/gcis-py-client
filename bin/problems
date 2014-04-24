@@ -7,17 +7,28 @@ from gcis_clients.sync_utils import move_images_to_gcis
 
 webform_client = WebformClient('http://resources.assessment.globalchange.gov', webform_token)
 
-gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
+# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
 gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
 
+whitelisted_dupes = [
+    'e13cdf2e-0699-4c52-a642-56c8fc3317c4', #33.11 #34.11
+    '03937439-cc5a-45c7-a0fd-78b863c49979', #33.11 #34.11
+
+    '0bcb7984-50c0-4f94-9946-c3fa635125a4', #2.1 #34.2
+
+    'eb9bd7dc-3e3a-4001-9a64-f2a0763b3f64', #2.31 #34.21
+    '8c679de0-4a6c-4fc9-bbd1-59251ffe3d7f', #2.31 #34.21
+
+    'a1bd40f2-424e-4af8-8d3d-f44ba7ba36b6', #33.17 #34.13
+]
 
 def main():
     hitlist_file = 'hitlist.pk1'
 
-    create_problem_list('nca3', hitlist_file)
-    print_problem_list(hitlist_file)
-#     solve_problems(hitlist_file, 'nca3')
-#    print_ready_list(hitlist_file)
+    # create_problem_list('nca3', hitlist_file)
+    # print_problem_list(hitlist_file)
+    solve_problems(hitlist_file, 'nca3')
+    # print_ready_list(hitlist_file)
 
 
 def solve_problems(path, report_id):
@@ -36,7 +47,7 @@ def solve_problems(path, report_id):
         creates = img_id_missing - img_file_missing
 
         img_assoc_broken = set(problems[webform]['broken_image_assoc']) if 'broken_image_assoc' in problems[webform] else set()
-        assocs = img_assoc_broken - creates
+        assocs = img_assoc_broken - creates - img_file_missing
 
         if len(creates) > 0:
             move_images_to_gcis(webform_client, gcis, webform_id, gcis_id, report_id, subset_images=creates)
@@ -61,18 +72,23 @@ def load_ready_list(path):
     return ready
 
 
-def print_problem_list(path):
+def print_problem_list(path, filter=None):
     problems = load_problem_list(path)
+
     for webform in problems:
+        if filter:
+            problems[webform] = {k: problems[webform][k] for k in problems[webform] if k == filter}
         print webform
         for problem_type in problems[webform]:
             print '\t', problem_type, problems[webform][problem_type]
+    print len(problems)
 
 
 def print_ready_list(path):
     for x in sorted(load_ready_list(path), key=lambda t: float(t[1])):
-        print x
-
+        webform_id, figure_num, gcis_id = x
+        print '{tuple},  # {f}'.format(tuple=(str(webform_id), gcis_id), f=figure_num)
+    print len(load_ready_list(path))
 
 def sort_webform_list(report_id):
     all_forms = []
@@ -140,6 +156,8 @@ def sort_webform_list(report_id):
         if len(keys) > 1:
 
             for key in keys:
+                if image_id in whitelisted_dupes:
+                    continue
 #                ready.pop(key, None)
                 problems.setdefault(key, {}).setdefault('duplicate_image_id', []).append((image_id, key))
 
