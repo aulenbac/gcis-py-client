@@ -257,7 +257,16 @@ class Dataset(GcisObject):
             'Historical Climatology Network Monthly (USHCN) Version 2.5': 'ushcn',
             'Annual Maximum Ice Coverage (AMIC)': 'amic',
             'Global Historical Climatology Network-Daily (GHCN-D) Monthly Summaries: North American subset': 'ghcnd-monthly-summaries',
-            'Global Sea Level From TOPEX & Jason Altimetry': 'topex-jason-altimetry'
+            'Global Sea Level From TOPEX & Jason Altimetry': 'topex-jason-altimetry',
+            'World Climate Research Program\'s (WCRP\'s) Coupled Model Intercomparison Project phase 5 (CMIP5) multi-model ensemble': 'cmip5',
+
+            #Surely we can do better
+            'Proxy Data': 'proxy-data',
+            'Tide Gauge Data': 'tide-gauge-data',
+            'Projected Sea Level Rise': 'projected-sea-level-rise',
+
+            
+            
         }
 
         #Private attributes for handling date parsing
@@ -273,8 +282,11 @@ class Dataset(GcisObject):
 
         self.identifier = self._identifiers[self.name] if self.name in self._identifiers else self.name
 
-    def __str__(self):
+    def __repr__(self):
         return 'Dataset: {id}: {name}'.format(id=self.identifier, name=self.name)
+
+    def __str__(self):
+        return self.__repr__()
 
     def as_json(self, indent=0):
         return super(Dataset, self).as_json(omit_fields=['files', 'parents', 'contributors', 'references'])
@@ -326,14 +338,18 @@ class Dataset(GcisObject):
 class Activity(GcisObject):
     def __init__(self, data):
         self.gcis_fields = ['start_time', 'uri', 'methodology', 'data_usage', 'href', 'metholodogies', 'end_time',
-                            'output_artifacts', 'duration', 'identifier', 'publication_maps', 'computing_environment']
+                            'output_artifacts', 'duration', 'identifier', 'publication_maps', 'computing_environment',
+                            'software', 'visualization_software', 'notes']
 
         self.translations = {
             'how_much_time_was_invested_in_creating_the_image': 'duration',
             '35_what_are_all_of_the_files_names_and_extensions_associated_with_this_image': 'output_artifacts',
             'what_operating_systems_and_platforms_were_used': 'computing_environment',
             'what_analytical_statistical_methods_were_employed_to_the_data': 'methodology',
-            'describe_how_the_data_was_used_in_the_image_figure_creation': 'data_usage'
+            'describe_how_the_data_was_used_in_the_image_figure_creation': 'data_usage',
+            'list_the_name_and_version_of_the_software': 'software',
+            'what_software_applications_were_used_to_manipulate_the_data': 'notes',
+            '33_what_software_applications_were_used_to_visualize_the_data': 'visualization_software'
 
         }
 
@@ -341,6 +357,12 @@ class Activity(GcisObject):
 
     def as_json(self, indent=0):
         return super(Activity, self).as_json(omit_fields=['metholodogies', 'publication_maps'])
+
+    def __repr__(self):
+        return 'Activity: {id}'.format(id=self.identifier)
+
+    def __str__(self):
+        return self.__repr__()
 
 
 class Person(Gcisbase):
@@ -372,11 +394,11 @@ class Organization(Gcisbase):
             'NOAA NCDC/CICS-NC': 'cooperative-institute-climate-satellites-nc',
             'NCDC/CICS-NC': 'cooperative-institute-climate-satellites-nc',
             'NOAA NCDC/CICS NC': 'cooperative-institute-climate-satellites-nc',
-            'NESDIS/NCDC': 'noaa-national-climatic-data-center',
-            'NCDC': 'noaa-national-climatic-data-center',
+            'NESDIS/NCDC': 'national-climatic-data-center',
+            'NCDC': 'national-climatic-data-center',
             'U.S. Forest Service': 'us-forest-service',
-            'NOAA Pacific Marine Environmental Laboratory': 'noaa-pacific-marine-environmental-laboratory',
-            'Jet Propulsion Laboratory': 'nasa-jet-propulsion-laboratory',
+            'NOAA Pacific Marine Environmental Laboratory': 'pacific-marine-environmental-laboratory',
+            'Jet Propulsion Laboratory': 'jet-propulsion-laboratory',
             'HGS Consulting': 'hgs-consulting-llc',
             'University of Virginia': 'university-virginia',
             'Miami-Dade Dept. of Regulatory and Economic Resources': 'miami-dade-dept-regulatory-economic-resources',
@@ -425,7 +447,12 @@ class Contributor(Gcisbase):
             'Donald Wuebbles': 'scientist',
             'Felix Landerer': 'scientist',
             'David Wuertz': 'scientist',
-            'Russell Vose': 'scientist'
+            'Russell Vose': 'scientist',
+            'Gregg Garfin': 'scientist',
+            'Jeremy Littell': 'scientist',
+            'Emily Cloyd': 'contributing_author',
+            'F. Chapin': 'scientist',
+            ' Chapin': 'scientist'
         }
 
         super(Contributor, self).__init__(data, fields=self.gcis_fields)
