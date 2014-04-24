@@ -2,7 +2,7 @@
 
 from gcis_clients import GcisClient, gcis_dev_auth
 
-base_url = 'http://data.gcis-dev-front.joss.ucar.edu'
+base_url = 'http://data.globalchange.gov'
 
 #These are provided by environment variables GCIS_DEV_USER and GCIS_DEV_KEY
 username, api_key = gcis_dev_auth
