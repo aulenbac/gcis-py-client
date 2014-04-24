@@ -34,13 +34,17 @@ def realize_contributors(gcis_client, contributors):
         person = cont.person
         org = cont.organization
 
+        #Hack for F. Chapin
+        if '.' in person.first_name:
+            person.first_name = ''
+
         name_matches = gcis_client.lookup_person(person.first_name + ' ' + person.last_name)
         if len(name_matches) == 1:
             person.id = name_matches[0][0]
         elif len(name_matches) == 0:
-            print '\t', 'No ID found for ' + person.last_name
+            print '\t', 'No ID found for ' + person.first_name + ' ' + person.last_name
         else:
-            print '\t', 'Ambiguous results for ' + person.last_name
+            print '\t', 'Ambiguous results for ' + person.first_name + ' ' + person.last_name
             print '\t\t', name_matches
 
         if org.identifier in (None, '') and org.name not in (None, ''):

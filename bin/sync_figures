@@ -16,122 +16,215 @@ sync_metadata_tree = {
         #Chapter 2
         ('our-changing-climate', [
             # (webform_url, gcis_id)
-            ('/metadata/figures/3074', 'ten-indicators-of-a-warming-world'),
-            ('/metadata/figures/3293', 'observed-increase-in-frostfree-season-length'),
-            ('/metadata/figures/3294', 'projected-changes-in-frostfree-season-length'), #Good
-            ('/metadata/figures/2677', 'observed-us-precipitation-change'),
-            ('/metadata/figures/3298', 'observed-us-trend-in-heavy-precipitation'),
-            ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),
-            ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),
-            ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),
-            ('/metadata/figures/2939', 'projected-changes-in-soil-moisture-for-the-western-us'),
-            ('/metadata/figures/3305', 'variation-of-storm-frequency-and-intensity-during-the-cold-season-november--march'),
-            ('/metadata/figures/3067', 'ice-cover-in-the-great-lakes'),
-            ('/metadata/figures/2523', 'shells-dissolve-in-acidified-ocean-water'),
-            ('/metadata/figures/3175', 'observed-us-temperature-change'),
+            ('/metadata/figures/3074', 'ten-indicators-of-a-warming-world'),  # 2.1
+            ('/metadata/figures/3293', 'observed-increase-in-frostfree-season-length'),  # 2.10
+            ('/metadata/figures/3294', 'projected-changes-in-frostfree-season-length'),  # 2.11
+            ('/metadata/figures/2677', 'observed-us-precipitation-change'),  # 2.12
+            ('/metadata/figures/3298', 'observed-us-trend-in-heavy-precipitation'),  # 2.16
+            ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),  # 2.17
+            ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),  # 2.18
+            ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),  # 2.2
+            ('/metadata/figures/2939', 'projected-changes-in-soil-moisture-for-the-western-us'),  # 2.22
+            ('/metadata/figures/3305', 'variation-of-storm-frequency-and-intensity-during-the-cold-season-november--march'),  # 2.24
+            ('/metadata/figures/3067', 'ice-cover-in-the-great-lakes'),  # 2.27
+            ('/metadata/figures/3073', 'projected-arctic-sea-ice-decline'),  # 2.29
+            ('/metadata/figures/2940', 'as-oceans-absorb-co-they-become-more-acidic'),  # 2.30
+            ('/metadata/figures/2523', 'shells-dissolve-in-acidified-ocean-water'),  # 2.31
+            ('/metadata/figures/3175', 'observed-us-temperature-change'),  # 2.7
 
+        ]),
+        #Chapter 3
+        ('water-resources', [
+            ('/metadata/figures/2676', 'projected-changes-in-snow-runoff-and-soil-moisture'),  # 3.1
+            ('/metadata/figures/3303', 'trends-in-flood-magnitude'),  # 3.5
         ]),
         #Chapter 4
         ('energy-supply-and-use', [
-            ('/metadata/figures/3292', 'cooling-degree-days')
+            ('/metadata/figures/3082', 'paths-of-hurricanes-katrina-and-rita-relative-to-oil-and-gas-production-facilities'),  # 4.1
+            ('/metadata/figures/3292', 'cooling-degree-days'),  # 4.3
         ]),
         #Chapter 5
         ('transportation', [
-            ('/metadata/figures/3568', 'hurricane-sandy-causes-flooding-in-new-york-city-subway-stations'),
-            ('/metadata/figures/2952', 'role-of-adaptive-strategies-and-tactics-in-reducing-impacts-and-consequences'),
-            ('/metadata/figures/3169', 'tropical-storm-impact-on-vermont-road'),
+            ('/metadata/figures/3088', 'possible-future-flood-depths-in-mobile-al-with-rising-sea-level'),  # 5.1
+            ('/metadata/figures/2905', 'gulf-coast-transportation-hubs-at-risk'),  # 5.3
+            ('/metadata/figures/3568', 'hurricane-sandy-causes-flooding-in-new-york-city-subway-stations'),  # 5.4
+            ('/metadata/figures/2952', 'role-of-adaptive-strategies-and-tactics-in-reducing-impacts-and-consequences'),  # 5.5
+            ('/metadata/figures/3169', 'tropical-storm-impact-on-vermont-road'),  # 5.6
         ]),
         #Chapter 6
         ('agriculture', [
-            ('/metadata/figures/2691', 'projected-changes-in-key-climate-variables-affecting-agricultural-productivity'),
-            ('/metadata/figures/2872', 'drainage-tiles'),
+            ('/metadata/figures/2691', 'projected-changes-in-key-climate-variables-affecting-agricultural-productivity'),  # 6.5
+            ('/metadata/figures/2872', 'drainage-tiles'),  # 6.8
         ]),
         #Chapter 7
         ('forests', [
-            ('/metadata/figures/2977', 'effectiveness-of-forest-management-in-reducing-wildfire-risk'),
-            ('/metadata/figures/2978', 'forest-vulnerability-to-changing-climate'),
-            ('/metadata/figures/2985', 'forests-can-be-a-source--or-a-sink--for-carbon')
+            ('/metadata/figures/2887', 'forest-ecosystem-disturbances'),  # 7.1
+            ('/metadata/figures/2977', 'effectiveness-of-forest-management-in-reducing-wildfire-risk'),  # 7.2
+            ('/metadata/figures/2978', 'forest-vulnerability-to-changing-climate'),  # 7.3
+            ('/metadata/figures/2985', 'forests-can-be-a-source--or-a-sink--for-carbon'),  # 7.4
+            ('/metadata/figures/3130', 'public-and-private-forestlands'),  # 7.8
 
         ]),
         #Chapter 8
         ('ecosystems', [
-            ('/metadata/figures/2456', 'adaptation-planning-and-implementation-framework'),
-            ('/metadata/figures/3574', 'biological-responses-to-climate-change')
+            ('/metadata/figures/2456', 'adaptation-planning-and-implementation-framework'),  # 8.3
+            ('/metadata/figures/3574', 'biological-responses-to-climate-change'),  # 8.4
         ]),
         #Chapter 9
         ('human-health', [
-            ('/metadata/figures/2896', 'heavy-downpours-disease')
+            ('/metadata/figures/3162', 'projected-climate-change-worsens-asthma'),  # 9.1
+            ('/metadata/figures/2896', 'heavy-downpours-disease'),  # 9.7
+            ('/metadata/figures/2897', 'harmful-bloom-of-algae'),  # 9.8
         ]),
         #Chapter 10
         ('water-energy-land-use', [
-            ('/metadata/figures/2410', 'coasttocoast-100degree-days-in-2011'),
-            ('/metadata/figures/2986', 'hydraulic-fracturing-and-water-use'),
-            ('/metadata/figures/2916', 'renewable-energy-and-land-use')
+            ('/metadata/figures/2601', 'energy-water-land-and-climate-interactions'),  # 10.1
+            ('/metadata/figures/2917', 'the-columbia-river-basin-land-use-and-land-cover'),  # 10.10
+            ('/metadata/figures/2410', 'coasttocoast-100degree-days-in-2011'),  # 10.2
+            ('/metadata/figures/3158', 'projected-landuse-intensity-in-2030'),  # 10.6
+            ('/metadata/figures/2986', 'hydraulic-fracturing-and-water-use'),  # 10.7
+            ('/metadata/figures/2916', 'renewable-energy-and-land-use'),  # 10.8
+            ('/metadata/figures/2918', 'water-stress-in-the-us'),  # 10.9
+
         ]),
         #Chapter 11
         ('urban-systems-infrastructure-vulnerability', [
-            ('/metadata/figures/3569', 'urban-support-systems-are-interconnected')
+            ('/metadata/figures/3569', 'urban-support-systems-are-interconnected'),  # 11.2
+            ('/metadata/figures/3090', 'new-york-city-and-sea-level-rise'),  # 11.3
         ]),
         #Chapter 12
         ('tribal-indigenous-native-lands-resources', [
-            ('/metadata/figures/2911', 'arctic-marine-food-web')
+            ('/metadata/figures/3131', 'indigenous-populations-extend-beyond-reservation-lands'),  # 12.1
+            ('/metadata/figures/2594', 'many-tribes-many-climate-change-initiatives'),  # 12.2
+            ('/metadata/figures/2909', 'sand-dune-expansion'),  # 12.3
+            ('/metadata/figures/2911', 'arctic-marine-food-web'),  # 12.5
+        ]),
+        #Chapter 13
+        ('land-use-land-cover-change', [
+            ('/metadata/figures/2902', 'building-loss-by-fires-at-california-wildlandurban-interfaces'),  # 13.4
         ]),
         #Chapter 14
         ('rural', [
-            ('/metadata/figures/3306', 'growing-season-lengthens')
+            ('/metadata/figures/2662', 'rural-counties'),  # 14.1
+            ('/metadata/figures/2661', 'economic-dependence-varies-by-region'),  # 14.2
+            ('/metadata/figures/3306', 'growing-season-lengthens'),  # 14.3
+            ('/metadata/figures/2904', 'many-rural-areas-are-losing-population'),  # 14.5
         ]),
         # Chapter 15
         ('biogeochemical-cycles', [
-            ('/metadata/figures/2575', 'many-factors-combine-to-affect-biogeochemical-cycles')
+            ('/metadata/figures/2874', 'major-north-american-carbon-dioxide-sources-and-sinks'),  # 15.1
+            ('/metadata/figures/2575', 'many-factors-combine-to-affect-biogeochemical-cycles'),  # 15.4
         ]),
         #Chapter 16
         ('northeast', [
-            ('/metadata/figures/2995', 'projected-increases-in-the-number-of-days-over-90f'),
-            ('/metadata/figures/2844', 'coney-island-after-hurricane-irene'),
-            ('/metadata/figures/2846', 'storm-surge-barrier')
+            ('/metadata/figures/2995', 'projected-increases-in-the-number-of-days-over-90f'),  # 16.2
+            ('/metadata/figures/3512', 'flooding-and-hurricane-irene'),  # 16.3
+            ('/metadata/figures/3104', 'coastal-flooding-along-new-jerseys-shore'),  # 16.4
+            ('/metadata/figures/2844', 'coney-island-after-hurricane-irene'),  # 16.6
+            ('/metadata/figures/2846', 'storm-surge-barrier'),  # 16.8
+
         ]),
         #Chapter 17
         ('southeast', [
-            ('/metadata/figures/2998', 'projected-change-in-number-of-days-over-95-f'),
-            ('/metadata/figures/2999', 'projected-change-in-number-of-nights-below-32f'),
-            ('/metadata/figures/2857', 'local-planning')
+            ('/metadata/figures/2998', 'projected-change-in-number-of-days-over-95-f'),  # 17.4
+            ('/metadata/figures/2999', 'projected-change-in-number-of-nights-below-32f'),  # 17.5
+            ('/metadata/figures/2857', 'local-planning'),  # 17.9
         ]),
         #Chapter 18
         ('midwest', [
-            ('/metadata/figures/2550', 'temperatures-are-rising-in-the-midwest'),
-            ('/metadata/figures/2992', 'projected-midcentury-temperature-changes-in-the-midwest'),
-            ('/metadata/figures/2994', 'when-it-rains-it-pours'),
+            ('/metadata/figures/2550', 'temperatures-are-rising-in-the-midwest'),  # 18.1
+            ('/metadata/figures/2992', 'projected-midcentury-temperature-changes-in-the-midwest'),  # 18.2
+            ('/metadata/figures/2994', 'when-it-rains-it-pours'),  # 18.6
+            ('/metadata/figures/3159', 'midwest-ice-cover-in-the-great-lakes')  #18.7
         ]),
         #Chapter 19
         ('great-plains', [
-            ('/metadata/figures/2697', 'temperature-and-precipitation-distribution-in-the-great-plains'),
-            ('/metadata/figures/2989', 'projected-change-in-number-of-hot-days'),
-            ('/metadata/figures/2990', 'projected-change-in-number-of-warm-nights'),
-            ('/metadata/figures/2991', 'projected-change-in-number-of-heavy-precipitation-days'),
-            ('/metadata/figures/3002', 'projected-change-in-number-of-consecutive-dry-days'),
+            ('/metadata/figures/2697', 'temperature-and-precipitation-distribution-in-the-great-plains'),  # 19.1
+            ('/metadata/figures/2989', 'projected-change-in-number-of-hot-days'),  # 19.2
+            ('/metadata/figures/2990', 'projected-change-in-number-of-warm-nights'),  # 19.3
+            ('/metadata/figures/2991', 'projected-change-in-number-of-heavy-precipitation-days'),  # 19.4
+            ('/metadata/figures/3002', 'projected-change-in-number-of-consecutive-dry-days'),  # 19.5
+        ]),
+        #Chapter 20
+        ('southwest', [
+            ('/metadata/figures/3484', 'urban-heat-and-public-health'),  # 20.6
+        ]),
+        #Chapter 21
+        ('northwest', [
+            ('/metadata/figures/2558', 'forest-mortality'),  # 21.6
+        ]),
+        #Chapter 22
+        ('alaska', [
+            ('/metadata/figures/2817', 'newtok-alaska'),  # 22.4
+        ]),
+        #Chapter 23
+        ('hawaii', [
+            ('/metadata/figures/2834', 'us-pacific-islands-region'),  # 23.1
+            ('/metadata/figures/3284', 'increased-acidification-decreases-suitable-coral-habitat'),  # 23.3
+            ('/metadata/figures/2837', 'observed-changes-in-annual-rainfall-in-the-western-north-pacific'),  # 23.4
+            ('/metadata/figures/2838', 'native-plants-at-risk'),  # 23.5
+            ('/metadata/figures/3285', 'saltwater-intrusion-destroys-crops'),  # 23.6
+            ('/metadata/figures/2840', 'residents-of-lowlying-islands-at-risk'),  # 23.7
+            ('/metadata/figures/3286', 'higher-sea-level-rise-in-western-pacific'),  # 23.8
         ]),
         #Chapter 25
         ('coastal-zone', [
-            ('/metadata/figures/2543', 'coastal-ecosystem-services')
+            ('/metadata/figures/2540', 'adapting-coastal-infrastructure-to-sea-level-rise-and-land-loss'),  # 25.5
+            ('/metadata/figures/3430', 'coasttoinland-economic-connections'),  # 25.7
+            ('/metadata/figures/2543', 'coastal-ecosystem-services'),  # 25.8
+        ]),
+        #Chapter 26
+        ('decision-support', [
+            ('/metadata/figures/3571', 'decisionmaking-elements-and-outcomes'),  # 26.1
+            ('/metadata/figures/2949', 'boundary-processes-linking-decisionmakers-and-scientifictechnical-experts'),  # 26.2
+            ('/metadata/figures/2950', 'decisionmaking-framework'),  # 26.3
+            ('/metadata/figures/2611', 'linking-risk-assessment-and-risk-perception-with-risk-management-of-climate-change'),  # 26.4
+            ('/metadata/figures/2962', 'land-use-planning-tool-for-the-upper-santa-cruz-watershed'),  # 26.5
+        ]),
+        #Chapter 27
+        ('mitigation', [
+            ('/metadata/figures/3080', 'drivers-of-us-fossil-emissions'),  # 27.2
+        ]),
+        #Chapter 28
+        ('adaptation', [
+            ('/metadata/figures/2862', 'status-of-state-climate-adaptation-plans'),  # 28.1
+            ('/metadata/figures/2863', 'risk-disk'),  # 28.2
+            ('/metadata/figures/2864', 'adaptation-process'),  # 28.3
+            ('/metadata/figures/2675', 'us-drought-monitor'),  # 28.5
+            ('/metadata/figures/2865', 'northwoods-climate-change-response-framework'),  # 28.6
         ]),
         #Chapter 33: Climate Science Appendix
         ('appendix-climate-science', [
-            ('/metadata/figures/3301', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),
-            ('/metadata/figures/2798', 'detection-and-attribution-as-forensics'),
-            # ('/metadata/figures/2799', 'human-influences-apparent-in-many-climate-variables'), #Dupe, not used
-            ('/metadata/figures/2802', 'modeling-the-climate-system'),
-            ('/metadata/figures/2803', 'increasing-model-resolution'),
-            ('/metadata/figures/2533', 'us-seasonal-temperatures'),
-            ('/metadata/figures/2534', 'app-extreme-precipitation'),
-            ('/metadata/figures/3147', 'ice-loss-from-greenland-and-antarctica'),
+            ('/metadata/figures/3112', 'indicators-of-warming-from-multiple-data-sets'),  # 33.10
+            ('/metadata/figures/3138', 'warming-trend-and-effects-of-el-nino-la-nina'),  # 33.14
+            ('/metadata/figures/2798', 'detection-and-attribution-as-forensics'),  # 33.16
+            ('/metadata/figures/3301', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),  # 33.17
+            ('/metadata/figures/2813', 'earths-energy-balance'),  # 33.2
+            ('/metadata/figures/2802', 'modeling-the-climate-system'),  # 33.24
+            ('/metadata/figures/2803', 'increasing-model-resolution'),  # 33.25
+            ('/metadata/figures/3575', 'increasing-climate-model-components'),  # 33.26
+            ('/metadata/figures/2533', 'us-seasonal-temperatures'),  # 33.28
+            ('/metadata/figures/2806', 'ice-cover-on-lake-mendota'),  # 33.29
+            ('/metadata/figures/2534', 'app-extreme-precipitation'),  # 33.32
+            ('/metadata/figures/2809', 'extreme-drought-in-the-us-and-mexico-past-and-future'),  # 33.35
+            ('/metadata/figures/2393', 'permafrost-temperatures-rising'),  # 33.38
+            ('/metadata/figures/3144', 'melting-of-arctic-landbased-ice'),  # 33.39
+            ('/metadata/figures/3145', 'melting-glaciers-lead-to-sea-level-rise'),  # 33.40
+            ('/metadata/figures/3147', 'ice-loss-from-greenland-and-antarctica'),  # 33.42
+            ('/metadata/figures/3110', 'relative-strengths-of-warming-and-cooling-influences'),  # 33.6
+            ('/metadata/figures/2796', 'development-of-observing-capabilities'),  # 33.7
         ]),
         #Chapter 34: FAQ/CAQ
         ('appendix-climate-science-faqs', [
-            ('/metadata/figures/2663', 'us-annual-temperature'),
-            # ('/metadata/figures/3300', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),#Manually associate existing figure
-            # ('/metadata/figures/3075', 'ten-indicators-of-a-warming-world'), #Manually associate existing figure
-            ('/metadata/figures/2520', 'ocean-acidification-and-the-food-web'),
-            ('/metadata/figures/3134', 'temperature-trends-1900-2012'),
+            ('/metadata/figures/2663', 'us-annual-temperature'),  # 34.1
+            ('/metadata/figures/3300', 'caq-human-influences-apparent-in-many-aspects-of-the-changing-climate'),  # 34.13
+            ('/metadata/figures/3091', 'published-climate-change-research-papers'),  # 34.18
+            ('/metadata/figures/3075', 'caq-ten-indicators-of-a-warming-world'),  # 34.2
+            ('/metadata/figures/2520', 'ocean-acidification-and-the-food-web'),  # 34.21
+            ('/metadata/figures/2790', 'potential-tipping-points'),  # 34.24
+            ('/metadata/figures/2635', 'potential-effects-of-climate-change'),  # 34.25
+            ('/metadata/figures/2791', 'two-us-emissions-reduction-pathways'),  # 34.27
+            ('/metadata/figures/3134', 'temperature-trends-1900-2012'),  # 34.8
         ])
     ])
 }
@@ -139,11 +232,14 @@ sync_metadata_tree = {
 
 def main():
     print gcis.test_login()
-    sync_dataset_metadata(gcis, webform.get_aggregated_datasets(), skip=['Proxy Data', 'Projected Sea Level Rise', 'Tide Gauge Data'])
-    sync(replace=False)
+    # sync_dataset_metadata(gcis, webform.get_aggregated_datasets())
+
+    # sync(replace=True)
 
 
 def sync(replace=False):
+    count = 0
+
     for report_id in sync_metadata_tree:
         for chapter_id in sync_metadata_tree[report_id]:
             for figure_ids in sync_metadata_tree[report_id][chapter_id]:
@@ -176,6 +272,8 @@ def sync(replace=False):
                 gcis.update_figure(report_id, chapter_id, figure_obj)
 
                 print 'Success!'
+                count += 1
+    print count
 
 if __name__ == '__main__':
     main()
