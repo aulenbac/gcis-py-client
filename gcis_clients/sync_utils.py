@@ -26,7 +26,7 @@ def move_images_to_gcis(webform_client, gcis_client, webform_url, gcis_id, repor
 def sync_dataset_metadata(gcis_client, datasets, skip=[]):
     for ds in [ds for ds in datasets if ds.identifier not in skip]:
         gcis_client.create_or_update_dataset(ds)
-        gcis_client.create_or_update_activity(ds.activity)
+        # gcis_client.create_or_update_activity(ds.activity)
 
 
 def realize_contributors(gcis_client, contributors):

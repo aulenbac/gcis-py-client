@@ -153,8 +153,9 @@ class GcisClient(object):
         for dataset in image.datasets:
             if not self.dataset_exists(dataset.identifier):
                 self.create_dataset(dataset)
-            if not self.activity_exists(dataset.activity.identifier):
-                self.create_activity(dataset.activity)
+            # if not self.activity_exists(dataset.activity.identifier):
+            #     self.create_activity(dataset.activity))
+            self.create_or_update_activity(dataset.activity)
             self.associate_dataset_with_image(dataset.identifier, image.identifier,
                                               activity_id=dataset.activity.identifier)
         return resp
@@ -163,7 +164,8 @@ class GcisClient(object):
     def update_image(self, image, old_id=None):
         url = '{b}/image/{img}'.format(b=self.base_url, img=old_id or image.identifier)
         for dataset in image.datasets:
-            self.update_activity(dataset.activity)
+            # self.update_activity(dataset.activity)
+            self.create_or_update_activity(dataset.activity)
             self.associate_dataset_with_image(dataset.identifier, image.identifier,
                                               activity_id=dataset.activity.identifier)
         for c in image.contributors:
@@ -384,6 +386,11 @@ class GcisClient(object):
             self.update_activity(activity)
         else:
             self.create_activity(activity)
+
+    def get_activity_list(self):
+        url = '{b}/activity'.format(b=self.base_url)
+
+        return self.s.get(url, params={'all': 1}, verify=False).json()
 
     @exists
     def person_exists(self, person_id):
