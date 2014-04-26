@@ -233,40 +233,37 @@ class Dataset(GcisObject):
 
         #This desperately needs to get added to the webform
         self._identifiers = {
-            'Global Historical Climatology Network - Daily': 'ghcn-daily',
-            'Global Historical Climatology Network - Monthly': 'ghcn-monthly',
-            'NCDC Merged Land and Ocean Surface Temperature': 'mlost',
-            'U.S. Climate Divisional Dataset Version 2': 'cddv2',
-            'Climate Division Database Version 2': 'cddv2',
-            'Eighth degree-CONUS Daily Downscaled Climate Projections by Katharine Hayhoe': 'cmip3-downscaled', #Problem
-            'Eighth degree-CONUS Daily Downscaled Climate Projections': 'cmip3-downscaled', #Problem
-            'Earth Policy Institute Atmospheric Carbon Dioxide Concentration, 1000-2012': 'epi-co2',
-            'Daily 1/8-degree gridded meteorological data [1 Jan 1949 - 31 Dec 2010]': 'maurer',
-            'NCEP/NCAR Reanalysis': 'ncep-ncar',
-            'NCDC Global Surface Temperature Anomalies': 'ncdc-gst-anomalies',
-            'GRACE Static Field Geopotential Coefficients JPL Release 5.0 GSM': 'grace',
-            'UW/NCDC Satellite Derived Hurricane Intensity Dataset': 'hurricane-intensity',
-            'Bias-Corrected and Spatially Downscaled Surface Water Projections Hydrologic Data': 'water-projections',
-            'International Best Track Archive for Climate Stewardship (IBTrACS)': 'ibtracs',
-            'the World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'cmip3',
-            'World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'cmip3',
-            'World Climate Research Program\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'cmip3',
-            'North American Regional Climate Change Assessment Program dataset': 'narccap',
-            'Gridded Population of the World Version 3 (GPWv3): Population Count Grid': 'gpwv3',
-            'ETCCDI Extremes Indices Archive': 'etccdi',
-            'Historical Climatology Network Monthly (USHCN) Version 2.5': 'ushcn',
-            'Annual Maximum Ice Coverage (AMIC)': 'amic',
-            'Global Historical Climatology Network-Daily (GHCN-D) Monthly Summaries: North American subset': 'ghcnd-monthly-summaries',
-            'Global Sea Level From TOPEX & Jason Altimetry': 'topex-jason-altimetry',
-            'World Climate Research Program\'s (WCRP\'s) Coupled Model Intercomparison Project phase 5 (CMIP5) multi-model ensemble': 'cmip5',
+            'Global Historical Climatology Network - Daily': 'nca3-ghcn-daily-r201305',
+            'Global Historical Climatology Network - Monthly': 'nca3-ghcn-monthly-r201305',
+            'NCDC Merged Land and Ocean Surface Temperature': 'nca3-mlost',
+            'U.S. Climate Divisional Dataset Version 2': 'nca3-cddv2-r1',
+            'Climate Division Database Version 2': 'nca3-cddv2-r1',
+            'Eighth degree-CONUS Daily Downscaled Climate Projections by Katharine Hayhoe': 'nca3-cmip3-downscaled-r201304',
+            'Eighth degree-CONUS Daily Downscaled Climate Projections': 'nca3-cmip3-downscaled-r201304',
+            'Earth Policy Institute Atmospheric Carbon Dioxide Concentration, 1000-2012': 'nca3-epi-co2-r201307',
+            'Daily 1/8-degree gridded meteorological data [1 Jan 1949 - 31 Dec 2010]': 'nca3-maurer-r201304',
+            'NCEP/NCAR Reanalysis': 'nca3-ncep-ncar-r1',
+            'NCDC Global Surface Temperature Anomalies': 'nca3-ncdc-gst-anomalies-r201307',
+            'GRACE Static Field Geopotential Coefficients JPL Release 5.0 GSM': 'nca3-grace-r201307',
+            'UW/NCDC Satellite Derived Hurricane Intensity Dataset': 'nca3-hurricane-intensity-r1',
+            'Bias-Corrected and Spatially Downscaled Surface Water Projections Hydrologic Data': 'nca3-water-projections-r201208',
+            'International Best Track Archive for Climate Stewardship (IBTrACS)': 'nca3-ibtracs-r201311',
+            'the World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'nca3-cmip3-r201205',
+            'World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'nca3-cmip3-r201205',
+            'World Climate Research Program\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'nca3-cmip3-r201205',
+            'North American Regional Climate Change Assessment Program dataset': 'nca3-narccap-r201205',
+            'Gridded Population of the World Version 3 (GPWv3): Population Count Grid': 'nca3-gpwv3-r201211',
+            'ETCCDI Extremes Indices Archive': 'nca3-etccdi-r201305',
+            'Historical Climatology Network Monthly (USHCN) Version 2.5': 'nca3-ushcn',
+            'Annual Maximum Ice Coverage (AMIC)': 'nca3-amic-r201308',
+            'Global Historical Climatology Network-Daily (GHCN-D) Monthly Summaries: North American subset': 'nca3-ghcnd-monthly-summaries-r201401',
+            'Global Sea Level From TOPEX & Jason Altimetry': 'nca3-topex-jason-altimetry-r1',
+            'World Climate Research Program\'s (WCRP\'s) Coupled Model Intercomparison Project phase 5 (CMIP5) multi-model ensemble': 'nca3-cmip5-r1',
 
             #Surely we can do better
-            'Proxy Data': 'proxy-data',
-            'Tide Gauge Data': 'tide-gauge-data',
-            'Projected Sea Level Rise': 'projected-sea-level-rise',
-
-            
-            
+            'Proxy Data': 'nca3-proxy-data-r1',
+            'Tide Gauge Data': 'nca3-tide-gauge-data-r1',
+            'Projected Sea Level Rise': 'nca3-projected-sea-level-rise-r1',
         }
 
         #Private attributes for handling date parsing

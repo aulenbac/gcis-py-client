@@ -3,6 +3,8 @@ from gcis_clients import Nca3Client, GcisClient, gcis_stage_auth
 import pickle
 import json
 import requests
+import bs4
+from bs4 import BeautifulSoup
 
 nca3_url = 'https://nca3.cicsnc.org'
 nca3 = Nca3Client(nca3_url, 'andrew.buddenberg', 'Nz9O^00I', http_basic_user='nca3', http_basic_pass='avl-TSU')
@@ -12,9 +14,24 @@ gcis = GcisClient(gcis_url, *gcis_stage_auth)
 
 
 def main():
-    pass
+    for list_item in [i for i in sorted(nca3.get_all_captions().json(), key=lambda f: f['Ordinal']) if i['Ordinal'] and i['Metadata URI'] and i['Caption']]:
+        ordinal = list_item['Ordinal']
+        gcis_fig_id = list_item['Metadata URI'].split('/')[-1]
+
+        # stripped_caption = strip_tags(list_item['Caption']['value'])
+
+        fig = gcis.get_figure('nca3', gcis_fig_id)
+        print fig.as_json()
 
 
+
+def strip_tags(caption):
+    soup = BeautifulSoup(caption)
+
+    for t in soup.find_all(name=lambda t: t.name not in ['tbib']):
+        t.unwrap()
+
+    return str(soup).strip()
 
 
 def get_gcis_chapters():

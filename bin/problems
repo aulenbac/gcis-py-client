@@ -20,6 +20,8 @@ whitelisted_dupes = [
     '8c679de0-4a6c-4fc9-bbd1-59251ffe3d7f', #2.31 #34.21
 
     'a1bd40f2-424e-4af8-8d3d-f44ba7ba36b6', #33.17 #34.13
+
+    '834f7624-40de-4a09-9ced-faaca30d4d6d', #2.27 #18.7
 ]
 
 def main():

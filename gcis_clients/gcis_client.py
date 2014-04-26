@@ -290,17 +290,25 @@ class GcisClient(object):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset_id)
         return self.s.head(url, verify=False)
 
+    @http_resp
     def create_dataset(self, dataset):
         url = '{b}/dataset/'.format(b=self.base_url)
         return self.s.post(url, data=dataset.as_json(), verify=False)
 
+    @http_resp
     def update_dataset(self, dataset, old_id=None):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=old_id or dataset.identifier)
         return self.s.post(url, data=dataset.as_json(), verify=False)
 
+    @http_resp
     def delete_dataset(self, dataset):
         url = '{b}/dataset/{ds}'.format(b=self.base_url, ds=dataset.identifier)
         return self.s.delete(url, verify=False)
+
+    @http_resp
+    def get_dataset_list(self):
+        url = '{b}/dataset/'.format(b=self.base_url)
+        return self.s.get(url, params={'all': 1}, verify=False)
 
     def associate_dataset_with_image(self, dataset_id, image_id, activity_id=None):
         url = '{b}/image/prov/{img}'.format(b=self.base_url, img=image_id)
@@ -525,3 +533,22 @@ class GcisClient(object):
 
         return self.s.post(url, data=json.dumps(data), verify=False)
 
+    @http_resp
+    def associate_figure_with_report(self, figure_id, report_id, other_report_id):
+        url = '{b}/report/{rpt}/figure/prov/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
+
+        data = {
+            'parent_uri': '/report/' + other_report_id,
+            'parent_rel': 'prov:wasDerivedFrom'
+        }
+
+        return self.s.post(url, data=json.dumps(data), verify=False)
+
+    def lookup_publication(self, pub_type, name):
+        url = '{b}/autocomplete'.format(b=self.base_url)
+        resp = self.s.get(url, params={'q': name, 'items': 15, 'type': pub_type}, verify=False)
+
+        if resp.status_code == 200:
+            return [re.match(r'\[.+\] \{(.+)\} (.*)', r).groups() for r in resp.json()]
+        else:
+            raise Exception(resp.text)
