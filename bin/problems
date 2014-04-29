@@ -7,8 +7,8 @@ from gcis_clients.sync_utils import move_images_to_gcis
 
 webform_client = WebformClient('http://resources.assessment.globalchange.gov', webform_token)
 
-# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
-gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
+gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
+# gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
 
 whitelisted_dupes = [
     'e13cdf2e-0699-4c52-a642-56c8fc3317c4', #33.11 #34.11
