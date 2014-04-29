@@ -6,8 +6,9 @@ from os.path import join
 import getpass
 import requests
 from dateutil.parser import parse
+from copy import deepcopy
 
-from domain import Figure, Image, Dataset, Activity, Contributor, Person, Organization
+from domain import Figure, Image, Dataset, Activity, Contributor, Person, Organization, Parent
 
 
 def sanitized(pattern):
@@ -86,6 +87,11 @@ class WebformClient:
         #Add contributor info
         if 'list_the_creator_of_the_figure' in figure_json:
             f.add_contributor(parse_creators(figure_json['list_the_creator_of_the_figure']))
+
+        #Add provenance information (wasDerivedFrom parent)
+        if 'what_type_of_source_provided_this_figure' in figure_json and figure_json[
+            'what_type_of_source_provided_this_figure'] == 'published_source':
+            f.add_parent(Parent(deepcopy(f.original)))
 
         if 'images' in webform_json[webform_nid]:
             for img_idx, image in enumerate(webform_json[webform_nid]['images']):
@@ -192,4 +198,5 @@ class WebformClient:
                         dataset_map[dataset.identifier].merge(dataset)
                         dataset_map[dataset.identifier].activity.merge(dataset.activity)
 
+                    # print webform_url, dataset.identifier
         return dataset_map.values()

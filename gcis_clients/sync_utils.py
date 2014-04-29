@@ -55,3 +55,20 @@ def realize_contributors(gcis_client, contributors):
     if not all(map(lambda c: c.organization.identifier is not None, contributors)):
         print contributors
 
+
+def realize_parents(gcis_client, parents):
+    for parent in parents:
+        # print parent.publication_type_identifier, parent.label
+        if parent.url:
+            print '\t', ' '.join(('Using hint for', parent.publication_type_identifier, parent.label))
+            continue
+
+        parent_matches = gcis_client.lookup_publication(parent.publication_type_identifier, parent.label)
+
+        if len(parent_matches) == 1:
+            parent.url = '/{type}/{id}'.format(type=parent.publication_type_identifier, id=parent_matches[0][0])
+        elif len(parent_matches) == 0:
+            print '\t', ' '.join(('No ID found for', parent.publication_type_identifier, parent.label))
+        else:
+            print '\t', ' '.join(('Ambiguous results for', parent.publication_type_identifier, parent.label))
+            print '\t\t', parent_matches

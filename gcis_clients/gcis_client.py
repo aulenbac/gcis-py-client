@@ -110,6 +110,9 @@ class GcisClient(object):
                 self.create_image(image),
                 self.associate_image_with_figure(image.identifier, report_id, figure.identifier)
 
+        for p in figure.parents:
+            self.associate_figure_with_parent(report_id, figure.identifier, p)
+
         return resp
 
     @http_resp
@@ -133,6 +136,9 @@ class GcisClient(object):
 
         for c in figure.contributors:
             self.associate_contributor_with_figure(c, report_id, chapter_id, figure.identifier)
+
+        for p in figure.parents:
+            self.associate_figure_with_parent(report_id, figure.identifier, p)
 
         return resp
 
@@ -534,15 +540,38 @@ class GcisClient(object):
         return self.s.post(url, data=json.dumps(data), verify=False)
 
     @http_resp
-    def associate_figure_with_report(self, figure_id, report_id, other_report_id):
+    def associate_figure_with_parent(self, report_id, figure_id, parent):
         url = '{b}/report/{rpt}/figure/prov/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
 
         data = {
-            'parent_uri': '/report/' + other_report_id,
-            'parent_rel': 'prov:wasDerivedFrom'
+            'parent_uri': parent.url,
+            'parent_rel': parent.relationship
         }
 
-        return self.s.post(url, data=json.dumps(data), verify=False)
+        try:
+            self.delete_figure_pub_assoc(report_id, figure_id, parent)
+        except AssociationException as e:
+            print e.value
+
+        resp = self.s.post(url, data=json.dumps(data), verify=False)
+        return resp
+
+    def delete_figure_pub_assoc(self, report_id, figure_id, parent):
+        url = '{b}/report/{rpt}/figure/prov/{fig}'.format(b=self.base_url, rpt=report_id, fig=figure_id)
+
+        data = {
+            'delete': {
+                'parent_uri': parent.url,
+                'parent_rel': parent.relationship
+            }
+        }
+        resp = self.s.post(url, data=json.dumps(data), verify=False)
+
+        if resp.status_code == 200:
+            return resp
+        else:
+            raise AssociationException(
+                'Parent dissociation failed:\n{url}\n{resp}\n{d}'.format(url=url, resp=resp.text, d=data))
 
     def lookup_publication(self, pub_type, name):
         url = '{b}/autocomplete'.format(b=self.base_url)
@@ -550,5 +579,6 @@ class GcisClient(object):
 
         if resp.status_code == 200:
             return [re.match(r'\[.+\] \{(.+)\} (.*)', r).groups() for r in resp.json()]
+            # return resp.json()
         else:
             raise Exception(resp.text)

@@ -61,6 +61,9 @@ class GcisObject(Gcisbase):
         contrib_list = data.pop('contributors', None)
         self.contributors = [Contributor(contrib) for contrib in contrib_list] if contrib_list else []
 
+        parents_list = data.pop('parents', None)
+        self.parents = [Parent(parent) for parent in parents_list] if parents_list else []
+
         super(GcisObject, self).__init__(data, **kwargs)
 
     def add_contributor(self, contributor):
@@ -68,6 +71,9 @@ class GcisObject(Gcisbase):
 
     def add_person(self, person):
         self.contributors.append(Contributor(person, Organization()))
+
+    def add_parent(self, parent):
+        self.parents.append(parent)
 
 
 class Figure(GcisObject):
@@ -245,7 +251,7 @@ class Dataset(GcisObject):
             'NCEP/NCAR Reanalysis': 'nca3-ncep-ncar-r1',
             'NCDC Global Surface Temperature Anomalies': 'nca3-ncdc-gst-anomalies-r201307',
             'GRACE Static Field Geopotential Coefficients JPL Release 5.0 GSM': 'nca3-grace-r201307',
-            'UW/NCDC Satellite Derived Hurricane Intensity Dataset': 'nca3-hurricane-intensity-r1',
+            'UW/NCDC Satellite Derived Hurricane Intensity Dataset': 'nca3-hursat-r1',
             'Bias-Corrected and Spatially Downscaled Surface Water Projections Hydrologic Data': 'nca3-water-projections-r201208',
             'International Best Track Archive for Climate Stewardship (IBTrACS)': 'nca3-ibtracs-r201311',
             'the World Climate Research Programme\'s (WCRP\'s) Coupled Model Intercomparison Project phase 3 (CMIP3) multi-model dataset': 'nca3-cmip3-r201205',
@@ -278,6 +284,10 @@ class Dataset(GcisObject):
         super(Dataset, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
 
         self.identifier = self._identifiers[self.name] if self.name in self._identifiers else self.name
+
+        #Hack to fix a particular kind of bad URL
+        if self.url and self.url.startswith('ttp://'):
+            self.url = self.url.replace('ttp://', 'http://')
 
     def __repr__(self):
         return 'Dataset: {id}: {name}'.format(id=self.identifier, name=self.name)
@@ -412,8 +422,9 @@ class Organization(Gcisbase):
         }
 
         super(Organization, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
-        
-        self.identifier = self._identifiers[self.name] if self.name in self._identifiers else None
+
+        if not self.identifier:
+            self.identifier = self._identifiers[self.name] if self.name in self._identifiers else None
 
     def __repr__(self):
         return 'Organization: {id}: {name}'.format(id=self.identifier, name=self.name)
@@ -449,20 +460,24 @@ class Contributor(Gcisbase):
             'Jeremy Littell': 'scientist',
             'Emily Cloyd': 'contributing_author',
             'F. Chapin': 'scientist',
-            ' Chapin': 'scientist'
+            ' Chapin': 'scientist',
+            'Andrew Buddenberg': 'analyst'
         }
+        self._role = None
 
         super(Contributor, self).__init__(data, fields=self.gcis_fields)
 
-        self.person = None
-        self.organization = None
-        self._role = None
+        person_tree = data.pop('person', None)
+        org_tree = data.pop('organization', None)
+
+        self.person = Person(person_tree) if person_tree else None
+        self.organization = Organization(org_tree) if org_tree else None
 
     @property
     def role(self):
 
         #Hack hack hack
-        if self._role is None:
+        if self._role is None and self.person is not None:
             horrible_key = ' '.join((self.person.first_name, self.person.last_name))
             self._role = Role(self.people_role_map[horrible_key]) if horrible_key in self.people_role_map else None
 
@@ -485,3 +500,127 @@ class Role(object):
     def __str__(self):
         return self.__repr__()
 
+
+class Parent(Gcisbase):
+    def __init__(self, data):
+        self.gcis_fields = ['relationship', 'url', 'publication_type_identifier', 'label', 'activity_uri', 'note']
+
+        self.translations = {
+            'what_type_of_publication_was_the_figure_published_in': 'publication_type_identifier',
+            'name_title': 'label',
+            'article_title': 'label',
+            'book_title': 'label',
+            'web_page_title': 'label',
+            'conference_title': 'label',
+            'title': 'label',
+        }
+
+        self.publication_type_map = {
+            'report': 'report',
+            'journal_article': 'article',
+            'book_section': 'report',
+            'electronic_article': 'article',
+            'web_page': 'webpage',
+            'book': 'book',
+            'conference_proceedings': 'generic',
+        }
+
+        self.search_hints = {
+            'report': {
+                'The State of the Climate 2009 Highlights': 'usgcrp-globclimchhighlights-2009',
+                'Global Climate Change Impacts in the United States': 'nca2',
+                'Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Study, Phase I.': 'ccsp-sap-4_7-2008',
+                'Climate and Energy-Water-Land  System Interactions': 'pnnl-21185',
+                'Freshwater Use by U.S. Power Plants Electricity\'s thirst for a Precious Resource': 'ucusa-freshwater-2011',
+                'New York City Panel on Climate Change Climate Risk Information 2013 Observations, Climate Change Projections and Maps': 'nycpanelonclimch-cri2013',
+                'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 2. Climate of the Southeast U.S.': 'noaa-techreport-nesdis-142-2',
+                'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 3. Climate of the Midwest U.S.': 'noaa-techreport-nesdis-142-3',
+                'Reefs at Risk Revisited': ('book', '3788c071-e06a-42c3-b0b9-0396fd494aa3'),
+                'Climate Change and Pacific Islands: Indicators and Impacts Report for the 2012 Pacific Islands  Regional Climate Assessment': 'pirca-climate-change-and-pacific-islands',
+                'Climate adaptation: Risk, uncertainty and decision-making': 'ukcip-climate-adaptation-risk-uncertainty-and-decision-making',
+                'Adapting to Impacts of Climate Change. America\'s Climate Choices: Report of the Panel on 43 Adapting to the Impacts of Climate C': ('book', '1e88532d-c40d-47d2-a872-77b2627fbe89'),
+                'Climate Change 2007:  The Physical Science Basis. Contribution of Working Group I to the Fourth Assessment Report of the IPCC': ('book', '92debecd-ca55-46f1-a0c1-734e6b0dc6b1'),
+                'Snow, Water, Ice and Permafrost in the Arctic (SWIPA): Climate Change and the Cryosphere': ('book', 'e7c9614c-8db8-410f-9fec-0957292554bf'),
+                'Climate Change 2013: The Physical Science Basis. Contribution of Working Group I to the Fifth Assessment  Report of the IPCC': 'ipcc-wg1-ar5-physical-science-basis',
+                'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 9. Climate of the Contiguous United States': 'noaa-techreport-nesdis-142-9',
+                'How to Avoid Dangerous Climate Change. A Target for U.S. Emissions Reductions': 'ucusa-howtoavoid-2007',
+                'Summary for Decision Makers. Assessment of Climate Change in the Southwest United States': 'swccar-assessment-climate-change-in-southwest-us',
+                'Climate Variability and Change in Mobile, Alabama: Task 2 Final Report. Impacts of Climate  25 Change and Variability on Transpo': 'fhwa-hep-12-053',
+                'Effects of Climatic Variability and  Change on Forest Ecosystems: A Comprehensive Science  Synthesis for the U.S. Forest  Sector': 'usfs-gtr-nrs-87',
+                'Future of America\'s Forests and Rangelands Forest Service. 2010 Resources Planning Act Assessment': 'usfs-gtr-wo-87'
+
+
+
+            },
+            'webpage': {
+                'Toxic Algae Bloom in Lake Erie. October 14, 2011': 'afe12af6-a7d3-4b70-99e5-0f80b67b7047',
+                'Tribal Energy Program Projects on Tribal Lands': 'abde0ebc-342b-4bb7-b206-016cd3c829c4',
+                'Atlas of Rural and Small-Town America. Category: County Classifications. Current Map: Rural-urban Continuum Code, 2013': '2cb79b4a-31cf-43ec-a70a-0371626f1407',
+                'Atlas of Rural and Small-Town America. Category: County Classifications. Current Map: Economic Dependence, 1998-2000': '2cb79b4a-31cf-43ec-a70a-0371626f1407',
+                'Atlas of Rural and Small-Town America. Category: People.': '2cb79b4a-31cf-43ec-a70a-0371626f1407',
+                'St. Petersburg Coastal and Marine Science Center': '2f586ef7-91bb-45e5-b463-ee3e358185ba',
+                'NASA Earth Observatory Natural Hazards': 'c57946b1-f413-491f-b75c-1c08f7594f84',
+                'Plants of Hawaii': 'a8159919-b01c-442b-afb8-c2e272f81f48',
+                'Public Roads': '5f3538ab-eb81-4858-b44e-1304b949b288',
+                'Freight Analysis Framework Data Tabulation Tool': '5fe65558-d010-445b-b4f1-9079224dca6b',
+                'Ecosystem Services Analysis of Climate Change and Urban Growth in the Upper Santa Cruz Watershed: SCWEPM': 'd4622f7e-aca7-42e6-95da-90579a187c30',
+                'State and Local Climate Adaptation': '7de6bfc9-55fa-4d12-ae80-486561b3802c',
+                'Climate Change Response Framework - Northwoods': '267378f7-278b-4201-8ffa-a820f5a694b8',
+                'NWHI Maps and Publications': 'e6438f11-85f4-4c29-abb5-b09efa3279b2'
+
+
+            },
+            'article': {
+                'North American carbon dioxide sources and sinks: magnitude, attribution, and uncertainty': '10.1890/120066',
+                'Air Quality and Exercise-Related Health Benefits from Reduced Car Travel  in the Midwestern United States': '10.1289/ehp.1103440',
+                'A Shift in Western Tropical Pacific Sea Level Trends during the 1990s': '10.1175/2011JCLI3932.1',
+                'An update on Earth\'s energy balance in light of the latest global observations': '10.1038/ngeo1580',
+                'About the Lack of Warming...': ('web_page', 'e2ec2d0f-430c-4032-a309-2514ca1f6572'),
+                'The Myth of the 1970s Global Cooling Scientific Consensus': '10.1175/2008BAMS2370.1',
+                'Hurricane Sandy devestates NY/NJ-area passenger rai systems': ('web_page', '135ae7d9-56e3-4dcb-a81c-42a6f1e9b332')
+
+            },
+            'book': {
+                'Climate Change and Pacific Islands: Indicators and Impacts. Report for the 2012 Pacific Islands Regional Climate Assessment': ('report', 'pirca-climate-change-and-pacific-islands'),
+                'A focus on climate during the past 100 years in "Climate Variability and Extremes during the Past 100 Years"': '998aa4c2-9f0d-478c-b7bb-19e383c628a9'
+            },
+            'generic': {
+                'Verrazano Narrows Storm Surge Barrier: Against the Deluge: Storm Barriers to  Protect New York City, March 31st 2009': '01d188d1-636b-49e6-af43-c1544cee9319'
+            }
+        }
+
+        self._publication_type_identifier = None
+
+        super(Parent, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
+
+        #HACK: Set default relationship type
+        self.relationship = self.relationship if self.relationship else 'prov:wasDerivedFrom'
+
+        #HACK to smooth out ambiguous search results
+        if self.publication_type_identifier in self.search_hints and self.label in \
+                self.search_hints[self.publication_type_identifier]:
+
+            hint = self.search_hints[self.publication_type_identifier][self.label]
+            if isinstance(hint, tuple):
+                type, id = hint
+                self.publication_type_identifier = type
+            else:
+                id = hint
+                type = self.publication_type_identifier
+
+            self.url = '/{type}/{id}'.format(type=self.publication_type_identifier, id=id)
+
+    @property
+    def publication_type_identifier(self):
+        return self._publication_type_identifier
+
+    @publication_type_identifier.setter
+    def publication_type_identifier(self, value):
+        self._publication_type_identifier = self.publication_type_map[value] \
+            if value in self.publication_type_map else '**MISSING**' + value
+
+    def __repr__(self):
+        return '{rel}: {type}: {url}'.format(rel=self.relationship, type=self.publication_type_identifier, url=self.url)
+
+    def __str__(self):
+        return self.__repr__()
