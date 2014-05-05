@@ -502,11 +502,7 @@ class GcisClient(object):
         url = '{b}/report/{rpt}/chapter/{chp}/figure/contributors/{fig}'.format(b=self.base_url, rpt=report_id, chp=chapter_id, fig=figure_id)
 
         data = {
-            'delete': {
-                'role': contrib.role.type_id,
-                'organization_identifier': contrib.organization.identifier,
-                'person_id': contrib.person.identifier
-            }
+            'delete_contributor': contrib.id
         }
 
         return self.s.post(url, data=json.dumps(data), verify=False)
