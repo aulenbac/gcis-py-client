@@ -9,14 +9,14 @@ from bs4 import BeautifulSoup
 nca3_url = 'https://nca3.cicsnc.org'
 nca3 = Nca3Client(nca3_url, 'andrew.buddenberg', 'Nz9O^00I', http_basic_user='nca3', http_basic_pass='avl-TSU')
 
-# gcis_url = 'https://data-stage.globalchange.gov'
-# gcis = GcisClient(gcis_url, *gcis_stage_auth)
-gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
+gcis_url = 'https://data-stage.globalchange.gov'
+gcis = GcisClient(gcis_url, *gcis_stage_auth)
+# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
 
 
 def main():
     print gcis.test_login()
-    for list_item in [i for i in sorted(nca3.get_all_captions().json(), key=lambda f: f['Ordinal']) if i['Ordinal'] and i['Metadata URI'] and i['Caption']][2:3]:
+    for idx, list_item in enumerate([i for i in sorted(nca3.get_all_captions().json(), key=lambda f: f['Ordinal']) if i['Ordinal'] and i['Metadata URI'] and i['Caption']]):
         ordinal = list_item['Ordinal']
         gcis_fig_id = list_item['Metadata URI'].split('/')[-1]
 
@@ -25,9 +25,11 @@ def main():
         fig = gcis.get_figure('nca3', gcis_fig_id)
         fig.caption = stripped_caption
 
+        # print idx, list_item
+        # print stripped_caption
         #Just to be safe...
         fig.contributors = []
-        # print gcis.update_figure('nca3', fig.chapter_identifier, fig, skip_images=True)
+        print gcis.update_figure('nca3', fig.chapter_identifier, fig, skip_images=True)
 
 
 
@@ -35,7 +37,7 @@ def main():
 def strip_tags(caption):
     soup = BeautifulSoup(caption)
 
-    for t in soup.find_all(name=lambda t: t.name not in ['tbib', 'sup']):
+    for t in soup.find_all(name=lambda t: t.name not in ['tbib', 'sup', 'sub']):
         t.unwrap()
 
     return str(soup).strip()
