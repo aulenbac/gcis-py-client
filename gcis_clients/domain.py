@@ -416,8 +416,12 @@ class Organization(Gcisbase):
             'Institute of the Environment': 'university-arizona',
             'USGS': 'us-geological-survey',
             'University of Puerto Rico': 'university-puerto-rico',
-            'University of Alaska': 'university-alaska'
-
+            'University of Alaska': 'university-alaska',
+            'U.S. Department of Agriculture': 'us-department-agriculture',
+            'Kiksapa Consulting': 'kiksapa-consulting-llc',
+            'Centers for Disease Control and Prevention': 'centers-disease-control-and-prevention',
+            'Pacific Northwest Laboratories': 'pacific-northwest-national-laboratory',
+            'Susanne Moser Research & Consulting': 'susanne-moser-research-consulting'
 
         }
 
@@ -435,7 +439,7 @@ class Organization(Gcisbase):
 
 class Contributor(Gcisbase):
     def __init__(self, data):
-        self.gcis_fields = ['role_type_identifier', 'organization_uri', 'uri', 'href', 'person_uri']
+        self.gcis_fields = ['role_type_identifier', 'organization_uri', 'uri', 'href', 'person_uri', 'person_id', 'id']
 
         #Hack
         self.people_role_map = {
@@ -461,7 +465,14 @@ class Contributor(Gcisbase):
             'Emily Cloyd': 'contributing_author',
             'F. Chapin': 'scientist',
             ' Chapin': 'scientist',
-            'Andrew Buddenberg': 'analyst'
+            'Andrew Buddenberg': 'analyst',
+            'Jerry Hatfield': 'author',
+            'George Luber': 'lead_author',
+            'Kathy Hibbard': 'lead_author',
+            'Susanne Moser': 'convening_lead_author',
+            'Bull Bennett': 'convening_lead_author',
+            'Ernesto Weil': 'scientist',
+            'William Elder': 'scientist'
         }
         self._role = None
 
@@ -527,7 +538,7 @@ class Parent(Gcisbase):
 
         self.search_hints = {
             'report': {
-                'The State of the Climate 2009 Highlights': 'usgcrp-globclimchhighlights-2009',
+                'The State of the Climate 2009 Highlights': 'noaa-stateofclim-2009',
                 'Global Climate Change Impacts in the United States': 'nca2',
                 'Impacts of Climate Change and Variability on Transportation Systems and Infrastructure: Gulf Study, Phase I.': 'ccsp-sap-4_7-2008',
                 'Climate and Energy-Water-Land  System Interactions': 'pnnl-21185',
@@ -546,7 +557,7 @@ class Parent(Gcisbase):
                 'How to Avoid Dangerous Climate Change. A Target for U.S. Emissions Reductions': 'ucusa-howtoavoid-2007',
                 'Summary for Decision Makers. Assessment of Climate Change in the Southwest United States': 'swccar-assessment-climate-change-in-southwest-us',
                 'Climate Variability and Change in Mobile, Alabama: Task 2 Final Report. Impacts of Climate  25 Change and Variability on Transpo': 'fhwa-hep-12-053',
-                'Effects of Climatic Variability and  Change on Forest Ecosystems: A Comprehensive Science  Synthesis for the U.S. Forest  Sector': 'usfs-gtr-nrs-87',
+                'Effects of Climatic Variability and  Change on Forest Ecosystems: A Comprehensive Science  Synthesis for the U.S. Forest  Sector': 'usfs-pnw-gtr-870',
                 'Future of America\'s Forests and Rangelands Forest Service. 2010 Resources Planning Act Assessment': 'usfs-gtr-wo-87'
 
 
@@ -566,7 +577,9 @@ class Parent(Gcisbase):
                 'Ecosystem Services Analysis of Climate Change and Urban Growth in the Upper Santa Cruz Watershed: SCWEPM': 'd4622f7e-aca7-42e6-95da-90579a187c30',
                 'State and Local Climate Adaptation': '7de6bfc9-55fa-4d12-ae80-486561b3802c',
                 'Climate Change Response Framework - Northwoods': '267378f7-278b-4201-8ffa-a820f5a694b8',
-                'NWHI Maps and Publications': 'e6438f11-85f4-4c29-abb5-b09efa3279b2'
+                'NWHI Maps and Publications': 'e6438f11-85f4-4c29-abb5-b09efa3279b2',
+                'The Cryosphere Today Compare Daily Sea Ice': 'e4a9eb6a-9421-42c3-94b1-47caf588d41d',
+                'NASA Earth Observatory Visualizing the Sea Ice Minimum': '71b4c19e-42da-4f15-99d2-7c7746d8eaf2'
 
 
             },
@@ -577,7 +590,9 @@ class Parent(Gcisbase):
                 'An update on Earth\'s energy balance in light of the latest global observations': '10.1038/ngeo1580',
                 'About the Lack of Warming...': ('web_page', 'e2ec2d0f-430c-4032-a309-2514ca1f6572'),
                 'The Myth of the 1970s Global Cooling Scientific Consensus': '10.1175/2008BAMS2370.1',
-                'Hurricane Sandy devestates NY/NJ-area passenger rai systems': ('web_page', '135ae7d9-56e3-4dcb-a81c-42a6f1e9b332')
+                'Hurricane Sandy devestates NY/NJ-area passenger rai systems': ('web_page', '135ae7d9-56e3-4dcb-a81c-42a6f1e9b332'),
+                'Climate change impacts of US reactive nitrogen': '10.1073/pnas.1114243109',
+                'Range-wide patterns of greater  sage-grouse persistence': '10.1111/j.1472-4642.2008.00502.x'
 
             },
             'book': {

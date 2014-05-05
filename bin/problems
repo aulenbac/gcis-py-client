@@ -11,8 +11,8 @@ gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
 # gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
 
 whitelisted_dupes = [
-    'e13cdf2e-0699-4c52-a642-56c8fc3317c4', #33.11 #34.11
-    '03937439-cc5a-45c7-a0fd-78b863c49979', #33.11 #34.11
+    'e13cdf2e-0699-4c52-a642-56c8fc3317c4', #33.1 #34.11
+    '03937439-cc5a-45c7-a0fd-78b863c49979', #33.1 #34.11
 
     '0bcb7984-50c0-4f94-9946-c3fa635125a4', #2.1 #34.2
 

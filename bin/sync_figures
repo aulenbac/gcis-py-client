@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 __author__ = 'abuddenberg'
 
-from gcis_clients import WebformClient, GcisClient, gcis_dev_auth, gcis_stage_auth, webform_token
+from gcis_clients import WebformClient, GcisClient, gcis_dev_auth, gcis_stage_auth, webform_token, AssociationException
 from gcis_clients.sync_utils import move_images_to_gcis, sync_dataset_metadata, realize_contributors, realize_parents
 from collections import OrderedDict
 
 webform = WebformClient('http://resources.assessment.globalchange.gov', webform_token)
 
-gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
-# gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
+# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
+gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
 
 sync_metadata_tree = {
     #Reports
@@ -20,17 +20,25 @@ sync_metadata_tree = {
             ('/metadata/figures/3293', 'observed-increase-in-frostfree-season-length'),  # 2.10
             ('/metadata/figures/3294', 'projected-changes-in-frostfree-season-length'),  # 2.11
             ('/metadata/figures/2677', 'observed-us-precipitation-change'),  # 2.12
+            ('/metadata/figures/3296', 'ann-max-precip-cons-dry-day'),  # 2.13
+            ('/metadata/figures/3297', 'projected-precipitation-change-by-season'),  # 2.14
+            ('/metadata/figures/2955', 'proj-precip-change'),  # 2.15
             ('/metadata/figures/3298', 'observed-us-trend-in-heavy-precipitation'),  # 2.16
             ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),  # 2.17
             ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),  # 2.18
             ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),  # 2.2
             ('/metadata/figures/2939', 'projected-changes-in-soil-moisture-for-the-western-us'),  # 2.22
+            ('/metadata/figures/3304', 'observed-trends-in-hurricane-power-dissipation'),  # 2.23
             ('/metadata/figures/3305', 'variation-of-storm-frequency-and-intensity-during-the-cold-season-november--march'),  # 2.24
             ('/metadata/figures/3067', 'ice-cover-in-the-great-lakes'),  # 2.27
             ('/metadata/figures/3073', 'projected-arctic-sea-ice-decline'),  # 2.29
             ('/metadata/figures/2940', 'as-oceans-absorb-co-they-become-more-acidic'),  # 2.30
             ('/metadata/figures/2523', 'shells-dissolve-in-acidified-ocean-water'),  # 2.31
+            ('/metadata/figures/3078', 'emissions-levels-determine-temperature-rises'),  # 2.4
+            ('/metadata/figures/3172', 'projected-change-in-average-annual-temperature'),  #2.5
+            ('/metadata/figures/3176', 'projected-change-in-average-annual-precipitation'),  # 2.6
             ('/metadata/figures/3175', 'observed-us-temperature-change'),  # 2.7
+            ('/metadata/figures/3001', 'projected-temperature-change'),  # 2.8
             ('/metadata/figures/3000', 'projected-temperature-change-by-20712099-cmip5-models'),  #2.9
 
         ]),
@@ -46,8 +54,8 @@ sync_metadata_tree = {
         ]),
         #Chapter 5
         ('transportation', [
-            # ('/metadata/figures/3088', 'possible-future-flood-depths-in-mobile-al-with-rising-sea-level'),  # 5.1
-            # ('/metadata/figures/2905', 'gulf-coast-transportation-hubs-at-risk'),  # 5.3
+            ('/metadata/figures/3088', 'possible-future-flood-depths-in-mobile-al-with-rising-sea-level'),  # 5.1
+            ('/metadata/figures/2905', 'gulf-coast-transportation-hubs-at-risk'),  # 5.3
             ('/metadata/figures/3568', 'hurricane-sandy-causes-flooding-in-new-york-city-subway-stations'),  # 5.4
             ('/metadata/figures/2952', 'role-of-adaptive-strategies-and-tactics-in-reducing-impacts-and-consequences'),  # 5.5
             ('/metadata/figures/3169', 'tropical-storm-impact-on-vermont-road'),  # 5.6
@@ -69,6 +77,7 @@ sync_metadata_tree = {
         ]),
         #Chapter 8
         ('ecosystems', [
+            ('/metadata/figures/2576', 'the-aftermath-of-hurricanes'),  # 8.2
             ('/metadata/figures/2456', 'adaptation-planning-and-implementation-framework'),  # 8.3
             ('/metadata/figures/3574', 'biological-responses-to-climate-change'),  # 8.4
         ]),
@@ -99,6 +108,7 @@ sync_metadata_tree = {
             ('/metadata/figures/3131', 'indigenous-populations-extend-beyond-reservation-lands'),  # 12.1
             ('/metadata/figures/2594', 'many-tribes-many-climate-change-initiatives'),  # 12.2
             ('/metadata/figures/2909', 'sand-dune-expansion'),  # 12.3
+            ('/metadata/figures/3572', 'sea-ice-cover-reaches-record-low'),  # 12.4
             ('/metadata/figures/2911', 'arctic-marine-food-web'),  # 12.5
         ]),
         #Chapter 13
@@ -115,6 +125,7 @@ sync_metadata_tree = {
         # Chapter 15
         ('biogeochemical-cycles', [
             ('/metadata/figures/2874', 'major-north-american-carbon-dioxide-sources-and-sinks'),  # 15.1
+            ('/metadata/figures/2574', 'nitrogen-emissions'),  # 15.3
             ('/metadata/figures/2575', 'many-factors-combine-to-affect-biogeochemical-cycles'),  # 15.4
         ]),
         #Chapter 16
@@ -149,9 +160,11 @@ sync_metadata_tree = {
             ('/metadata/figures/2990', 'projected-change-in-number-of-warm-nights'),  # 19.3
             ('/metadata/figures/2991', 'projected-change-in-number-of-heavy-precipitation-days'),  # 19.4
             ('/metadata/figures/3002', 'projected-change-in-number-of-consecutive-dry-days'),  # 19.5
+            ('/metadata/figures/3280', 'historical-and-current-range-of-sage-grouse-habitat')  #19.7
         ]),
         #Chapter 20
         ('southwest', [
+            ('/metadata/figures/2568', 'coastal-risks-posed-by-sea-level-rise-and-high-tides'),  #20.5
             ('/metadata/figures/3484', 'urban-heat-and-public-health'),  # 20.6
         ]),
         #Chapter 21
@@ -166,12 +179,19 @@ sync_metadata_tree = {
         #Chapter 23
         ('hawaii', [
             ('/metadata/figures/2834', 'us-pacific-islands-region'),  # 23.1
+            ('/metadata/figures/3283', 'high-and-low-pacific-islands-face-different-threats'),  #23.2
             ('/metadata/figures/3284', 'increased-acidification-decreases-suitable-coral-habitat'),  # 23.3
             ('/metadata/figures/2837', 'observed-changes-in-annual-rainfall-in-the-western-north-pacific'),  # 23.4
             ('/metadata/figures/2838', 'native-plants-at-risk'),  # 23.5
             ('/metadata/figures/3285', 'saltwater-intrusion-destroys-crops'),  # 23.6
             ('/metadata/figures/2840', 'residents-of-lowlying-islands-at-risk'),  # 23.7
             ('/metadata/figures/3286', 'higher-sea-level-rise-in-western-pacific'),  # 23.8
+        ]),
+        #Chapter 24
+        ('oceans-marine-resources', [
+            ('/metadata/figures/3106', 'observed-ocean-warming'),  # 24.1
+            ('/metadata/figures/2560', 'ocean-acidification-reduces-size-of-clams'),  #24.3
+            ('/metadata/figures/2853', 'warming-seas-are-a-doubleblow-to-corals')  # 24.4
         ]),
         #Chapter 25
         ('coastal-zone', [
@@ -202,6 +222,7 @@ sync_metadata_tree = {
         #Chapter 33: Climate Science Appendix
         ('appendix-climate-science-supplement', [
             ('/metadata/figures/3112', 'indicators-of-warming-from-multiple-data-sets'),  # 33.10
+            ('/metadata/figures/3097', 'human-influence-on-the-greenhouse-effect'),  #33.1
             ('/metadata/figures/3138', 'warming-trend-and-effects-of-el-nino-la-nina'),  # 33.14
             ('/metadata/figures/2798', 'detection-and-attribution-as-forensics'),  # 33.16
             ('/metadata/figures/3301', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),  # 33.17
@@ -213,6 +234,7 @@ sync_metadata_tree = {
             ('/metadata/figures/2806', 'ice-cover-on-lake-mendota'),  # 33.29
             ('/metadata/figures/2534', 'app-extreme-precipitation'),  # 33.32
             ('/metadata/figures/2809', 'extreme-drought-in-the-us-and-mexico-past-and-future'),  # 33.35
+            ('/metadata/figures/3148', 'arctic-sea-ice-decline'),  # 33.37
             ('/metadata/figures/2393', 'permafrost-temperatures-rising'),  # 33.38
             ('/metadata/figures/3144', 'melting-of-arctic-landbased-ice'),  # 33.39
             ('/metadata/figures/3145', 'melting-glaciers-lead-to-sea-level-rise'),  # 33.40
@@ -223,6 +245,7 @@ sync_metadata_tree = {
         #Chapter 34: FAQ/CAQ
         ('appendix-faqs', [
             ('/metadata/figures/2663', 'us-annual-temperature'),  # 34.1
+            ('/metadata/figures/3096', 'caq-human-influence-on-the-greenhouse-effect'),  # 34.11
             ('/metadata/figures/3300', 'caq-human-influences-apparent-in-many-aspects-of-the-changing-climate'),  # 34.13
             ('/metadata/figures/3091', 'published-climate-change-research-papers'),  # 34.18
             ('/metadata/figures/3075', 'caq-ten-indicators-of-a-warming-world'),  # 34.2
@@ -235,11 +258,22 @@ sync_metadata_tree = {
     ])
 }
 
+images_with_multiple_figures = {
+    'e13cdf2e-0699-4c52-a642-56c8fc3317c4': ['human-influence-on-the-greenhouse-effect', 'caq-human-influence-on-the-greenhouse-effect'], #33.1 #34.11
+    '03937439-cc5a-45c7-a0fd-78b863c49979': ['human-influence-on-the-greenhouse-effect', 'caq-human-influence-on-the-greenhouse-effect'], #33.1 #34.11
+    '0bcb7984-50c0-4f94-9946-c3fa635125a4': ['ten-indicators-of-a-warming-world', 'caq-ten-indicators-of-a-warming-world'], #2.1 #34.2
+    'eb9bd7dc-3e3a-4001-9a64-f2a0763b3f64': ['shells-dissolve-in-acidified-ocean-water', 'ocean-acidification-and-the-food-web'], #2.31 #34.21
+    '8c679de0-4a6c-4fc9-bbd1-59251ffe3d7f': ['shells-dissolve-in-acidified-ocean-water', 'ocean-acidification-and-the-food-web'], #2.31 #34.21
+    'a1bd40f2-424e-4af8-8d3d-f44ba7ba36b6': ['human-influences-apparent-in-many-aspects-of-the-changing-climate', 'caq-human-influences-apparent-in-many-aspects-of-the-changing-climate'], #33.17 #34.13
+    '834f7624-40de-4a09-9ced-faaca30d4d6d': ['ice-cover-in-the-great-lakes', 'midwest-ice-cover-in-the-great-lakes'], #2.27 #18.7
+}
+
 
 def main():
     print gcis.test_login()
     # sync_dataset_metadata(gcis, webform.get_aggregated_datasets())
-    sync(replace=False)
+    # sync(replace=True)
+    cleanup_after_replace()
 
 
 def sync(replace=False):
@@ -265,8 +299,20 @@ def sync(replace=False):
                 #Hack: override webform's title in favor of gcis
                 figure_obj.title = gcis_fig.title if gcis_fig.title not in (None, '') else figure_obj.title
 
+
+                if len(gcis_fig.contributors) > 1:
+                    print '*** Multiple contributors: ', gcis_id
+
                 if replace:
-                    for image in figure_obj.images:
+                    #Hack: removing existing contributors to address orphans
+                    for c in gcis_fig.contributors:
+                        gcis.delete_contributor_figure_assoc(c, report_id, chapter_id, gcis_id)
+
+                    # #Remove existing parents
+                    for p in gcis_fig.parents:
+                        gcis.delete_figure_pub_assoc(report_id, gcis_id, p)
+
+                    for image in gcis_fig.images:
                         #TODO: There are better ways to do this. Build File support.
                         print 'Deleting {img}'.format(img=image.identifier)
                         gcis.delete_image(image)
@@ -280,6 +326,13 @@ def sync(replace=False):
                 print 'Success!'
                 count += 1
     print count
+
+
+#Hack
+def cleanup_after_replace():
+    for image_id in images_with_multiple_figures:
+        for figure_id in images_with_multiple_figures[image_id]:
+            print gcis.associate_image_with_figure(image_id, 'nca3', figure_id)
 
 if __name__ == '__main__':
     main()

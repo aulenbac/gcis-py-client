@@ -1,4 +1,4 @@
-from gcis_client import GcisClient
+from gcis_client import GcisClient, AssociationException
 from webform_client import WebformClient
 from nca3_client import Nca3Client
 
