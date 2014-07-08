@@ -79,12 +79,26 @@ class AssociationException(Exception):
 
 
 class GcisClient(object):
-    def __init__(self, url, username, api_key):
-        self.base_url = url
+    def __init__(self, *args, **kwargs):
+        username = None
+        api_key = None
+        
+        #Handle varargs
+        #User only specifies url
+        if len(args) == 1:
+            self.base_url = args[0]
+        #User provides url, username, and key
+        elif len(args) == 3:
+            self.base_url = args[0]
+            username, api_key == args[1:3]
+        #User provides none or inconsistent args
+        else:
+            print 'Using http://data.globalchange.gov'
+            self.base_url = 'http://data.globalchange.gov'
 
-        #If credentials were not provided, obtain them
+        #If credentials were not provided, obtain them 
         if username is None or api_key is None:
-            username, api_key = get_credentials(url)
+            username, api_key = get_credentials(self.base_url)
 
         self.s = requests.Session()
         self.s.auth = (username, api_key)
