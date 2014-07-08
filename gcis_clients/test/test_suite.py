@@ -1,5 +1,3 @@
-from domain import Contributor
-
 __author__ = 'abuddenberg'
 
 #To run the tests:

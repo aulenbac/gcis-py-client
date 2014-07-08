@@ -27,11 +27,14 @@ setup(
     url='http://data.globalchange.gov',
     description='Client for GCIS webservices',
     long_description=open('README.md').read(),
+    license='New BSD',
+    data_files = [("", ["LICENSE.txt"])],
     install_requires=[
         "requests >= 2.1.0",
         "python-dateutil >= 2.2",
-        "PyYAML >= 3.11"
+        "PyYAML >= 3.11",
+        "beautifulsoup4 >= 4.3.2",
+        "pytest >= 2.5.2"
     ],
-    tests_require=["pytest >= 2.5.2"],
     cmdclass={'test': PyTest},
 )
