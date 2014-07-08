@@ -19,7 +19,7 @@ These should be available through the package manager of your choice
 
 To install from git with pip:
 
-    pip install git+ssh://gcis-dev-back/usr/local/projects/repos/gcis-py-client.git/
+    pip install git+http://github.com/USGCRP/gcis-py-client
 
 To install from tarball:
 
