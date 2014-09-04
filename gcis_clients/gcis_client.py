@@ -90,7 +90,7 @@ class GcisClient(object):
         #User provides url, username, and key
         elif len(args) == 3:
             self.base_url = args[0]
-            username, api_key == args[1:3]
+            username, api_key = args[1:3]
         #User provides none or inconsistent args
         else:
             print 'Using http://data.globalchange.gov'
