@@ -7,8 +7,8 @@ from collections import OrderedDict
 
 webform = WebformClient('http://resources.assessment.globalchange.gov', webform_token)
 
-# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
-gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
+gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
+# gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
 
 sync_metadata_tree = {
     #Reports
@@ -27,6 +27,7 @@ sync_metadata_tree = {
             ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),  # 2.17
             ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),  # 2.18
             ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),  # 2.2
+            ('/metadata/figures/3177', 'cs-trends-in-flood-magnitude'),  # 2.21
             ('/metadata/figures/2939', 'projected-changes-in-soil-moisture-for-the-western-us'),  # 2.22
             ('/metadata/figures/3304', 'observed-trends-in-hurricane-power-dissipation'),  # 2.23
             ('/metadata/figures/3305', 'variation-of-storm-frequency-and-intensity-during-the-cold-season-november--march'),  # 2.24
@@ -266,14 +267,18 @@ images_with_multiple_figures = {
     '8c679de0-4a6c-4fc9-bbd1-59251ffe3d7f': ['shells-dissolve-in-acidified-ocean-water', 'ocean-acidification-and-the-food-web'], #2.31 #34.21
     'a1bd40f2-424e-4af8-8d3d-f44ba7ba36b6': ['human-influences-apparent-in-many-aspects-of-the-changing-climate', 'caq-human-influences-apparent-in-many-aspects-of-the-changing-climate'], #33.17 #34.13
     '834f7624-40de-4a09-9ced-faaca30d4d6d': ['ice-cover-in-the-great-lakes', 'midwest-ice-cover-in-the-great-lakes'], #2.27 #18.7
+    'eab9f2d3-6ebf-40ef-9d9b-fc7f9d62e693': ['cs-trends-in-flood-magnitude', 'trends-in-flood-magnitude'],
 }
 
 
 def main():
     print gcis.test_login()
     # sync_dataset_metadata(gcis, webform.get_aggregated_datasets())
-    # sync(replace=True)
-    cleanup_after_replace()
+    sync(replace=False)
+    # cleanup_after_replace()
+
+    # for ds in gcis.get_dataset_list().json():
+    #     print '-'.join(ds['identifier'].split('-')[1:-1]) + '\t' + str(ds['url'])
 
 
 def sync(replace=False):

@@ -592,7 +592,8 @@ class Parent(Gcisbase):
                 'The Myth of the 1970s Global Cooling Scientific Consensus': '10.1175/2008BAMS2370.1',
                 'Hurricane Sandy devestates NY/NJ-area passenger rai systems': ('web_page', '135ae7d9-56e3-4dcb-a81c-42a6f1e9b332'),
                 'Climate change impacts of US reactive nitrogen': '10.1073/pnas.1114243109',
-                'Range-wide patterns of greater  sage-grouse persistence': '10.1111/j.1472-4642.2008.00502.x'
+                'Range-wide patterns of greater  sage-grouse persistence': '10.1111/j.1472-4642.2008.00502.x',
+                'Monitoring and understanding changes in heat waves, cold waves, floods and droughts in the United States: State of Knowledge': '10.1175/BAMS-D-12-00066.1',
 
             },
             'book': {
@@ -635,7 +636,9 @@ class Parent(Gcisbase):
             if value in self.publication_type_map else '**MISSING**' + value
 
     def __repr__(self):
-        return '{rel}: {type}: {url}'.format(rel=self.relationship, type=self.publication_type_identifier, url=self.url)
+        return '{rel}: {type}: {url}: {lbl}'.format(
+            rel=self.relationship, type=self.publication_type_identifier, url=self.url, lbl=self.label
+        )
 
     def __str__(self):
         return self.__repr__()

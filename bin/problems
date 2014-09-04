@@ -22,7 +22,10 @@ whitelisted_dupes = [
     'a1bd40f2-424e-4af8-8d3d-f44ba7ba36b6', #33.17 #34.13
 
     '834f7624-40de-4a09-9ced-faaca30d4d6d', #2.27 #18.7
+
+    'eab9f2d3-6ebf-40ef-9d9b-fc7f9d62e693', #2.21 #3.5
 ]
+
 
 def main():
     hitlist_file = 'hitlist.pk1'
