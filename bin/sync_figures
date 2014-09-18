@@ -52,6 +52,7 @@ sync_metadata_tree = {
         ('energy-supply-and-use', [
             ('/metadata/figures/3082', 'paths-of-hurricanes-katrina-and-rita-relative-to-oil-and-gas-production-facilities'),  # 4.1
             ('/metadata/figures/3292', 'cooling-degree-days'),  # 4.3
+            ('/metadata/figures/3291', 'projected-changes-in-seasonal-precipitation'),  # 4.4
         ]),
         #Chapter 5
         ('transportation', [
@@ -93,6 +94,7 @@ sync_metadata_tree = {
             ('/metadata/figures/2601', 'energy-water-land-and-climate-interactions'),  # 10.1
             ('/metadata/figures/2917', 'the-columbia-river-basin-land-use-and-land-cover'),  # 10.10
             ('/metadata/figures/2410', 'coasttocoast-100degree-days-in-2011'),  # 10.2
+            ('/metadata/figures/2596', 'texas-summer-2011-record-heat-and-drought'),  # 10.3
             ('/metadata/figures/3158', 'projected-landuse-intensity-in-2030'),  # 10.6
             ('/metadata/figures/2986', 'hydraulic-fracturing-and-water-use'),  # 10.7
             ('/metadata/figures/2916', 'renewable-energy-and-land-use'),  # 10.8
@@ -255,6 +257,7 @@ sync_metadata_tree = {
             ('/metadata/figures/2635', 'potential-effects-of-climate-change'),  # 34.25
             ('/metadata/figures/2791', 'two-us-emissions-reduction-pathways'),  # 34.27
             ('/metadata/figures/3134', 'temperature-trends-1900-2012'),  # 34.8
+            ('/metadata/figures/3099', 'decade-scale-changes-in-average-temperature-for-us-regions')  # 34.9
         ])
     ])
 }
@@ -274,7 +277,7 @@ images_with_multiple_figures = {
 def main():
     print gcis.test_login()
     # sync_dataset_metadata(gcis, webform.get_aggregated_datasets())
-    sync(replace=False)
+    sync(replace=True)
     # cleanup_after_replace()
 
     # for ds in gcis.get_dataset_list().json():
