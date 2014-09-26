@@ -167,6 +167,7 @@ sync_metadata_tree = {
         ]),
         #Chapter 20
         ('southwest', [
+            ('/metadata/figures/2996', 'projected-temperature-increases'),  #20.1
             ('/metadata/figures/2568', 'coastal-risks-posed-by-sea-level-rise-and-high-tides'),  #20.5
             ('/metadata/figures/3484', 'urban-heat-and-public-health'),  # 20.6
         ]),
@@ -177,6 +178,7 @@ sync_metadata_tree = {
         ]),
         #Chapter 22
         ('alaska', [
+            ('/metadata/figures/3262', 'alaska-will-continue-to-warm-rapidly'),  # 22.1
             ('/metadata/figures/2817', 'newtok-alaska'),  # 22.4
         ]),
         #Chapter 23

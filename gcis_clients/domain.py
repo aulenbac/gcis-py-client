@@ -421,8 +421,8 @@ class Organization(Gcisbase):
             'Kiksapa Consulting': 'kiksapa-consulting-llc',
             'Centers for Disease Control and Prevention': 'centers-disease-control-and-prevention',
             'Pacific Northwest Laboratories': 'pacific-northwest-national-laboratory',
-            'Susanne Moser Research & Consulting': 'susanne-moser-research-consulting'
-
+            'Susanne Moser Research & Consulting': 'susanne-moser-research-consulting',
+            'NEMAC': 'national-environmental-modeling-analysis-center',
         }
 
         super(Organization, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
@@ -472,7 +472,8 @@ class Contributor(Gcisbase):
             'Susanne Moser': 'convening_lead_author',
             'Bull Bennett': 'convening_lead_author',
             'Ernesto Weil': 'scientist',
-            'William Elder': 'scientist'
+            'William Elder': 'scientist',
+            'Greg Dobson': 'analyst'
         }
         self._role = None
 
@@ -558,7 +559,9 @@ class Parent(Gcisbase):
                 'Summary for Decision Makers. Assessment of Climate Change in the Southwest United States': 'swccar-assessment-climate-change-in-southwest-us',
                 'Climate Variability and Change in Mobile, Alabama: Task 2 Final Report. Impacts of Climate  25 Change and Variability on Transpo': 'fhwa-hep-12-053',
                 'Effects of Climatic Variability and  Change on Forest Ecosystems: A Comprehensive Science  Synthesis for the U.S. Forest  Sector': 'usfs-pnw-gtr-870',
-                'Future of America\'s Forests and Rangelands Forest Service. 2010 Resources Planning Act Assessment': 'usfs-gtr-wo-87'
+                'Future of America\'s Forests and Rangelands Forest Service. 2010 Resources Planning Act Assessment': 'usfs-gtr-wo-87',
+                'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 5. Climate of the Southwest U.S.': 'noaa-techreport-nesdis-142-5',
+                'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 7. Climate of Alaska': 'noaa-techreport-nesdis-142-7'
 
 
 
