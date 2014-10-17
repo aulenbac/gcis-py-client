@@ -561,8 +561,8 @@ class Parent(Gcisbase):
                 'Effects of Climatic Variability and  Change on Forest Ecosystems: A Comprehensive Science  Synthesis for the U.S. Forest  Sector': 'usfs-pnw-gtr-870',
                 'Future of America\'s Forests and Rangelands Forest Service. 2010 Resources Planning Act Assessment': 'usfs-gtr-wo-87',
                 'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 5. Climate of the Southwest U.S.': 'noaa-techreport-nesdis-142-5',
-                'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 7. Climate of Alaska': 'noaa-techreport-nesdis-142-7'
-
+                'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 7. Climate of Alaska': 'noaa-techreport-nesdis-142-7',
+                'Reclamation, SECURE Water Act Section 9503(c) - Reclamation Climate Change and Water, Report to  Congress': 'usbr-secure-2011'
 
 
             },
@@ -582,7 +582,11 @@ class Parent(Gcisbase):
                 'Climate Change Response Framework - Northwoods': '267378f7-278b-4201-8ffa-a820f5a694b8',
                 'NWHI Maps and Publications': 'e6438f11-85f4-4c29-abb5-b09efa3279b2',
                 'The Cryosphere Today Compare Daily Sea Ice': 'e4a9eb6a-9421-42c3-94b1-47caf588d41d',
-                'NASA Earth Observatory Visualizing the Sea Ice Minimum': '71b4c19e-42da-4f15-99d2-7c7746d8eaf2'
+                'NASA Earth Observatory Visualizing the Sea Ice Minimum': '71b4c19e-42da-4f15-99d2-7c7746d8eaf2',
+                '2007 Census Ag Atlas Maps: Crops and Plants': 'f39c0146-137f-4668-b401-5972fe40208d',
+                'NRCS Photo Gallery': '13da595f-e0f0-4ad0-b87b-44ce3897cd30',
+                'Billion-Dollar Weather/Climate Disasters: Mapping': 'd70d7a59-45d7-4b38-baf2-86a7fcf12da3',
+                'Before and After: 50 Years of Rising Tides and Sinking Marshes': '6778161f-897b-4f89-942f-8ad2f01f11a0'
 
 
             },
@@ -604,7 +608,8 @@ class Parent(Gcisbase):
                 'A focus on climate during the past 100 years in "Climate Variability and Extremes during the Past 100 Years"': '998aa4c2-9f0d-478c-b7bb-19e383c628a9'
             },
             'generic': {
-                'Verrazano Narrows Storm Surge Barrier: Against the Deluge: Storm Barriers to  Protect New York City, March 31st 2009': '01d188d1-636b-49e6-af43-c1544cee9319'
+                'Verrazano Narrows Storm Surge Barrier: Against the Deluge: Storm Barriers to  Protect New York City, March 31st 2009': '01d188d1-636b-49e6-af43-c1544cee9319',
+                'National Association of Recreation Resource Planners Annual Conference': 'national-association-of-recreation-resource-planners-annual-conference-2005'
             }
         }
 

@@ -7,8 +7,8 @@ from collections import OrderedDict
 
 webform = WebformClient('http://resources.assessment.globalchange.gov', webform_token)
 
-gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
-# gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
+# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
+gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
 
 sync_metadata_tree = {
     #Reports
@@ -46,6 +46,8 @@ sync_metadata_tree = {
         #Chapter 3
         ('water-resources', [
             ('/metadata/figures/2676', 'projected-changes-in-snow-runoff-and-soil-moisture'),  # 3.1
+            ('/metadata/figures/3573', 'projected-changes-in-water-withdrawals'),  # 3.11
+            ('/metadata/figures/3171', 'streamflow-projections-for-river-basins-in-the-western-us'),  # 3.4
             ('/metadata/figures/3303', 'trends-in-flood-magnitude'),  # 3.5
         ]),
         #Chapter 4
@@ -64,8 +66,11 @@ sync_metadata_tree = {
         ]),
         #Chapter 6
         ('agriculture', [
+            ('/metadata/figures/2867', 'agricultural-distribution'),  #6.2
             ('/metadata/figures/3582', 'crop-yield-response-to-warming-in-californias-central-valley'),  #6.4
             ('/metadata/figures/2691', 'projected-changes-in-key-climate-variables-affecting-agricultural-productivity'),  # 6.5
+            ('/metadata/figures/3081', 'reduced-winter-chilling-projected-for-california'),  # 6.6
+            ('/metadata/figures/2871', 'water-and-soil'),  # 6.7
             ('/metadata/figures/2872', 'drainage-tiles'),  # 6.8
         ]),
         #Chapter 7
@@ -74,11 +79,13 @@ sync_metadata_tree = {
             ('/metadata/figures/2977', 'effectiveness-of-forest-management-in-reducing-wildfire-risk'),  # 7.2
             ('/metadata/figures/2978', 'forest-vulnerability-to-changing-climate'),  # 7.3
             ('/metadata/figures/2985', 'forests-can-be-a-source--or-a-sink--for-carbon'),  # 7.4
+            ('/metadata/figures/3151', 'location-of-potential-forestry-biomass-resources'),  # 7.7
             ('/metadata/figures/3130', 'public-and-private-forestlands'),  # 7.8
 
         ]),
         #Chapter 8
         ('ecosystems', [
+            ('/metadata/figures/3580', 'water-supplies-projected-to-decline'),  # 8.1
             ('/metadata/figures/2576', 'the-aftermath-of-hurricanes'),  # 8.2
             ('/metadata/figures/2456', 'adaptation-planning-and-implementation-framework'),  # 8.3
             ('/metadata/figures/3574', 'biological-responses-to-climate-change'),  # 8.4
@@ -86,6 +93,7 @@ sync_metadata_tree = {
         #Chapter 9
         ('human-health', [
             ('/metadata/figures/3162', 'projected-climate-change-worsens-asthma'),  # 9.1
+            ('/metadata/figures/3085', 'projected-changes-in-tick-habitat'),  # 9.5
             ('/metadata/figures/2896', 'heavy-downpours-disease'),  # 9.7
             ('/metadata/figures/2897', 'harmful-bloom-of-algae'),  # 9.8
         ]),
@@ -123,6 +131,7 @@ sync_metadata_tree = {
             ('/metadata/figures/2662', 'rural-counties'),  # 14.1
             ('/metadata/figures/2661', 'economic-dependence-varies-by-region'),  # 14.2
             ('/metadata/figures/3306', 'growing-season-lengthens'),  # 14.3
+            ('/metadata/figures/3087', 'climate-change-impacts-on-summertime-tourism'),  # 14.4
             ('/metadata/figures/2904', 'many-rural-areas-are-losing-population'),  # 14.5
         ]),
         # Chapter 15
@@ -142,6 +151,8 @@ sync_metadata_tree = {
         ]),
         #Chapter 17
         ('southeast', [
+            ('/metadata/figures/3577', 'billion-dollar-weatherclimate-disasters'),  # 17.1
+            ('/metadata/figures/3108', 'shrinking-lands-for-tribal-communities'),  # 17.2
             ('/metadata/figures/2562', 'southeast-temperature-observed-and-projected'),  # 17.3
             ('/metadata/figures/2998', 'projected-change-in-number-of-days-over-95-f'),  # 17.4
             ('/metadata/figures/2999', 'projected-change-in-number-of-nights-below-32f'),  # 17.5
