@@ -199,4 +199,4 @@ class WebformClient:
                         dataset_map[dataset.identifier].activity.merge(dataset.activity)
 
                     # print webform_url, dataset.identifier
-        return dataset_map.values()
+        return dataset_map
