@@ -302,7 +302,7 @@ images_with_multiple_figures = {
     '9015558c-b1ad-4eb2-afe8-c7ea2caee2cd': ['projected-temperature-change-of-hottest-and-coldest-days', 'projected-temperature-change-of-hottest-days'],  #2.20 #9.4
     'bdbc59c7-c91e-496f-b4bd-9f584404df97': ['projected-change-in-heavy-precipitation-events', 'health-projected-change-in-heavy-precipitation-events'],  #2.19 #9.6
     'add6d6e7-30f0-4f44-bc2a-5b4a2ee4ce14': ['projected-change-in-heavy-precipitation-events', 'health-projected-change-in-heavy-precipitation-events'],  #2.19 #9.6
-    '47b50ae0-e3d1-4e29-aff7-09de2bdf6648': ['separating-human-and-natural-influences-on-climate', 'caq-separating-human-and-natural-influences-on-climate']  #2.3 #34.15
+    '47b50ae0-e3d1-4e29-aff7-09de2bdf6648': ['separating-human-and-natural-influences-on-climate', 'caq-separating-human-and-natural-influences-on-climate'],  #2.3 #34.15
     'ebc4e8fb-f987-40da-9bbf-e36802241556': ['caq-carbon-emissions-in-the-industrial-age', 'carbon-emissions-in-the-industrial-age']  #33.3 #34.4
 }
 
