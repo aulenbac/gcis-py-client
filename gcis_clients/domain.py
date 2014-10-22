@@ -242,6 +242,7 @@ class Dataset(GcisObject):
             'Global Historical Climatology Network - Daily': 'nca3-ghcn-daily-r201305',
             'Global Historical Climatology Network - Monthly': 'nca3-ghcn-monthly-r201305',
             'NCDC Merged Land and Ocean Surface Temperature': 'nca3-mlost',
+            'NOAA Merged Land-Ocean Surface Temperature Analysis (MLOST)': 'nca3-mlost',
             'U.S. Climate Divisional Dataset Version 2': 'nca3-cddv2-r1',
             'Climate Division Database Version 2': 'nca3-cddv2-r1',
             'Eighth degree-CONUS Daily Downscaled Climate Projections by Katharine Hayhoe': 'nca3-cmip3-downscaled-r201304',
@@ -265,6 +266,8 @@ class Dataset(GcisObject):
             'Global Historical Climatology Network-Daily (GHCN-D) Monthly Summaries: North American subset': 'nca3-ghcnd-monthly-summaries-r201401',
             'Global Sea Level From TOPEX & Jason Altimetry': 'nca3-topex-jason-altimetry-r1',
             'World Climate Research Program\'s (WCRP\'s) Coupled Model Intercomparison Project phase 5 (CMIP5) multi-model ensemble': 'nca3-cmip5-r1',
+            'Global CO2 Emissions from Fossil-Fuel Burning, Cement Manufacture, and Gas Flaring: 1751-2009': 'nca3-doe-co2-r201209',
+            'Proxy-based reconstructions of hemispheric and global surface temperature variations over the past two millennia': 'nca3-mann-recons-r200809',
 
             #Surely we can do better
             'Proxy Data': 'nca3-proxy-data-r1',
@@ -423,6 +426,8 @@ class Organization(Gcisbase):
             'Pacific Northwest Laboratories': 'pacific-northwest-national-laboratory',
             'Susanne Moser Research & Consulting': 'susanne-moser-research-consulting',
             'NEMAC': 'national-environmental-modeling-analysis-center',
+            'LBNL': 'lawrence-berkeley-national-laboratory',
+            'Texas Tech University': 'texas-tech-university'
         }
 
         super(Organization, self).__init__(data, fields=self.gcis_fields, trans=self.translations)
@@ -473,7 +478,9 @@ class Contributor(Gcisbase):
             'Bull Bennett': 'convening_lead_author',
             'Ernesto Weil': 'scientist',
             'William Elder': 'scientist',
-            'Greg Dobson': 'analyst'
+            'Greg Dobson': 'analyst',
+            'Michael Wehner': 'scientist',
+            'Katharine Hayhoe': 'scientist'
         }
         self._role = None
 
@@ -562,7 +569,8 @@ class Parent(Gcisbase):
                 'Future of America\'s Forests and Rangelands Forest Service. 2010 Resources Planning Act Assessment': 'usfs-gtr-wo-87',
                 'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 5. Climate of the Southwest U.S.': 'noaa-techreport-nesdis-142-5',
                 'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 7. Climate of Alaska': 'noaa-techreport-nesdis-142-7',
-                'Reclamation, SECURE Water Act Section 9503(c) - Reclamation Climate Change and Water, Report to  Congress': 'usbr-secure-2011'
+                'Reclamation, SECURE Water Act Section 9503(c) - Reclamation Climate Change and Water, Report to  Congress': 'usbr-secure-2011',
+                'The Physical Science Basis. Contribution of Working Group I to the Fourth AR4 of IPCC': 'ipcc-wg1-ar5-physical-science-basis'
 
 
             },

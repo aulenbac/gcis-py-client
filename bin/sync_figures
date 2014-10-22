@@ -7,8 +7,8 @@ from collections import OrderedDict
 
 webform = WebformClient('http://resources.assessment.globalchange.gov', webform_token)
 
-# gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
-gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
+gcis = GcisClient('http://data.gcis-dev-front.joss.ucar.edu', *gcis_dev_auth)
+# gcis = GcisClient('http://data-stage.globalchange.gov', *gcis_stage_auth)
 
 sync_metadata_tree = {
     #Reports
@@ -26,6 +26,8 @@ sync_metadata_tree = {
             ('/metadata/figures/3298', 'observed-us-trend-in-heavy-precipitation'),  # 2.16
             ('/metadata/figures/2506', 'observed-change-in-very-heavy-precipitation'),  # 2.17
             ('/metadata/figures/2997', 'observed-change-in-very-heavy-precipitation-2'),  # 2.18
+            ('/metadata/figures/3302', 'projected-change-in-heavy-precipitation-events'),  #2.19
+            ('/metadata/figures/3263', 'projected-temperature-change-of-hottest-and-coldest-days'),  #2.20
             ('/metadata/figures/3170', 'global-temperature-and-carbon-dioxide'),  # 2.2
             ('/metadata/figures/3177', 'cs-trends-in-flood-magnitude'),  # 2.21
             ('/metadata/figures/2939', 'projected-changes-in-soil-moisture-for-the-western-us'),  # 2.22
@@ -33,6 +35,7 @@ sync_metadata_tree = {
             ('/metadata/figures/3305', 'variation-of-storm-frequency-and-intensity-during-the-cold-season-november--march'),  # 2.24
             ('/metadata/figures/3067', 'ice-cover-in-the-great-lakes'),  # 2.27
             ('/metadata/figures/3073', 'projected-arctic-sea-ice-decline'),  # 2.29
+            ('/metadata/figures/3076', 'separating-human-and-natural-influences-on-climate'),  #2.3
             ('/metadata/figures/2940', 'as-oceans-absorb-co-they-become-more-acidic'),  # 2.30
             ('/metadata/figures/2523', 'shells-dissolve-in-acidified-ocean-water'),  # 2.31
             ('/metadata/figures/3078', 'emissions-levels-determine-temperature-rises'),  # 2.4
@@ -93,7 +96,9 @@ sync_metadata_tree = {
         #Chapter 9
         ('human-health', [
             ('/metadata/figures/3162', 'projected-climate-change-worsens-asthma'),  # 9.1
+            ('/metadata/figures/3084', 'projected-temperature-change-of-hottest-days'),  # 9.4
             ('/metadata/figures/3085', 'projected-changes-in-tick-habitat'),  # 9.5
+            ('/metadata/figures/3586', 'health-projected-change-in-heavy-precipitation-events'),  # 9.6
             ('/metadata/figures/2896', 'heavy-downpours-disease'),  # 9.7
             ('/metadata/figures/2897', 'harmful-bloom-of-algae'),  # 9.8
         ]),
@@ -243,16 +248,21 @@ sync_metadata_tree = {
             ('/metadata/figures/2798', 'detection-and-attribution-as-forensics'),  # 33.16
             ('/metadata/figures/3301', 'human-influences-apparent-in-many-aspects-of-the-changing-climate'),  # 33.17
             ('/metadata/figures/2813', 'earths-energy-balance'),  # 33.2
+            ('/metadata/figures/3141', 'projected-annually-averaged-temperature-change'),  # 33.20
+            ('/metadata/figures/3153', 'projected-wintertime-precipitation-changes'),  #33.21
+            ('/metadata/figures/3152', 'projected-summertime-precipitation-changes'),  #33.22
             ('/metadata/figures/2802', 'modeling-the-climate-system'),  # 33.24
             ('/metadata/figures/2803', 'increasing-model-resolution'),  # 33.25
             ('/metadata/figures/3575', 'increasing-climate-model-components'),  # 33.26
             ('/metadata/figures/2533', 'us-seasonal-temperatures'),  # 33.28
             ('/metadata/figures/2806', 'ice-cover-on-lake-mendota'),  # 33.29
+            ('/metadata/figures/3137', 'carbon-emissions-in-the-industrial-age'),  #33.3
             ('/metadata/figures/2534', 'app-extreme-precipitation'),  # 33.32
             ('/metadata/figures/2809', 'extreme-drought-in-the-us-and-mexico-past-and-future'),  # 33.35
             ('/metadata/figures/3148', 'arctic-sea-ice-decline'),  # 33.37
             ('/metadata/figures/2393', 'permafrost-temperatures-rising'),  # 33.38
             ('/metadata/figures/3144', 'melting-of-arctic-landbased-ice'),  # 33.39
+            ('/metadata/figures/3307', 'heattrapping-gas-levels'),  #33.4
             ('/metadata/figures/3145', 'melting-glaciers-lead-to-sea-level-rise'),  # 33.40
             ('/metadata/figures/3147', 'ice-loss-from-greenland-and-antarctica'),  # 33.42
             ('/metadata/figures/3110', 'relative-strengths-of-warming-and-cooling-influences'),  # 33.6
@@ -262,12 +272,16 @@ sync_metadata_tree = {
         ('appendix-faqs', [
             ('/metadata/figures/2663', 'us-annual-temperature'),  # 34.1
             ('/metadata/figures/3096', 'caq-human-influence-on-the-greenhouse-effect'),  # 34.11
+            ('/metadata/figures/3136', 'caq-carbon-emissions-in-the-industrial-age'),  #34.4
+            ('/metadata/figures/3115', 'caq-1700-years-of-global-temperature-from-proxy-data'),  #34.5
             ('/metadata/figures/3300', 'caq-human-influences-apparent-in-many-aspects-of-the-changing-climate'),  # 34.13
+            ('/metadata/figures/3077', 'caq-separating-human-and-natural-influences-on-climate'),  # 34.15
             ('/metadata/figures/3091', 'published-climate-change-research-papers'),  # 34.18
             ('/metadata/figures/3075', 'caq-ten-indicators-of-a-warming-world'),  # 34.2
             ('/metadata/figures/2520', 'ocean-acidification-and-the-food-web'),  # 34.21
             ('/metadata/figures/2790', 'potential-tipping-points'),  # 34.24
             ('/metadata/figures/2635', 'potential-effects-of-climate-change'),  # 34.25
+            ('/metadata/figures/3266', 'multiple-pathways-for-reducing-us-emissions'),  #34.26
             ('/metadata/figures/2791', 'two-us-emissions-reduction-pathways'),  # 34.27
             ('/metadata/figures/3134', 'temperature-trends-1900-2012'),  # 34.8
             ('/metadata/figures/3099', 'decade-scale-changes-in-average-temperature-for-us-regions')  # 34.9
@@ -284,17 +298,20 @@ images_with_multiple_figures = {
     'a1bd40f2-424e-4af8-8d3d-f44ba7ba36b6': ['human-influences-apparent-in-many-aspects-of-the-changing-climate', 'caq-human-influences-apparent-in-many-aspects-of-the-changing-climate'], #33.17 #34.13
     '834f7624-40de-4a09-9ced-faaca30d4d6d': ['ice-cover-in-the-great-lakes', 'midwest-ice-cover-in-the-great-lakes'], #2.27 #18.7
     'eab9f2d3-6ebf-40ef-9d9b-fc7f9d62e693': ['cs-trends-in-flood-magnitude', 'trends-in-flood-magnitude'],
+    'd6b03280-7a3e-47ab-b109-caffc4bee634': ['projected-temperature-change-of-hottest-and-coldest-days', 'projected-temperature-change-of-hottest-days'],  #2.20 #9.4
+    '9015558c-b1ad-4eb2-afe8-c7ea2caee2cd': ['projected-temperature-change-of-hottest-and-coldest-days', 'projected-temperature-change-of-hottest-days'],  #2.20 #9.4
+    'bdbc59c7-c91e-496f-b4bd-9f584404df97': ['projected-change-in-heavy-precipitation-events', 'health-projected-change-in-heavy-precipitation-events'],  #2.19 #9.6
+    'add6d6e7-30f0-4f44-bc2a-5b4a2ee4ce14': ['projected-change-in-heavy-precipitation-events', 'health-projected-change-in-heavy-precipitation-events'],  #2.19 #9.6
+    '47b50ae0-e3d1-4e29-aff7-09de2bdf6648': ['separating-human-and-natural-influences-on-climate', 'caq-separating-human-and-natural-influences-on-climate']  #2.3 #34.15
+    'ebc4e8fb-f987-40da-9bbf-e36802241556': ['caq-carbon-emissions-in-the-industrial-age', 'carbon-emissions-in-the-industrial-age']  #33.3 #34.4
 }
 
 
 def main():
     print gcis.test_login()
-    # sync_dataset_metadata(gcis, webform.get_aggregated_datasets())
+    # sync_dataset_metadata(gcis, webform.get_aggregated_datasets().values())
     sync(replace=True)
-    # cleanup_after_replace()
-
-    # for ds in gcis.get_dataset_list().json():
-    #     print '-'.join(ds['identifier'].split('-')[1:-1]) + '\t' + str(ds['url'])
+    cleanup_after_replace()
 
 
 def sync(replace=False):
