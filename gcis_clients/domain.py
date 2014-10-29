@@ -268,6 +268,12 @@ class Dataset(GcisObject):
             'World Climate Research Program\'s (WCRP\'s) Coupled Model Intercomparison Project phase 5 (CMIP5) multi-model ensemble': 'nca3-cmip5-r1',
             'Global CO2 Emissions from Fossil-Fuel Burning, Cement Manufacture, and Gas Flaring: 1751-2009': 'nca3-doe-co2-r201209',
             'Proxy-based reconstructions of hemispheric and global surface temperature variations over the past two millennia': 'nca3-mann-recons-r200809',
+            'EPICA Dome C Ice Core 800KYr Carbon Dioxide Data': 'nca3-epica-ice-core-r20080515',
+            'Western U.S. Percent Area Moderately to Extremely Dry and Moderately to Extremely Wet': 'nca3-western-us-wet-dry-r2012',
+            'Total Wildland Fires and Acres (1960-2009)': 'nca3-wildland-fires-r1',
+            'HadCRUT4': 'nca3-hadcrut4-v4_1_1_0',
+            'GISS Surface Temperature Analysis (GISTEMP)': 'nca3-gistemp-r2010',
+            'Solar Constant': 'nca3-solar-constant-r20131003',
 
             #Surely we can do better
             'Proxy Data': 'nca3-proxy-data-r1',
@@ -570,8 +576,9 @@ class Parent(Gcisbase):
                 'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 5. Climate of the Southwest U.S.': 'noaa-techreport-nesdis-142-5',
                 'Regional Climate Trends and Scenarios for the U.S. National Climate Assessment. Part 7. Climate of Alaska': 'noaa-techreport-nesdis-142-7',
                 'Reclamation, SECURE Water Act Section 9503(c) - Reclamation Climate Change and Water, Report to  Congress': 'usbr-secure-2011',
-                'The Physical Science Basis. Contribution of Working Group I to the Fourth AR4 of IPCC': 'ipcc-wg1-ar5-physical-science-basis'
-
+                'The Physical Science Basis. Contribution of Working Group I to the Fourth AR4 of IPCC': 'ipcc-wg1-ar5-physical-science-basis',
+                '2005 Louisiana Hurricane Impact Atlas': 'lgic-lahurricane-2006',
+                '2009 State of the Climate Highlights': 'noaa-stateofclim-2009',
 
             },
             'webpage': {
@@ -594,7 +601,9 @@ class Parent(Gcisbase):
                 '2007 Census Ag Atlas Maps: Crops and Plants': 'f39c0146-137f-4668-b401-5972fe40208d',
                 'NRCS Photo Gallery': '13da595f-e0f0-4ad0-b87b-44ce3897cd30',
                 'Billion-Dollar Weather/Climate Disasters: Mapping': 'd70d7a59-45d7-4b38-baf2-86a7fcf12da3',
-                'Before and After: 50 Years of Rising Tides and Sinking Marshes': '6778161f-897b-4f89-942f-8ad2f01f11a0'
+                'Before and After: 50 Years of Rising Tides and Sinking Marshes': '6778161f-897b-4f89-942f-8ad2f01f11a0',
+                'Influence of El Nino and La Nina on Southwest Rainfall': '6d0a1cba-70fe-4fa3-a630-c45409115ab8',
+                'Map of Sea Level Trends': '2ab182cc-171d-4edd-9f9f-51e8b4cc2584'
 
 
             },
