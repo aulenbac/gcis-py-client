@@ -579,6 +579,9 @@ class Parent(Gcisbase):
                 'The Physical Science Basis. Contribution of Working Group I to the Fourth AR4 of IPCC': 'ipcc-wg1-ar5-physical-science-basis',
                 '2005 Louisiana Hurricane Impact Atlas': 'lgic-lahurricane-2006',
                 '2009 State of the Climate Highlights': 'noaa-stateofclim-2009',
+                'Climate of the Southeast United States: Variability, change, impacts and vulnerability.': ('book', '7951fbd8-5877-41aa-ae62-9da3eb56b5c5'),
+                'A Reef Manager\'s Guide to Coral Bleaching': ('book', 'd6f69088-1025-4ce7-b0e1-54ab6403a951'),
+                'Climate Stabilization Targets: Emissions, Concentrations, and Impacts over Decades to Millennia': ('book', 'f5b281a2-38d2-4633-84db-fd37fa0fb3e6')
 
             },
             'webpage': {
@@ -603,7 +606,8 @@ class Parent(Gcisbase):
                 'Billion-Dollar Weather/Climate Disasters: Mapping': 'd70d7a59-45d7-4b38-baf2-86a7fcf12da3',
                 'Before and After: 50 Years of Rising Tides and Sinking Marshes': '6778161f-897b-4f89-942f-8ad2f01f11a0',
                 'Influence of El Nino and La Nina on Southwest Rainfall': '6d0a1cba-70fe-4fa3-a630-c45409115ab8',
-                'Map of Sea Level Trends': '2ab182cc-171d-4edd-9f9f-51e8b4cc2584'
+                'Map of Sea Level Trends': '2ab182cc-171d-4edd-9f9f-51e8b4cc2584',
+                'Climate changing our nation\'s landscapes: NOAA, American Public Gardens Association unveil partnership to enhance awareness': 'e4160240-e5ad-41ee-ad56-9cbdaf162369'
 
 
             },
@@ -618,6 +622,8 @@ class Parent(Gcisbase):
                 'Climate change impacts of US reactive nitrogen': '10.1073/pnas.1114243109',
                 'Range-wide patterns of greater  sage-grouse persistence': '10.1111/j.1472-4642.2008.00502.x',
                 'Monitoring and understanding changes in heat waves, cold waves, floods and droughts in the United States: State of Knowledge': '10.1175/BAMS-D-12-00066.1',
+                'How do we know the world has warmed?': '10.1175/BAMS-91-7-StateoftheClimate',
+                'Attribution of observed historical near-surface temperature variations to anthropogenic and natural causes usingCMIP5simulations': '10.1002/jgrd.50239'
 
             },
             'book': {
